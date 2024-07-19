@@ -8,5 +8,8 @@
   border-radius: 20px;
   margin: 0 auto;
   margin-bottom: 2%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   /* background: drop-shadow(0 0 2em #61dafbaa); */
 }

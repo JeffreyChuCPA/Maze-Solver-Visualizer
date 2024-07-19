@@ -1,0 +1,24 @@
+.maze {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  aspect-ratio: 1;
+  border: 1px solid white;
+}
+
+.maze__row {
+  display: flex;
+  border: 1px solid white;
+}
+
+.maze__wall {
+  background-color: black; /* Color for walls (1) */
+}
+
+.maze__path {
+  background-color: white; /* Color for paths (0) */
+}
+
+.maze__walked {
+  background-color: var(--first-color); /* Color for paths (0) */
+}
