@@ -1,40 +1,36 @@
-import {
-    dfs,
-    bfs,
-    aStarSearch,
-    dijkstraAlgorithm,
-    wallFollower
-} from "./solvingAlgorithms";
+import React from "react";
+import { algorithms } from "./objects";
 
-type AlgorithmFunction = (
-    maze: number[][],
-    curr: Point | null,
-    start: Point | null,
-    end: Point | null,
-    seen: boolean[][],
-    path: Point[],
-    setMaze: React.Dispatch<React.SetStateAction<number[][]>>,
-    delay: number,
-    setSolving: React.Dispatch<React.SetStateAction<boolean>>,
-    solvingRef: React.MutableRefObject<boolean>
-) => void;
+export type SetState<T> = React.Dispatch<React.SetStateAction<T>>;
 
-type Algorithms = {
-    "Depth First Search (DFS)": AlgorithmFunction;
-    "Breadth First Search (BFS)": AlgorithmFunction;
-    "A* Search": AlgorithmFunction;
-    "Dijkstra's Algorithm": AlgorithmFunction;
-    "Wall Follower": AlgorithmFunction;
+export type Maze = number[][];
+
+export type AlgorithmName = keyof typeof algorithms;
+
+export type ClientControlPanelProps = {
+    mazeSize: number;
+    maze: Maze;
+    solving: boolean;
+    solvingRef: React.MutableRefObject<boolean>;
+    setMazeSize: SetState<number>;
+    setAlgorithm: SetState<AlgorithmName>;
+    setMaze: SetState<Maze>;
+    setSolving: SetState<boolean>;
 };
 
-export type AlgorithmName = keyof Algorithms;
+export type BoardProps = {
+    mazeSize: number;
+    algorithm: AlgorithmName;
+    maze: Maze;
+    solving: boolean;
+    solvingRef: React.MutableRefObject<boolean>;
+    setSolving: SetState<boolean>;
+    setMaze: SetState<Maze>;
+};
 
-export const algorithm: Algorithms = {
-    "Depth First Search (DFS)": dfs,
-    "Breadth First Search (BFS)": bfs,
-    "A* Search": aStarSearch,
-    "Dijkstra's Algorithm": dijkstraAlgorithm,
-    "Wall Follower": wallFollower
+export type MazeProps = {
+    maze: Maze;
+    mazeSize: number;
 };
 
 export type Point = {

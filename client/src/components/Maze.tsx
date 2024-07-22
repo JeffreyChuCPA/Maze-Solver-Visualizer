@@ -1,11 +1,8 @@
 import React from "react";
 import "../styling/Maze.css";
 import Block from "./Block";
+import { MazeProps } from "../utilities/types";
 
-type MazeProps = {
-    maze: number[][];
-    mazeSize: number;
-};
 
 const Maze: React.FC<MazeProps> = ({ maze, mazeSize }) => {
 

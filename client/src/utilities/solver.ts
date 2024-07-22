@@ -1,13 +1,15 @@
-import { algorithm, AlgorithmName, Point } from "./types";
+import { algorithms } from "./objects";
+import { aStarSearch, bfs, dfs, dijkstraAlgorithm, wallFollower } from "./SolvingAlgorithms/solvingAlgorithms";
+import { AlgorithmName, Maze, Point, SetState } from "./types";
 import { findEndPoint, findStartPoint } from "./utilities";
 
 export const solver = (
-    maze: number[][],
+    maze: Maze,
     algorithmName: AlgorithmName,
-    setMaze: React.Dispatch<React.SetStateAction<number[][]>>,
     delay: number,
-    setSolving: React.Dispatch<React.SetStateAction<boolean>>,
-    solvingRef: React.MutableRefObject<boolean>
+    solvingRef: React.MutableRefObject<boolean>,
+    setMaze: SetState<Maze>,
+    setSolving: SetState<boolean>,
 ): Point[] | void => {
     const seen: boolean[][] = [];
     const path: Point[] = [];
@@ -25,7 +27,8 @@ export const solver = (
         seen.push(new Array(maze[0].length).fill(false));
     }
 
-    const algorithmFunction = algorithm[algorithmName];
+    const algorithmFunction = algorithms[algorithmName];
+    //!Update to switch case, then update to useContext
     if (algorithmFunction) {
         algorithmFunction(
             maze,
@@ -34,10 +37,10 @@ export const solver = (
             end,
             seen,
             path,
-            setMaze,
             delay,
+            solvingRef,
+            setMaze,
             setSolving,
-            solvingRef
         );
     } else {
         console.error(`Algorithm ${algorithmName} not found.`);

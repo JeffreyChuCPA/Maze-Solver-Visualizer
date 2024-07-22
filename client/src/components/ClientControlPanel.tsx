@@ -1,18 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import "../styling/ClientControlPanel.css";
-import { algorithm, AlgorithmName } from "../utilities/types";
+import { ClientControlPanelProps } from "../utilities/types";
 import sampleMazes from "../utilities/sampleMazes";
-
-type ClientControlPanelProps = {
-    mazeSize: number;
-    maze: number[][];
-    solving: boolean;
-    solvingRef: React.MutableRefObject<boolean>,
-    setMazeSize: React.Dispatch<React.SetStateAction<number>>;
-    setAlgorithm: React.Dispatch<React.SetStateAction<AlgorithmName>>;
-    setMaze: React.Dispatch<React.SetStateAction<number[][]>>;
-    setSolving: React.Dispatch<React.SetStateAction<boolean>>;
-};
+import { algorithms } from "../utilities/objects";
 
 const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
     mazeSize,
@@ -63,9 +53,9 @@ const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
                     name="algorithm"
                     id="algorithm"
                     onChange={(e): void =>
-                        setAlgorithm(e.target.value as AlgorithmName)
+                        setAlgorithm(e.target.value as keyof typeof algorithms)
                     }>
-                    {Object.keys(algorithm).map((key) => (
+                    {Object.keys(algorithms).map((key) => (
                         <option id={key} key={key} value={key}>
                             {key}
                         </option>

@@ -1,25 +1,16 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import "../styling/Board.css";
 import Maze from './Maze';
-import { AlgorithmName } from '../utilities/types';
+import { BoardProps } from '../utilities/types';
 import { solver } from '../utilities/solver';
 
-type BoardProps = {
-  mazeSize: number;
-  algorithm: AlgorithmName;
-  maze: number[][];
-  solving: boolean;
-  solvingRef: React.MutableRefObject<boolean>;
-  setSolving: React.Dispatch<React.SetStateAction<boolean>>;
-  setMaze: React.Dispatch<React.SetStateAction<number[][]>>;
-} 
 
 const Board: React.FC<BoardProps> = ({mazeSize, algorithm, maze, solvingRef, solving, setMaze, setSolving}) => {
 
   //*when solving == True, use given algorithm to solve the grid
   if (solving) {
     solvingRef.current = true
-    solver(maze, algorithm, setMaze, 0, setSolving, solvingRef)
+    solver(maze, algorithm, 0, solvingRef, setMaze, setSolving)
   }
   
 
