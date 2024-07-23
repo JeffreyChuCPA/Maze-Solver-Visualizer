@@ -1,4 +1,4 @@
-import { Maze, Point } from "./types";
+import { Maze, Point, SetState } from "./types";
 
 export const findStartPoint = (maze: Maze): Point | null => {
   if (maze.length > 0) {
@@ -26,3 +26,18 @@ export const findEndPoint = (maze: Maze): Point | null => {
   }
   return null
 }
+
+export const updateMaze = (
+  maze: Maze,
+  point: Point | undefined,
+  setMaze: SetState<Maze>,
+  value: number
+): Maze => {
+  const updatedMaze: Maze = maze.map((row, rowIndex) => {
+      return row.map((cell, colIndex) => {
+          return rowIndex === point?.x && colIndex === point?.y ? value : cell;
+      });
+  });
+  setMaze(updatedMaze);
+  return updatedMaze;
+};
