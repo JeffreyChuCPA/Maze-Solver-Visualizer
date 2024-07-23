@@ -1,4 +1,3 @@
-
 import { aStarSearch } from "./SolvingAlgorithms/aStarSearch";
 import { bfs } from "./SolvingAlgorithms/bfs";
 import { dfs } from "./SolvingAlgorithms/dfs";
@@ -10,5 +9,5 @@ export const algorithms = {
   "Breadth First Search (BFS)": bfs,
   "A* Search": aStarSearch,
   "Dijkstra's Algorithm": dijkstraAlgorithm,
-  "Wall Follower": wallFollower
+  "Wall Follower": wallFollower,
 };

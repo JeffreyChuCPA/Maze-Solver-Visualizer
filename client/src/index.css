@@ -1,35 +1,35 @@
 @import url("https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap");
 
 * {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
 }
 
 :root {
-    --header-height: 3.5rem;
-    --first-color: hsl(184, 83%, 50%);
-    --title-color: hsl(184, 83%, 50%);
-    --text-color: black;
-    --body-color: #242424;
-    --body-font: "Inter";
-    --h2-font-size: 1.25rem;
-    --small-font-size: 0.813rem;
-    --font-semi-bold: 600;
-    --z-tooltip: 10;
-    --z-fixed: 100;
+  --header-height: 3.5rem;
+  --first-color: hsl(184, 83%, 50%);
+  --title-color: hsl(184, 83%, 50%);
+  --text-color: black;
+  --body-color: #242424;
+  --body-font: "Inter";
+  --h2-font-size: 1.25rem;
+  --small-font-size: 0.813rem;
+  --font-semi-bold: 600;
+  --z-tooltip: 10;
+  --z-fixed: 100;
 }
 
 body {
-    background-color: var(--body-color);
-    color: var(--text-color);
-    font-family: var(--body-font);
+  background-color: var(--body-color);
+  color: var(--text-color);
+  font-family: var(--body-font);
 }
 
 ul {
-    list-style: none;
+  list-style: none;
 }
 
 a {
-    text-decoration: none;
+  text-decoration: none;
 }

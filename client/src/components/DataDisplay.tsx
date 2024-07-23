@@ -1,12 +1,8 @@
-import React from 'react'
-import '../styling/DataDisplay.css'
+import React from "react";
+import "../styling/DataDisplay.css";
 
 const DataDisplay = () => {
-  return (
-    <div className='datadisplay__card' >
-      
-    </div>
-  )
-}
+  return <div className="datadisplay__card"></div>;
+};
 
-export default DataDisplay
+export default DataDisplay;

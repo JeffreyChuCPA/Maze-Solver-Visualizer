@@ -10,7 +10,7 @@ export const aStarSearch = (
   delay: number,
   solvingRef: React.MutableRefObject<boolean>,
   setMaze: SetState<Maze>,
-  setSolving:SetState<boolean>,
+  setSolving: SetState<boolean>,
 ): void => {
   console.log("A* Search algorithm");
 };

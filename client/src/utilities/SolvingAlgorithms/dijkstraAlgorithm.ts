@@ -10,7 +10,7 @@ export const dijkstraAlgorithm = (
   delay: number,
   solvingRef: React.MutableRefObject<boolean>,
   setMaze: SetState<Maze>,
-  setSolving:SetState<boolean>,
+  setSolving: SetState<boolean>,
 ): void => {
   console.log("Dijkstra's Algorithm");
 };
