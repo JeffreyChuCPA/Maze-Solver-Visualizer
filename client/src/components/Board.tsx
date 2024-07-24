@@ -12,11 +12,13 @@ const Board: React.FC<BoardProps> = ({
   solving,
   setMaze,
   setSolving,
+  setSolved,
 }) => {
+
   //*when solving == True, use given algorithm to solve the grid
   if (solving) {
     solvingRef.current = true;
-    solver(maze, algorithm, 0, solvingRef, setMaze, setSolving);
+    solver(maze, algorithm, 0, solvingRef, setMaze, setSolving, setSolved);
   }
 
   return (

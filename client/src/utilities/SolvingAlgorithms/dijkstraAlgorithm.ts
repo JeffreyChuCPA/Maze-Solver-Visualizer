@@ -11,6 +11,7 @@ export const dijkstraAlgorithm = (
   solvingRef: React.MutableRefObject<boolean>,
   setMaze: SetState<Maze>,
   setSolving: SetState<boolean>,
+	setSolved: SetState<boolean>,
 ): void => {
   console.log("Dijkstra's Algorithm");
 };

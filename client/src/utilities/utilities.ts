@@ -41,3 +41,16 @@ export const updateMaze = (
   setMaze(updatedMaze);
   return updatedMaze;
 };
+
+export const resetMaze = (
+  maze: Maze,
+  setMaze: SetState<Maze>,
+): Maze => {
+  const updatedMaze: Maze = maze.map((row) => {
+    return row.map((cell) => {
+      return cell === 2 ? 0 : cell;
+    });
+  });
+  setMaze(updatedMaze);
+  return updatedMaze;
+};

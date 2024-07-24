@@ -1,11 +1,4 @@
 import { algorithms } from "./objects";
-import {
-  aStarSearch,
-  bfs,
-  dfs,
-  dijkstraAlgorithm,
-  wallFollower,
-} from "./SolvingAlgorithms/solvingAlgorithms";
 import { AlgorithmName, Maze, Point, SetState } from "./types";
 import { findEndPoint, findStartPoint } from "./utilities";
 
@@ -16,7 +9,11 @@ export const solver = (
   solvingRef: React.MutableRefObject<boolean>,
   setMaze: SetState<Maze>,
   setSolving: SetState<boolean>,
+	setSolved: SetState<boolean>,
 ): Point[] | void => {
+
+	console.log('called to solve');
+
   const seen: boolean[][] = [];
   const path: Point[] = [];
 
@@ -25,9 +22,9 @@ export const solver = (
   console.log(start);
   // console.log(end);
 
-  if (start === null || end === null) {
-    return console.log("Maze has not start or end points");
-  }
+	if (start === null || end === null) {
+		return console.log("Maze has not start or end points");
+	}
 
   for (let i = 0; i < maze.length; i++) {
     seen.push(new Array(maze[0].length).fill(false));
@@ -47,8 +44,9 @@ export const solver = (
       solvingRef,
       setMaze,
       setSolving,
-    );
-  } else {
+			setSolved
+    );}
+	else {
     console.error(`Algorithm ${algorithmName} not found.`);
   }
 

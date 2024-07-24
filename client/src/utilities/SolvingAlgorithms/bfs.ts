@@ -12,14 +12,10 @@ export const bfs = async (
   solvingRef: React.MutableRefObject<boolean>,
   setMaze: SetState<Maze>,
   setSolving: SetState<boolean>,
+  setSolved: SetState<boolean>,
 ): Promise<boolean> => {
-  // return new Promise((resolve) => {
-  console.log(curr);
-
   if (!curr || !end || !start) {
     console.error("Start or end point is null");
-    // resolve(false);
-    // return;
     return false;
   }
 
@@ -30,7 +26,6 @@ export const bfs = async (
     { x: 0, y: 1 },
   ];
 
-  // setTimeout(async () => {
   if (curr.x === start.x && curr.y === start.y) {
     const hasValidMoves = directions.some((direction) => {
       return (
@@ -46,8 +41,6 @@ export const bfs = async (
     if (!hasValidMoves) {
       console.log("Not solvable");
       setSolving(false);
-      // resolve(false);
-      // return;
       return false;
     }
   }
@@ -71,23 +64,21 @@ export const bfs = async (
 
   //*while queue is not empty
   while (path.length !== 0) {
-    if (!solvingRef.current) {
-      console.log("Stopped solving");
-      setSolving(false);
-      return false;
-    }
-
     const currCell = path.shift();
-    console.log(currCell);
     currentMaze = updateMaze(currentMaze, currCell, setMaze, 2);
     await new Promise((resolve) => setTimeout(resolve, delay));
 
+    if (!solvingRef.current) {
+      console.log("Stopped solving");
+      return false;
+    }
+    
     if (currCell?.x === end.x && currCell?.y === end.y) {
       path.push(end);
       currentMaze = updateMaze(currentMaze, currCell, setMaze, 2);
       setSolving(false);
-      // resolve(true)
-      // return
+      setSolved(true);
+      console.log("Solved!");
       return true;
     }
 
@@ -105,18 +96,11 @@ export const bfs = async (
           2,
         );
         seen[adjCurrCellX][adjCurrCellY] = true;
-        await new Promise((resolve) => setTimeout(resolve, delay));
       }
     }
-    console.log(seen);
-    console.log(path);
-    console.log(maze);
   }
 
-  // resolve(false)
-  // return
+  console.log("Not solvable");
   setSolving(false);
   return false;
-  // }, delay)
 };
-// };

@@ -12,13 +12,12 @@ export const dfs = async (
   solvingRef: React.MutableRefObject<boolean>,
   setMaze: SetState<Maze>,
   setSolving: SetState<boolean>,
+  setSolved: SetState<boolean>,
 ): Promise<boolean> => {
-  // return new Promise((resolve) => {
   console.log(curr);
 
   if (!curr || !end || !start) {
     console.error("Start or end point is null");
-    // resolve(false);
     return false;
   }
 
@@ -30,12 +29,8 @@ export const dfs = async (
   ];
 
   if (!solvingRef.current) {
-    // updateMaze(maze, curr, setMaze, 2);
-    // await new Promise((resolve) => setTimeout(resolve, delay));
     console.log("Stopped solving");
     console.log(maze);
-    setSolving(false);
-    // resolve(false);
     return false;
   }
 
@@ -48,13 +43,11 @@ export const dfs = async (
     curr.y < 0 ||
     curr.y >= maze.length
   ) {
-    // resolve(false);
     return false;
   }
 
   //* on a wall
   if (maze[curr.x][curr.y] === 1) {
-    // resolve(false);
     return false;
   }
 
@@ -63,7 +56,8 @@ export const dfs = async (
     path.push(end);
     updateMaze(maze, curr, setMaze, 2);
     setSolving(false);
-    // resolve(true);
+    setSolved(true)
+    console.log("Solved!");
     return true;
   }
 
@@ -83,14 +77,12 @@ export const dfs = async (
     if (!hasValidMoves) {
       console.log("Not solvable");
       setSolving(false);
-      // resolve(false);
       return false;
     }
   }
 
   //* if seen the spot already (using argument of seen that is boolean 2D array)
   if (seen[curr.x][curr.y]) {
-    // resolve(false);
     return false;
   }
 
@@ -98,25 +90,12 @@ export const dfs = async (
   //* pre
   seen[curr.x][curr.y] = true;
   path.push(curr);
-  // console.log(seen);
-  // console.log(path);
   const updatedMaze = updateMaze(maze, curr, setMaze, 2);
   await new Promise((resolve) => setTimeout(resolve, delay));
 
   //* recurse
 
   for (const direction of directions) {
-    // if (!solvingRef.current) {
-    //     updateMaze(updatedMaze, direction, setMaze, 2);
-    //     // await new Promise((resolve) => setTimeout(resolve, delay));
-    //     console.log("Stopped solving during recursion");
-    //     setSolving(false)
-    //     console.log(maze);
-
-    //     // resolve(false);
-    //     return false;
-    // }
-
     if (
       await dfs(
         updatedMaze,
@@ -129,9 +108,9 @@ export const dfs = async (
         solvingRef,
         setMaze,
         setSolving,
+        setSolved,
       )
     ) {
-      // resolve(true);
       return true;
     }
   }
@@ -147,8 +126,5 @@ export const dfs = async (
       updateMaze(maze, deleteCurr, setMaze, 0);
     }
   }
-  // resolve(false);
   return false;
-  // }, delay);
-  // });
 };

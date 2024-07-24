@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Board from "../components/Board";
 import ClientControlPanel from "../components/ClientControlPanel";
 import DataDisplay from "../components/DataDisplay";
@@ -11,22 +11,26 @@ const Home = () => {
   );
   const [maze, setMaze] = useState<Maze>([]);
   const [solving, setSolving] = useState<boolean>(false);
+  const [solved, setSolved] = useState<boolean>(false);
   const solvingRef = useRef<boolean>(false);
-  // console.log(maze);
   // console.log(algorithm);
-  // console.log(solvingRef);
+  console.log(solving);
+  console.log(solvingRef.current);
+  console.log(solved);
 
   return (
     <>
       <ClientControlPanel
         mazeSize={mazeSize}
         solving={solving}
+        solved={solved}
         maze={maze}
         solvingRef={solvingRef}
         setSolving={setSolving}
         setMazeSize={setMazeSize}
         setAlgorithm={setAlgorithm}
         setMaze={setMaze}
+        setSolved={setSolved}
       />
       <Board
         maze={maze}
@@ -36,6 +40,7 @@ const Home = () => {
         solvingRef={solvingRef}
         setSolving={setSolving}
         setMaze={setMaze}
+        setSolved={setSolved}
       />
       <DataDisplay />
     </>

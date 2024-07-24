@@ -1,35 +1,49 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styling/ClientControlPanel.css";
 import { ClientControlPanelProps } from "../utilities/types";
 import sampleMazes from "../utilities/sampleMazes";
 import { algorithms } from "../utilities/objects";
+import { resetMaze } from "../utilities/utilities";
 
 const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
   mazeSize,
   maze,
   solving,
   solvingRef,
+  solved,
   setMazeSize,
   setAlgorithm,
   setMaze,
   setSolving,
+  setSolved,
 }) => {
-  // const [showMaze, setShowMaze] = useState<boolean>(false);
+  const [visualize, setVisualize] = useState<boolean>(false);
 
   //! generate an actual grid based on given gridSize
   //! Bug: clicking generateMaze to stop the maze would alternately flash the other maze for a brief moment
   const generateMaze = () => {
-    setSolving(false);
     solvingRef.current = false;
+    setSolving(false);
+    setSolved(false)
+    setVisualize(false)
 
     const sampleMaze = Math.floor(Math.random() * sampleMazes.length);
-    console.log(sampleMaze);
     setMaze(sampleMazes[sampleMaze]);
   };
 
   const startSolving = () => {
-    setSolving(!solving);
+    setSolving(true);
+    setVisualize(true)
     solvingRef.current = false;
+  };
+
+
+  const clearMaze = () => {
+    setSolving(false);
+    setSolved(false);
+    solvingRef.current = false;
+    setVisualize(false)
+    resetMaze(maze, setMaze);
   };
 
   return (
@@ -63,7 +77,13 @@ const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
         </select>
       </div>
       <button onClick={generateMaze}>Generate Maze</button>
-      <button onClick={startSolving}>Visualize Solver</button>
+      {!visualize ? (
+        <button onClick={startSolving}>Visualize Solver</button>
+      ) : (
+        <>
+          <button onClick={clearMaze}>Reset</button>
+        </>
+      )}
     </div>
   );
 };

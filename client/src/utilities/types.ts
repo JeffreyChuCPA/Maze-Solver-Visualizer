@@ -12,10 +12,12 @@ export type ClientControlPanelProps = {
   maze: Maze;
   solving: boolean;
   solvingRef: React.MutableRefObject<boolean>;
+  solved: boolean;
   setMazeSize: SetState<number>;
   setAlgorithm: SetState<AlgorithmName>;
   setMaze: SetState<Maze>;
   setSolving: SetState<boolean>;
+  setSolved: SetState<boolean>;
 };
 
 export type BoardProps = {
@@ -26,6 +28,7 @@ export type BoardProps = {
   solvingRef: React.MutableRefObject<boolean>;
   setSolving: SetState<boolean>;
   setMaze: SetState<Maze>;
+  setSolved: SetState<boolean>;
 };
 
 export type MazeProps = {
