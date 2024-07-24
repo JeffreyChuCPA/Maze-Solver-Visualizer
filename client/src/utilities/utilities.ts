@@ -1,19 +1,19 @@
 import { Maze, Point, SetState } from "./types";
 
-export const findStartPoint = (maze: Maze): Point | null => {
+export const findStartPoint = (maze: Maze): Point  => {
   if (maze.length > 0) {
     for (let i: number = 0; i < maze.length; i++) {
-      if (maze[0][i] === 0) {
+      if (maze[0][i] === 0 ) {
         return { x: 0, y: i };
       } else if (maze[i][0] === 0) {
         return { x: i, y: 0 };
       }
     }
   }
-  return null;
+  return {x: 0, y: 0};
 };
 
-export const findEndPoint = (maze: Maze): Point | null => {
+export const findEndPoint = (maze: Maze): Point => {
   if (maze.length > 0) {
     const last = maze.length - 1;
     for (let i: number = 0; i < maze.length; i++) {
@@ -24,7 +24,7 @@ export const findEndPoint = (maze: Maze): Point | null => {
       }
     }
   }
-  return null;
+  return {x: 0, y: 0};
 };
 
 export const updateMaze = (
@@ -48,7 +48,7 @@ export const resetMaze = (
 ): Maze => {
   const updatedMaze: Maze = maze.map((row) => {
     return row.map((cell) => {
-      return cell === 2 ? 0 : cell;
+      return cell === 2 || cell === 3 ? 0 : cell;
     });
   });
   setMaze(updatedMaze);

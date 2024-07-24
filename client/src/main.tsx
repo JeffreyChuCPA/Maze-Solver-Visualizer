@@ -4,7 +4,7 @@ import App from "./App.tsx";
 import "./index.css";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
-  <React.StrictMode>
+  <React.StrictMode> //*to remove strictmode to accurately count iterations
     <App />
   </React.StrictMode>,
 );

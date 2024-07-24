@@ -4,13 +4,15 @@ import { ClientControlPanelProps } from "../utilities/types";
 import sampleMazes from "../utilities/sampleMazes";
 import { algorithms } from "../utilities/objects";
 import { resetMaze } from "../utilities/utilities";
+import { solver } from "../utilities/solver";
 
 const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
   mazeSize,
   maze,
-  solving,
   solvingRef,
-  solved,
+  iterationRef,
+  resultRef,
+  algorithm,
   setMazeSize,
   setAlgorithm,
   setMaze,
@@ -19,30 +21,48 @@ const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
 }) => {
   const [visualize, setVisualize] = useState<boolean>(false);
 
+  console.log("Controls are rerenderd");
+
   //! generate an actual grid based on given gridSize
   //! Bug: clicking generateMaze to stop the maze would alternately flash the other maze for a brief moment
   const generateMaze = () => {
     solvingRef.current = false;
+    iterationRef.current = 0;
+    resultRef.current = "";
     setSolving(false);
-    setSolved(false)
-    setVisualize(false)
+    setSolved(false);
+    setVisualize(false);
 
     const sampleMaze = Math.floor(Math.random() * sampleMazes.length);
+    console.log(sampleMaze);
+
     setMaze(sampleMazes[sampleMaze]);
   };
 
   const startSolving = () => {
+    solvingRef.current = true;
     setSolving(true);
-    setVisualize(true)
-    solvingRef.current = false;
+    setVisualize(true);
+    solver(
+      maze,
+      algorithm,
+      0,
+      solvingRef,
+      iterationRef,
+      resultRef,
+      setMaze,
+      setSolving,
+      setSolved,
+    );
   };
-
 
   const clearMaze = () => {
     setSolving(false);
     setSolved(false);
     solvingRef.current = false;
-    setVisualize(false)
+    iterationRef.current = 0;
+    resultRef.current = "";
+    setVisualize(false);
     resetMaze(maze, setMaze);
   };
 

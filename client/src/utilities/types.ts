@@ -10,9 +10,10 @@ export type AlgorithmName = keyof typeof algorithms;
 export type ClientControlPanelProps = {
   mazeSize: number;
   maze: Maze;
-  solving: boolean;
   solvingRef: React.MutableRefObject<boolean>;
-  solved: boolean;
+	iterationRef: React.MutableRefObject<number>;
+  resultRef: React.MutableRefObject<string>
+  algorithm: AlgorithmName;
   setMazeSize: SetState<number>;
   setAlgorithm: SetState<AlgorithmName>;
   setMaze: SetState<Maze>;
@@ -26,9 +27,16 @@ export type BoardProps = {
   maze: Maze;
   solving: boolean;
   solvingRef: React.MutableRefObject<boolean>;
+  iterationRef: React.MutableRefObject<number>;
+  resultRef: React.MutableRefObject<string>
   setSolving: SetState<boolean>;
   setMaze: SetState<Maze>;
   setSolved: SetState<boolean>;
+};
+
+export type DataDisplayProps = {
+  iterationRef: React.MutableRefObject<number>;
+  resultRef: React.MutableRefObject<string>
 };
 
 export type MazeProps = {

@@ -9,6 +9,7 @@
 :root {
   --header-height: 3.5rem;
   --first-color: hsl(184, 83%, 50%);
+  --second-color: hsl(184, 55%, 27%);
   --title-color: hsl(184, 83%, 50%);
   --text-color: black;
   --body-color: #242424;

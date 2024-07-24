@@ -10,16 +10,14 @@ const Board: React.FC<BoardProps> = ({
   maze,
   solvingRef,
   solving,
+  iterationRef,
+  resultRef,
   setMaze,
   setSolving,
   setSolved,
 }) => {
 
-  //*when solving == True, use given algorithm to solve the grid
-  if (solving) {
-    solvingRef.current = true;
-    solver(maze, algorithm, 0, solvingRef, setMaze, setSolving, setSolved);
-  }
+  console.log('rerenderd');
 
   return (
     <div className="board__card">
