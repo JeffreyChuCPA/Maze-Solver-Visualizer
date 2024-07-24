@@ -1,0 +1,13 @@
+.board__card {
+  width: 80%;
+  aspect-ratio: 1;
+  border: 2px solid var(--first-color);
+  background-color: var(--first-color);
+  border-radius: 20px;
+  margin: 0 auto;
+  margin-bottom: 2%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* background: drop-shadow(0 0 2em #61dafbaa); */
+}
