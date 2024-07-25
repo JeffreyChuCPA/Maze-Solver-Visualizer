@@ -22,7 +22,9 @@ const Block: React.FC<BlockProps> = ({ blockType, mazeSize }) => {
             ? "maze__path"
             : blockType === 2
               ? "maze__walked"
-              : "maze__queued"
+              : blockType === 4
+                ? "maze__shortpath"
+                : 'maze__queued'
       }`}
       style={maze_block}
     />

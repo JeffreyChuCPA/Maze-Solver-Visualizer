@@ -46,7 +46,7 @@ const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
     solver(
       maze,
       algorithm,
-      0,
+      500,
       solvingRef,
       iterationRef,
       resultRef,

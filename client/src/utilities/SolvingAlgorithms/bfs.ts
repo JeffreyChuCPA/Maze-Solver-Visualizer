@@ -41,6 +41,8 @@ export const bfs = async (
   };
 
   path.push(curr);
+  const parentCells: { [key: string]: Point | null | undefined} = {}
+  parentCells[`${curr.x},${curr.y}`] = null;
   seen[curr.x][curr.y] = true;
   let currentMaze = maze;
 
@@ -58,9 +60,17 @@ export const bfs = async (
     
     if (currCell?.x === end.x && currCell?.y === end.y) {
       path.push(end);
-      iterationRef.current += 1 
-      resultRef.current = 'Solved'
       currentMaze = updateMaze(currentMaze, currCell, setMaze, 2);
+
+      let cell: Point | null | undefined = currCell
+      while (cell) {
+        currentMaze = updateMaze(currentMaze, cell, setMaze, 4);
+        iterationRef.current += 1 
+        await new Promise((resolve) => setTimeout(resolve, delay));
+        cell = parentCells[`${cell.x},${cell.y}`]
+      }
+
+      resultRef.current = 'Solved'
       setSolving(false);
       setSolved(true);
       console.log("Solved!");
@@ -71,12 +81,14 @@ export const bfs = async (
     for (const direction of directions) {
       const adjCurrCellX = currCell?.x + direction.x;
       const adjCurrCellY = currCell?.y + direction.y;
+      const newPoint: Point = { x: adjCurrCellX, y: adjCurrCellY }
 
-      if (isValid(seen, { x: adjCurrCellX, y: adjCurrCellY } as Point)) {
-        path.push({ x: adjCurrCellX, y: adjCurrCellY } as Point);
+      if (isValid(seen, newPoint)) {
+        path.push(newPoint);
+        parentCells[`${newPoint.x},${newPoint.y}`] = currCell;
         currentMaze = updateMaze(
           currentMaze,
-          { x: adjCurrCellX, y: adjCurrCellY } as Point,
+          newPoint,
           setMaze,
           3,
         );

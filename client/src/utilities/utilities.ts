@@ -48,7 +48,7 @@ export const resetMaze = (
 ): Maze => {
   const updatedMaze: Maze = maze.map((row) => {
     return row.map((cell) => {
-      return cell === 2 || cell === 3 ? 0 : cell;
+      return cell === 2 || cell === 3 || cell === 4 ? 0 : cell;
     });
   });
   setMaze(updatedMaze);

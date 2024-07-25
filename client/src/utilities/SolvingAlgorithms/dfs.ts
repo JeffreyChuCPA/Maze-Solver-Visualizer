@@ -60,7 +60,7 @@ export const dfs = async (
   }
 
   // //*No more possible moves after checking and returning to start cell
-  if (curr.x === start.x && curr.y === start.y) {
+  if (curr.x === start.x && curr.y === start.y && !seen.flat().includes(true)) {
     const hasValidMoves = directions.some((direction) => {
       const newX = curr.x + direction.x
       const newY = curr.y + direction.y
