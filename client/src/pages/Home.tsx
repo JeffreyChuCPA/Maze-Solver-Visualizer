@@ -16,9 +16,9 @@ const Home = () => {
   const iterationRef = useRef<number>(0);
   const resultRef = useRef<string>('');
   // console.log(algorithm);
-  console.log(solving);
+  // console.log(maze);
   // console.log(solvingRef.current);
-  console.log(solved);
+  // console.log(solved);
 
   return (
     <>

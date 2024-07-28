@@ -42,7 +42,8 @@ export const solver = (
       setMaze,
       setSolving,
 			setSolved,
-    );}
+    )
+  }
 	else {
     console.error(`Algorithm ${algorithmName} not found.`);
   }

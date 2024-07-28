@@ -65,7 +65,7 @@ const NavBar = () => {
     <header className="header">
       <nav className="nav container">
         <NavLink to="/" className="nav__logo">
-          <h1>Maze Solver Visualizer</h1>
+          <h1>Maze It Yourself</h1>
         </NavLink>
 
         {isMobile && (
