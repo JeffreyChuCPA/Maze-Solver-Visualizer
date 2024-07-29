@@ -55,3 +55,17 @@ export const resetMaze = (
   setMaze(updatedMaze);
   return updatedMaze;
 };
+
+export const updateMazePath = (
+  maze: Maze,
+  path: Point[],
+  setMaze: SetState<Maze>,
+  value: number,
+): Maze => {
+  const updatedMaze = maze
+  for (const cell of path) {
+    updatedMaze[cell.x][cell.y] = value
+  }
+  setMaze(updatedMaze);
+  return updatedMaze;
+};

@@ -83,8 +83,10 @@ const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
         <select
           name="algorithm"
           id="algorithm"
-          onChange={(e): void =>
+          onChange={(e): void => {
             setAlgorithm(e.target.value as keyof typeof algorithms)
+            clearMaze()
+          }
           }
         >
           {Object.keys(algorithms).map((key) => (

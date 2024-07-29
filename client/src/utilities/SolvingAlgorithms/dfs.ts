@@ -16,9 +16,6 @@ export const dfs = async (
   setSolving: SetState<boolean>,
   setSolved: SetState<boolean>,
 ): Promise<boolean> => {
-  console.log(curr);
-  // console.log(seen);
-  
 
   const directions: Point[] = [
     { x: 0, y: 1 },
@@ -29,7 +26,6 @@ export const dfs = async (
 
   if (!solvingRef.current) {
     console.log("Stopped solving");
-    // console.log(maze);
     return false;
   }
 
@@ -74,7 +70,7 @@ export const dfs = async (
         maze[newX][newY] === 0 &&
         !seen[newX][newY]
       );
-      console.log(`Direction (${direction.x}, ${direction.y}) leads to (${newX}, ${newY}): ${validMove ? "Valid" : "Invalid"}`);
+      // console.log(`Direction (${direction.x}, ${direction.y}) leads to (${newX}, ${newY}): ${validMove ? "Valid" : "Invalid"}`);
       return validMove;
     });
 
@@ -129,12 +125,9 @@ export const dfs = async (
 
   if (solvingRef.current) {
     const deleteCurr = path.pop();
-    console.log(`popped x:${deleteCurr.x} , y:${deleteCurr.y}`);
-    // console.log(path);
 
     if (deleteCurr) {
       updateMaze(maze, deleteCurr, setMaze, 0);
-      // await new Promise((resolve) => setTimeout(resolve, delay));
     }
 
     if (deleteCurr.x === start.x && deleteCurr.y === start.y) {

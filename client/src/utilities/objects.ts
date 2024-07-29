@@ -2,6 +2,7 @@ import { aStarSearch } from "./SolvingAlgorithms/aStarSearch";
 import { bfs } from "./SolvingAlgorithms/bfs";
 import { dfs } from "./SolvingAlgorithms/dfs";
 import { dijkstraAlgorithm } from "./SolvingAlgorithms/dijkstraAlgorithm";
+import { GreedyBestFirstSearch } from "./SolvingAlgorithms/GreedyBestFirstSearch";
 import { wallFollower } from "./SolvingAlgorithms/wallFollower";
 
 export const algorithms = {
@@ -10,4 +11,5 @@ export const algorithms = {
   "A* Search": aStarSearch,
   "Dijkstra's Algorithm": dijkstraAlgorithm,
   "Wall Follower": wallFollower,
+  "Greedy Best-First Search": GreedyBestFirstSearch
 };

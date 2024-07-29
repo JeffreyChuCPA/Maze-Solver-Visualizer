@@ -9,13 +9,9 @@ const Board: React.FC<BoardProps> = ({
   mazeSize,
   algorithm,
   maze,
-  solvingRef,
   solving,
-  iterationRef,
   resultRef,
   setMaze,
-  setSolving,
-  setSolved,
 }) => {
 
   useEffect(() => {
@@ -23,7 +19,6 @@ const Board: React.FC<BoardProps> = ({
       resetMaze(maze, setMaze, 4)
     }
   }, [solving])
-
 
   return (
     <div className="board__card">

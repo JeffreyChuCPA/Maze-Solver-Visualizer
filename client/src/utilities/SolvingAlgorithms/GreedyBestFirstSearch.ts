@@ -1,11 +1,12 @@
-import { Maze, Point, SetState } from "../types";
+import { Maze, Point, QueuePoint, SetState } from "../types";
+import PriorityQueue from 'js-priority-queue'
 import { updateMaze } from "../utilities";
 
-export const bfs = async (
+export const GreedyBestFirstSearch = async (
   maze: Maze,
-  curr: Point,
-  start: Point,
-  end: Point,
+  curr: Point | null,
+  start: Point | null,
+  end: Point | null,
   seen: boolean[][],
   path: Point[],
   delay: number,
@@ -14,9 +15,13 @@ export const bfs = async (
   resultRef: React.MutableRefObject<string>,
   setMaze: SetState<Maze>,
   setSolving: SetState<boolean>,
-  setSolved: SetState<boolean>,
+	setSolved: SetState<boolean>,
 ): Promise<boolean> => {
-  
+
+  if (!curr || !start || !end) {
+    console.log('Provided points are not usable');
+    return false
+  }
 
   const directions: Point[] = [
     { x: 0, y: 1 },
@@ -24,6 +29,11 @@ export const bfs = async (
     { x: 0, y: -1 },
     { x: -1, y: 0 },
   ];
+
+  //calc distance between 2 points via Manhattan Distance
+  const heuristic = (a: Point | null , b: Point | null ): number => {
+    return Math.abs(a.x - b.x) + Math.abs(a.y - b.y)
+  }
 
   const isValid = (seen: boolean[][], cell: Point | null) => {
     if (
@@ -38,29 +48,30 @@ export const bfs = async (
     return true;
   };
 
-  const queue: Point[] = []
-  queue.push(curr); 
-  const parentCells: { [key: string]: Point | null | undefined} = {}
-  parentCells[`${curr.x},${curr.y}`] = null;
-  seen[curr.x][curr.y] = true;
+  const priorityQueue = new PriorityQueue({ comparator: (a: QueuePoint, b: QueuePoint) => a.cost - b.cost})
+  const parents: Point[][] | null = Array.from({length: maze.length}, () => Array(maze[0].length).fill(null))
+  
+  priorityQueue.queue({x: start?.x, y: start?.y, cost: heuristic(start, end)})
+  seen[start.x][start.y] = true;
   let currentMaze = maze;
 
-  //*while queue is not empty
-  while (queue.length !== 0) {
+
+  while (priorityQueue.length > 0) {
     if (!solvingRef.current) {
       console.log("Stopped solving");
       return false;
     }
-
-    const currCell = queue.shift();
-    currentMaze = updateMaze(currentMaze, currCell, setMaze, 2);
+    
+    const currCell: QueuePoint = priorityQueue.dequeue()    
+    currentMaze = updateMaze(currentMaze, {x: currCell.x, y: currCell.y}, setMaze, 2);
     iterationRef.current += 1 
     await new Promise((resolve) => setTimeout(resolve, delay));
+    if (!currCell) break
 
-    if (currCell?.x === end.x && currCell?.y === end.y) {
-      currentMaze = updateMaze(currentMaze, currCell, setMaze, 2);
+    if (currCell.x === end?.x && currCell.y === end?.y) {
+      currentMaze = updateMaze(currentMaze, {x: currCell.x, y: currCell.y}, setMaze, 2);
 
-      let cell: Point | null | undefined = currCell
+      let cell: Point | null | undefined = {x: currCell.x, y: currCell.y}
       while (cell) {
         if (!solvingRef.current) {
           console.log("Stopped solving");
@@ -71,29 +82,28 @@ export const bfs = async (
         currentMaze = updateMaze(currentMaze, cell, setMaze, 4);
         iterationRef.current += 1 
         await new Promise((resolve) => setTimeout(resolve, delay));
-        cell = parentCells[`${cell.x},${cell.y}`]
+        cell = parents[cell.x][cell.y]
       }
 
       resultRef.current = 'Solved'
       setSolving(false);
       setSolved(true);
       console.log("Solved!");
-      return true;
+      return true
     }
 
-    //*explore adjacent cells and add to queue if valid cells
     for (const direction of directions) {
-      const newX = currCell?.x + direction.x;
-      const newY = currCell?.y + direction.y;
-      const newPoint: Point = { x: newX, y: newY }
-
-      if (isValid(seen, newPoint)) {
+      const newX = currCell.x + direction.x
+      const newY = currCell.y + direction.y
+    
+      if (isValid(seen, {x: newX, y: newY})) {
         if (solvingRef.current) {
-          queue.push(newPoint);
-          parentCells[`${newPoint.x},${newPoint.y}`] = currCell;
+  
+          parents[newX][newY] = {x: currCell.x, y: currCell.y}
+          priorityQueue.queue({ x: newX, y: newY, cost: heuristic({x: newX, y: newY}, end)})
           currentMaze = updateMaze(
             currentMaze,
-            newPoint,
+            {x: newX, y: newY},
             setMaze,
             3,
           );
@@ -103,10 +113,9 @@ export const bfs = async (
       }
     }
   }
-
   console.log("Not solvable");
   resultRef.current = 'Unsolvable'
   setSolved(false)
   setSolving(false);
-  return false;
-};
+  return false
+}
