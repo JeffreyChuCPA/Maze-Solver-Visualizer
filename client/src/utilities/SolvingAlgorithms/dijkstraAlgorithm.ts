@@ -1,6 +1,7 @@
 import { Maze, Point, QueuePoint, SetState } from "../types";
 import PriorityQueue from 'js-priority-queue'
 import { updateMaze } from "../utilities";
+import { directions } from "../objects";
 
 export const dijkstraAlgorithm = async (
   maze: Maze,
@@ -17,13 +18,6 @@ export const dijkstraAlgorithm = async (
   setSolving: SetState<boolean>,
   setSolved: SetState<boolean>,
 ): Promise<boolean> => {
-
-  const directions: Point[] = [
-    { x: 0, y: 1 },
-    { x: 1, y: 0 },
-    { x: 0, y: -1 },
-    { x: -1, y: 0 },
-  ];
 
   const isValid = (seen: boolean[][], cell: Point | null) => {
     if (

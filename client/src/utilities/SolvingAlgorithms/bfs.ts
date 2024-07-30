@@ -1,3 +1,4 @@
+import { directions } from "../objects";
 import { Maze, Point, SetState } from "../types";
 import { updateMaze } from "../utilities";
 
@@ -17,14 +18,6 @@ export const bfs = async (
   setSolved: SetState<boolean>,
 ): Promise<boolean> => {
   
-
-  const directions: Point[] = [
-    { x: 0, y: 1 },
-    { x: 1, y: 0 },
-    { x: 0, y: -1 },
-    { x: -1, y: 0 },
-  ];
-
   const isValid = (seen: boolean[][], cell: Point | null) => {
     if (
       cell.x < 0 ||

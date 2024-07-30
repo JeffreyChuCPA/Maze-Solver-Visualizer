@@ -2,9 +2,10 @@ import React, { useState } from "react";
 import "../styling/ClientControlPanel.css";
 import { ClientControlPanelProps } from "../utilities/types";
 import sampleMazes from "../utilities/sampleMazes";
-import { algorithms } from "../utilities/objects";
+import { algorithms, generateMazeAlgorithms } from "../utilities/objects";
 import { resetMaze } from "../utilities/utilities";
 import { solver } from "../utilities/solver";
+import { generate } from "../utilities/generate";
 
 const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
   mazeSize,
@@ -13,36 +14,50 @@ const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
   iterationRef,
   resultRef,
   algorithm,
+  generatingAlgorithm,
+  generatingRef,
   setMazeSize,
   setAlgorithm,
+  setGeneratingAlgorithm,
   setMaze,
   setSolving,
   setSolved,
+  setGenerating,
 }) => {
   const [visualize, setVisualize] = useState<boolean>(false);
+  const [visualizeGeneration, setVisualizeGeneration] = useState<boolean>(false);
 
   //! generate an actual grid based on given gridSize
   //! Bug: clicking generateMaze to stop the maze would alternately flash the other maze for a brief moment
   const generateMaze = () => {
     solvingRef.current = false;
+    generatingRef.current = true
     iterationRef.current = 0;
     resultRef.current = "";
     setSolving(false);
     setSolved(false);
     setVisualize(false);
+    setVisualizeGeneration(true)
+    setGenerating(true)
 
-    const sampleMaze = Math.floor(Math.random() * sampleMazes.length);
-    setMaze(sampleMazes[sampleMaze]);
+    generate(mazeSize, generatingAlgorithm, 0, iterationRef, resultRef, generatingRef, setMaze, setGenerating)
+
+    // const sampleMaze = Math.floor(Math.random() * sampleMazes.length);
+    // setMaze(sampleMazes[sampleMaze]);
   };
 
   const startSolving = () => {
+    iterationRef.current = 0;
+    resultRef.current = "";
     solvingRef.current = true;
+    generatingRef.current = false
     setSolving(true);
     setVisualize(true);
+    setVisualizeGeneration(false)
     solver(
       maze,
       algorithm,
-      50,
+      0,
       solvingRef,
       iterationRef,
       resultRef,
@@ -56,9 +71,11 @@ const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
     setSolving(false);
     setSolved(false);
     solvingRef.current = false;
+    generatingRef.current = false
     iterationRef.current = 0;
     resultRef.current = "";
     setVisualize(false);
+    setVisualizeGeneration(false)
     resetMaze(maze, setMaze, 0);
     console.log('Reset');
     
@@ -79,7 +96,7 @@ const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
         />
       </div>
       <div>
-        Algorithm:{" "}
+        Solving Algorithm:{" "}
         <select
           name="algorithm"
           id="algorithm"
@@ -96,7 +113,31 @@ const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
           ))}
         </select>
       </div>
-      <button onClick={generateMaze}>Generate Maze</button>
+      <div>
+        Generating Algorithm:{" "}
+        <select
+          name="generatingAlgorithm"
+          id="generatingAlgorithm"
+          onChange={(e): void => {
+            setGeneratingAlgorithm(e.target.value as keyof typeof generateMazeAlgorithms)
+            clearMaze()
+          }
+          }
+        >
+          {Object.keys(generateMazeAlgorithms).map((key) => (
+            <option id={key} key={key} value={key}>
+              {key}
+            </option>
+          ))}
+        </select>
+      </div>
+      {!visualizeGeneration ? (
+        <button onClick={generateMaze}>Generate Maze</button>
+      ) : (
+        <>
+          <button onClick={clearMaze}>Reset</button>
+        </>
+      )}
       {!visualize ? (
         <button onClick={startSolving}>Visualize Solver</button>
       ) : (

@@ -1,8 +1,9 @@
 import { Maze, Point, QueuePoint, SetState } from "../types";
 import PriorityQueue from 'js-priority-queue'
 import { updateMaze } from "../utilities";
+import { directions } from "../objects";
 
-export const GreedyBestFirstSearch = async (
+export const greedyBestFirstSearch = async (
   maze: Maze,
   curr: Point | null,
   start: Point | null,
@@ -22,13 +23,6 @@ export const GreedyBestFirstSearch = async (
     console.log('Provided points are not usable');
     return false
   }
-
-  const directions: Point[] = [
-    { x: 0, y: 1 },
-    { x: 1, y: 0 },
-    { x: 0, y: -1 },
-    { x: -1, y: 0 },
-  ];
 
   //calc distance between 2 points via Manhattan Distance
   const heuristic = (a: Point | null , b: Point | null ): number => {
