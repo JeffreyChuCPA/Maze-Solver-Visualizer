@@ -28,16 +28,70 @@ export const findEndPoint = (maze: Maze): Point => {
   return {x: 0, y: 0};
 };
 
-export const generateStartPoint = (maze: Maze): Maze => {
+export const generateStartPoint = (maze: Maze, setMaze: SetState<Maze>, afterAlgoExecution: boolean): Maze => {
   const side: number = Math.floor(Math.random() * 2)
-  const startIndex: number = Math.floor(Math.random() * ( (maze.length - 1) - 1) + 1)
+  const updatedMaze: Maze = maze
 
-  if (!side) {
-    maze[0][startIndex] = 0
-  } else {
-    maze[startIndex][0] = 0
+  
+  if (!afterAlgoExecution) {
+    const startIndex: number = Math.floor(Math.random() *  (maze.length - 2)) + 1
+    if (!side) {
+      updatedMaze[0][startIndex] = 0
+    } else {
+      updatedMaze[startIndex][0] = 0
+    }
+    setMaze(updatedMaze);
+    return updatedMaze;
   }
-  return maze
+  
+  if (afterAlgoExecution) {
+    const isValidStartIndex = (side: number, index: number): boolean => {
+      if (!side) {
+        for (let i = 1; i < maze.length - 1; i++) {
+          if (updatedMaze[i][index] === 0) return true
+        }
+      } else {
+        for (let i = 1; i < maze[0].length - 1; i++) {
+          if (updatedMaze[index][i] === 0) return true
+        }
+      }
+      return false
+    }
+  
+    let startIndex: number;
+    do {
+      startIndex = Math.floor(Math.random() *  (maze.length - 2)) + 1
+    } while (!isValidStartIndex(side, startIndex))
+    
+    if (!side) {
+      updatedMaze[0][startIndex] = 0
+      console.log(`start point x: ${0}, y: ${startIndex}`);
+      let i = 1
+      while(i < maze.length - 1 && updatedMaze[i][startIndex] !== 0) {
+        updatedMaze[i][startIndex] = 0
+        if ((startIndex + 1 < maze[0].length && updatedMaze[i][startIndex + 1] === 0) || (startIndex - 1 >= 0 && updatedMaze[i][startIndex - 1] === 0)) {
+          break
+        }
+        i++
+      }
+    } else {
+      updatedMaze[startIndex][0] = 0
+      console.log(`start point x: ${startIndex}, y: ${0}`);
+      let i = 1
+      while(i < maze[0].length - 1 && (updatedMaze[startIndex][i] !== 0)) {
+        updatedMaze[startIndex][i] = 0
+        if ((startIndex + 1 < maze.length && updatedMaze[startIndex + 1][i] === 0) || (startIndex - 1 >= 0 && updatedMaze[startIndex - 1][i] === 0)) {
+          break
+        }
+        i++
+      }
+    }
+    setMaze(updatedMaze);
+    return updatedMaze;
+  }
+  
+  console.log('No start point generated');
+  return updatedMaze
 }
 
 export const generateEndPoint = (maze: Maze, setMaze: SetState<Maze>) => {
@@ -51,6 +105,7 @@ export const generateEndPoint = (maze: Maze, setMaze: SetState<Maze>) => {
         const randomEndIndex = pathIndices[Math.floor(Math.random() * pathIndices.length)]
         for (let endRow = row; endRow < maze.length; endRow++) {
           updatedMaze[endRow][randomEndIndex] = 0
+          console.log(`end point x: ${endRow}, y: ${randomEndIndex}`);
         }
         setMaze(updatedMaze)
         break
@@ -68,6 +123,7 @@ export const generateEndPoint = (maze: Maze, setMaze: SetState<Maze>) => {
         const randomEndIndex = pathIndices[Math.floor(Math.random() * pathIndices.length)]
         for (let endCol = col; endCol < maze.length; endCol++) {
           updatedMaze[randomEndIndex][endCol] = 0
+          console.log(`end point x: ${randomEndIndex}, y: ${endCol}`);
         }
         setMaze(updatedMaze)
         break
@@ -130,6 +186,6 @@ export const generateBaseMaze = (
     baseMaze.push(new Array(mazeSize).fill(1))
   }
   setMaze(baseMaze)
-  return generateStartPoint(baseMaze)
+  return baseMaze
 
 }
