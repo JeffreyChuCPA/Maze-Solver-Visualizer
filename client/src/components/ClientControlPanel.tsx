@@ -39,7 +39,7 @@ const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
     generate(
       mazeSize,
       generatingAlgorithm,
-      0,
+      50,
       iterationRef,
       resultRef,
       generatingRef,
