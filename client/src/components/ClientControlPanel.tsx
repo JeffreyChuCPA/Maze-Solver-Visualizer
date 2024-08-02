@@ -29,9 +29,9 @@ const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
   console.log(currentPage);
   const [visualize, setVisualize] = useState<boolean>(false);
 
-  // useEffect(() => {
-  //   generateBaseBuildMaze(mazeSize)
-  // }, [mazeSize])
+  useEffect(() => {
+    setMaze(generateBaseBuildMaze(mazeSize))
+  }, [mazeSize, setMaze])  
 
   const generateMaze = () => {
     solvingRef.current = false;
@@ -177,7 +177,6 @@ const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
               value={mazeSize}
               onChange={(e): void => {
                 setMazeSize(Number(e.target.value))
-                setMaze(generateBaseBuildMaze(mazeSize))
               }}
             />
           </div>

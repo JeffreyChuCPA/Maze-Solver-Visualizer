@@ -30,11 +30,3 @@
 .maze__shortpath {
   background-color: var(--third-color); /* Color for paths (0) */
 }
-
-.maze__startpoint {
-  background-color: var(--startpoint-color); /* Color for paths (0) */
-}
-
-.maze__endpoint {
-  background-color: var(--endpoint-color); /* Color for paths (0) */
-}

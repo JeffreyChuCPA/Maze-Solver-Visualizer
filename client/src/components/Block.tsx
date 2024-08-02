@@ -30,15 +30,11 @@ const Block: React.FC<BlockProps> = ({ blockType, mazeSize, maze, rowIndex, colI
       case 2: return "maze__walked"
       case 3: return "maze__queued"
       case 4: return "maze__shortpath"
-      case 5: return "maze__startpoint"
-      case 6: return "maze__endpoint"
       default: return "";
     }
   }
 
-  const handleClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    console.log(cell);
-    console.log(blockType);
+  const handleClick = () => {
     const newMaze: Maze = maze
 
     //*Set start point at top row or most left column
@@ -88,13 +84,29 @@ const Block: React.FC<BlockProps> = ({ blockType, mazeSize, maze, rowIndex, colI
     }
   }
 
+  const handleHover = (e: React.MouseEvent<HTMLDivElement>) => {
+    const newMaze: Maze = maze
+    if (e.shiftKey) {   
+      if (cell.x !== 0 && cell.x !== maze.length - 1 && cell.y !== 0 && cell.y !== maze.length - 1) {
+        let cellValue: number;
+        if (newMaze[cell.x][cell.y] === 0) {
+          cellValue = 1
+        } else {
+          cellValue = 0
+        }
+        updateMaze(newMaze, cell, setMaze, cellValue)
+      }
+    }
+
+  }
+
   return (
     <>
       {currentPage === 'Home' && (<div
         className={blockTypeColor(blockType)}
         style={maze_block}
       />)}
-      {currentPage === 'build-board' && (<div onClick={handleClick}
+      {currentPage === 'build-board' && (<div onClick={handleClick} onMouseOver={handleHover}
         className={blockTypeColor(blockType)}
         style={maze_block}
       />)}
