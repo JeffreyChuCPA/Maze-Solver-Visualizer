@@ -1,11 +1,13 @@
 import React from "react";
-import { algorithms } from "./objects";
+import { algorithms, generateMazeAlgorithms } from "./objects";
 
 export type SetState<T> = React.Dispatch<React.SetStateAction<T>>;
 
 export type Maze = number[][];
 
 export type AlgorithmName = keyof typeof algorithms;
+
+export type GeneratingAlgorithmName = keyof typeof generateMazeAlgorithms;
 
 export type ClientControlPanelProps = {
   mazeSize: number;
@@ -14,20 +16,20 @@ export type ClientControlPanelProps = {
 	iterationRef: React.MutableRefObject<number>;
   resultRef: React.MutableRefObject<string>
   algorithm: AlgorithmName;
+  generatingAlgorithm: GeneratingAlgorithmName;
+  generatingRef: React.MutableRefObject<boolean>;
   setMazeSize: SetState<number>;
   setAlgorithm: SetState<AlgorithmName>;
+  setGeneratingAlgorithm: SetState<GeneratingAlgorithmName>
   setMaze: SetState<Maze>;
   setSolving: SetState<boolean>;
   setSolved: SetState<boolean>;
+  setGenerating: SetState<boolean>;
 };
 
 export type BoardProps = {
   mazeSize: number;
-  algorithm: AlgorithmName;
   maze: Maze;
-  solving: boolean;
-  resultRef: React.MutableRefObject<string>
-  setMaze: SetState<Maze>;
 };
 
 export type DataDisplayProps = {

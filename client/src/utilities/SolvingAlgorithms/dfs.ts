@@ -1,5 +1,6 @@
+import { directions } from "../objects";
 import { Maze, Point, SetState } from "../types";
-import { updateMaze } from "../utilities";
+import { updateMaze, updateMazePath } from "../utilities";
 
 export const dfs = async (
   maze: Maze,
@@ -16,13 +17,6 @@ export const dfs = async (
   setSolving: SetState<boolean>,
   setSolved: SetState<boolean>,
 ): Promise<boolean> => {
-
-  const directions: Point[] = [
-    { x: 0, y: 1 },
-    { x: 1, y: 0 },
-    { x: 0, y: -1 },
-    { x: -1, y: 0 },
-  ];
 
   if (!solvingRef.current) {
     console.log("Stopped solving");
@@ -50,7 +44,7 @@ export const dfs = async (
     path.push(end);
     iterationRef.current += 1
     resultRef.current = 'Solved' 
-    updateMaze(maze, curr, setMaze, 2);
+    updateMazePath(maze, path, setMaze, 4);
     setSolving(false);
     setSolved(true)
     console.log("Solved");
