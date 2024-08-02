@@ -1,6 +1,6 @@
 .clientcontrolpanel__card {
   width: 80%;
-  height: 6rem;
+  height: 10rem;
   border: 2px solid var(--first-color);
   background-color: var(--first-color);
   border-radius: 20px;
