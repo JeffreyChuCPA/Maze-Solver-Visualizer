@@ -12,13 +12,15 @@ const BuildBoard = () => {
   const [algorithm, setAlgorithm] = useState<AlgorithmName>(
     "Depth First Search (DFS)",
   );
-  const [maze, setMaze] = useState<Maze>(generateBaseBuildMaze(mazeSize));
+  const [maze, setMaze] = useState<Maze>(generateBaseBuildMaze(20));
   const [solving, setSolving] = useState<boolean>(false);
   const [solved, setSolved] = useState<boolean>(false);
   const solvingRef = useRef<boolean>(false);
   const iterationRef = useRef<number>(0);
   const resultRef = useRef<string>('');
 
+  console.log(mazeSize);
+  
   return (
     <>
       <ClientControlPanel
@@ -37,6 +39,7 @@ const BuildBoard = () => {
       <Board
         maze={maze}
         mazeSize={mazeSize}
+        setMaze={setMaze}
       />
     </>
   );

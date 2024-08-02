@@ -6,11 +6,12 @@ import { BoardProps } from "../utilities/types";
 const Board: React.FC<BoardProps> = ({
   mazeSize,
   maze,
+  setMaze,
 }) => {
 
   return (
     <div className="board__card">
-      <Maze maze={maze} mazeSize={mazeSize} />
+      <Maze maze={maze} mazeSize={mazeSize} setMaze={setMaze} />
     </div>
   );
 };

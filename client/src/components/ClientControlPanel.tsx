@@ -1,8 +1,8 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "../styling/ClientControlPanel.css";
 import { ClientControlPanelProps } from "../utilities/types";
 import { algorithms, generateMazeAlgorithms } from "../utilities/objects";
-import { resetMaze } from "../utilities/utilities";
+import { generateBaseBuildMaze, resetMaze } from "../utilities/utilities";
 import { solver } from "../utilities/solver";
 import { generate } from "../utilities/generate";
 import { PageContext } from "../PageProvider";
@@ -27,8 +27,11 @@ const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
 }) => {
   const { currentPage } = useContext(PageContext);
   console.log(currentPage);
-
   const [visualize, setVisualize] = useState<boolean>(false);
+
+  // useEffect(() => {
+  //   generateBaseBuildMaze(mazeSize)
+  // }, [mazeSize])
 
   const generateMaze = () => {
     solvingRef.current = false;
@@ -85,6 +88,10 @@ const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
     resetMaze(maze, setMaze, 0);
     console.log("Reset");
   };
+
+  const clearBuildBoard = () => {
+    setMaze(generateBaseBuildMaze(mazeSize))
+  }
 
   return (
     <>
@@ -168,7 +175,10 @@ const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
               min="10"
               max="50"
               value={mazeSize}
-              onChange={(e): void => setMazeSize(Number(e.target.value))}
+              onChange={(e): void => {
+                setMazeSize(Number(e.target.value))
+                setMaze(generateBaseBuildMaze(mazeSize))
+              }}
             />
           </div>
           <div>
@@ -188,6 +198,7 @@ const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
               ))}
             </select>
           </div>
+          <button onClick={clearBuildBoard}>Clear Board</button>
           {!visualize ? (
             <button onClick={startSolving}>Visualize Solver</button>
           ) : (

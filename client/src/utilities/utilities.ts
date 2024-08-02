@@ -188,3 +188,18 @@ export const generateBaseMaze = (
   setMaze(baseMaze)
   return baseMaze
 }
+
+export const generateBaseBuildMaze = (
+  mazeSize: number,
+): number[][] => {
+  const baseMaze: number[][] = []
+  for (let i: number = 0; i < mazeSize; i++) {
+    if (i === 0 || i === mazeSize - 1) {
+      baseMaze.push(new Array(mazeSize).fill(1))
+    } else {
+      const row = [1, ...new Array(mazeSize - 2).fill(0) , 1]
+      baseMaze.push(row)
+    }
+  }
+  return baseMaze
+}
