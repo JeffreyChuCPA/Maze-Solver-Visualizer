@@ -15,10 +15,6 @@ const Home = () => {
   const solvingRef = useRef<boolean>(false);
   const iterationRef = useRef<number>(0);
   const resultRef = useRef<string>('');
-  // console.log(algorithm);
-  console.log(solving);
-  // console.log(solvingRef.current);
-  console.log(solved);
 
   return (
     <>
@@ -40,12 +36,8 @@ const Home = () => {
         mazeSize={mazeSize}
         algorithm={algorithm}
         solving={solving}
-        solvingRef={solvingRef}
-        iterationRef={iterationRef}
         resultRef={resultRef}
-        setSolving={setSolving}
         setMaze={setMaze}
-        setSolved={setSolved}
       />
       <DataDisplay iterationRef={iterationRef} resultRef={resultRef} />
     </>

@@ -16,7 +16,6 @@ export const dfs = async (
   setSolving: SetState<boolean>,
   setSolved: SetState<boolean>,
 ): Promise<boolean> => {
-  console.log(curr);
 
   const directions: Point[] = [
     { x: 0, y: 1 },
@@ -27,7 +26,6 @@ export const dfs = async (
 
   if (!solvingRef.current) {
     console.log("Stopped solving");
-    console.log(maze);
     return false;
   }
 
@@ -60,7 +58,7 @@ export const dfs = async (
   }
 
   // //*No more possible moves after checking and returning to start cell
-  if (curr.x === start.x && curr.y === start.y && !seen.flat().includes(true)) {
+  if (curr.x === start.x && curr.y === start.y && !seen.flat().includes(true) && path.length > 0) {
     const hasValidMoves = directions.some((direction) => {
       const newX = curr.x + direction.x
       const newY = curr.y + direction.y
@@ -72,7 +70,7 @@ export const dfs = async (
         maze[newX][newY] === 0 &&
         !seen[newX][newY]
       );
-      console.log(`Direction (${direction.x}, ${direction.y}) leads to (${newX}, ${newY}): ${validMove ? "Valid" : "Invalid"}`);
+      // console.log(`Direction (${direction.x}, ${direction.y}) leads to (${newX}, ${newY}): ${validMove ? "Valid" : "Invalid"}`);
       return validMove;
     });
 
@@ -127,11 +125,15 @@ export const dfs = async (
 
   if (solvingRef.current) {
     const deleteCurr = path.pop();
-    console.log(`popped x:${deleteCurr.x} , y:${deleteCurr.y}`);
-    // console.log(path);
 
     if (deleteCurr) {
       updateMaze(maze, deleteCurr, setMaze, 0);
+    }
+
+    if (deleteCurr.x === start.x && deleteCurr.y === start.y) {
+      console.log("Not solvable");
+      resultRef.current = 'Unsolvable' 
+      setSolving(false);
     }
   }
   return false;

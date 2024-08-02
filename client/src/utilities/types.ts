@@ -26,12 +26,8 @@ export type BoardProps = {
   algorithm: AlgorithmName;
   maze: Maze;
   solving: boolean;
-  solvingRef: React.MutableRefObject<boolean>;
-  iterationRef: React.MutableRefObject<number>;
   resultRef: React.MutableRefObject<string>
-  setSolving: SetState<boolean>;
   setMaze: SetState<Maze>;
-  setSolved: SetState<boolean>;
 };
 
 export type DataDisplayProps = {
@@ -47,4 +43,10 @@ export type MazeProps = {
 export type Point = {
   x: number;
   y: number;
+};
+
+export type QueuePoint = {
+  x: number;
+  y: number;
+  cost: number
 };

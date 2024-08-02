@@ -21,8 +21,6 @@ const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
 }) => {
   const [visualize, setVisualize] = useState<boolean>(false);
 
-  console.log("Controls are rerenderd");
-
   //! generate an actual grid based on given gridSize
   //! Bug: clicking generateMaze to stop the maze would alternately flash the other maze for a brief moment
   const generateMaze = () => {
@@ -34,8 +32,6 @@ const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
     setVisualize(false);
 
     const sampleMaze = Math.floor(Math.random() * sampleMazes.length);
-    console.log(sampleMaze);
-
     setMaze(sampleMazes[sampleMaze]);
   };
 
@@ -46,7 +42,7 @@ const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
     solver(
       maze,
       algorithm,
-      500,
+      50,
       solvingRef,
       iterationRef,
       resultRef,
@@ -63,7 +59,9 @@ const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
     iterationRef.current = 0;
     resultRef.current = "";
     setVisualize(false);
-    resetMaze(maze, setMaze);
+    resetMaze(maze, setMaze, 0);
+    console.log('Reset');
+    
   };
 
   return (
@@ -85,8 +83,10 @@ const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
         <select
           name="algorithm"
           id="algorithm"
-          onChange={(e): void =>
+          onChange={(e): void => {
             setAlgorithm(e.target.value as keyof typeof algorithms)
+            clearMaze()
+          }
           }
         >
           {Object.keys(algorithms).map((key) => (

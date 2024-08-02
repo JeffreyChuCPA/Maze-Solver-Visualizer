@@ -45,12 +45,27 @@ export const updateMaze = (
 export const resetMaze = (
   maze: Maze,
   setMaze: SetState<Maze>,
+  value: number
 ): Maze => {
   const updatedMaze: Maze = maze.map((row) => {
     return row.map((cell) => {
-      return cell === 2 || cell === 3 || cell === 4 ? 0 : cell;
+      return cell === 2 || cell === 3 || cell === 4 ? value : cell;
     });
   });
+  setMaze(updatedMaze);
+  return updatedMaze;
+};
+
+export const updateMazePath = (
+  maze: Maze,
+  path: Point[],
+  setMaze: SetState<Maze>,
+  value: number,
+): Maze => {
+  const updatedMaze = maze
+  for (const cell of path) {
+    updatedMaze[cell.x][cell.y] = value
+  }
   setMaze(updatedMaze);
   return updatedMaze;
 };
