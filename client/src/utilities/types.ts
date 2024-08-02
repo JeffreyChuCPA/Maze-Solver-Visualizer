@@ -18,6 +18,7 @@ export type ClientControlPanelProps = {
   algorithm: AlgorithmName;
   generatingAlgorithm: GeneratingAlgorithmName;
   generatingRef: React.MutableRefObject<boolean>;
+  generating: boolean
   setMazeSize: SetState<number>;
   setAlgorithm: SetState<AlgorithmName>;
   setGeneratingAlgorithm: SetState<GeneratingAlgorithmName>

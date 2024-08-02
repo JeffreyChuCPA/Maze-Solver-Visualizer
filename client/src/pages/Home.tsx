@@ -32,6 +32,7 @@ const Home = () => {
         algorithm={algorithm}
         generatingAlgorithm={generatingAlgorithm}
         generatingRef={generatingRef}
+        generating={generating}
         setSolving={setSolving}
         setGenerating={setGenerating}
         setMazeSize={setMazeSize}

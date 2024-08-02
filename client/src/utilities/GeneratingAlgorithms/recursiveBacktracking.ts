@@ -1,5 +1,5 @@
 import { Maze, Point, SetState } from "../types"
-import { findStartPoint, generateEndPoint, updateMaze } from "../utilities"
+import { findStartPoint, generateEndPoint, generateStartPoint, updateMaze } from "../utilities"
 
 export const recursiveBacktracking = async (
   baseMaze: Maze,
@@ -11,10 +11,10 @@ export const recursiveBacktracking = async (
   setGenerating: SetState<boolean>,
 ):Promise<boolean> => {
   
-  const start: Point = findStartPoint(baseMaze)
+  
+  const start: Point = findStartPoint(generateStartPoint(baseMaze, setMaze, false))
 
   console.log(generatingRef);
-  
   
   const directions: Point[] = [
     { x: 0, y: 2 },
