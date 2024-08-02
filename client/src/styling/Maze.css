@@ -22,3 +22,11 @@
 .maze__walked {
   background-color: var(--first-color); /* Color for paths (0) */
 }
+
+.maze__queued {
+  background-color: var(--second-color); /* Color for paths (0) */
+}
+
+.maze__shortpath {
+  background-color: var(--third-color); /* Color for paths (0) */
+}

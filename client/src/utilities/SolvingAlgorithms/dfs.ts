@@ -3,29 +3,26 @@ import { updateMaze } from "../utilities";
 
 export const dfs = async (
   maze: Maze,
-  curr: Point | null,
-  start: Point | null,
-  end: Point | null,
+  curr: Point,
+  start: Point,
+  end: Point,
   seen: boolean[][],
   path: Point[],
   delay: number,
   solvingRef: React.MutableRefObject<boolean>,
+  iterationRef: React.MutableRefObject<number>,
+  resultRef: React.MutableRefObject<string>,
   setMaze: SetState<Maze>,
   setSolving: SetState<boolean>,
   setSolved: SetState<boolean>,
 ): Promise<boolean> => {
   console.log(curr);
 
-  if (!curr || !end || !start) {
-    console.error("Start or end point is null");
-    return false;
-  }
-
   const directions: Point[] = [
-    { x: curr.x + 1, y: curr.y },
-    { x: curr.x, y: curr.y - 1 },
-    { x: curr.x - 1, y: curr.y },
-    { x: curr.x, y: curr.y + 1 },
+    { x: 0, y: 1 },
+    { x: 1, y: 0 },
+    { x: 0, y: -1 },
+    { x: -1, y: 0 },
   ];
 
   if (!solvingRef.current) {
@@ -34,7 +31,6 @@ export const dfs = async (
     return false;
   }
 
-  // setTimeout(async () => {
   //*1. base case. Recursive case is separate from base case
   //* off the map, 2D arrays u traverse column then row
   if (
@@ -54,28 +50,35 @@ export const dfs = async (
   //* At the end, end recursion
   if (curr.x === end.x && curr.y === end.y) {
     path.push(end);
+    iterationRef.current += 1
+    resultRef.current = 'Solved' 
     updateMaze(maze, curr, setMaze, 2);
     setSolving(false);
     setSolved(true)
-    console.log("Solved!");
+    console.log("Solved");
     return true;
   }
 
-  //*No more possible moves
-  if (curr.x === start.x && curr.y === start.y) {
+  // //*No more possible moves after checking and returning to start cell
+  if (curr.x === start.x && curr.y === start.y && !seen.flat().includes(true)) {
     const hasValidMoves = directions.some((direction) => {
-      return (
-        direction.x >= 0 &&
-        direction.x < maze[0].length &&
-        direction.y >= 0 &&
-        direction.y < maze.length &&
-        maze[direction.x][direction.y] === 0 &&
-        !seen[direction.x][direction.y]
+      const newX = curr.x + direction.x
+      const newY = curr.y + direction.y
+      const validMove = (
+        newX >= 0 &&
+        newX < maze.length &&
+        newY >= 0 &&
+        newY < maze[0].length &&
+        maze[newX][newY] === 0 &&
+        !seen[newX][newY]
       );
+      console.log(`Direction (${direction.x}, ${direction.y}) leads to (${newX}, ${newY}): ${validMove ? "Valid" : "Invalid"}`);
+      return validMove;
     });
 
     if (!hasValidMoves) {
       console.log("Not solvable");
+      resultRef.current = 'Unsolvable' 
       setSolving(false);
       return false;
     }
@@ -91,21 +94,26 @@ export const dfs = async (
   seen[curr.x][curr.y] = true;
   path.push(curr);
   const updatedMaze = updateMaze(maze, curr, setMaze, 2);
+  iterationRef.current += 1 
   await new Promise((resolve) => setTimeout(resolve, delay));
 
   //* recurse
 
   for (const direction of directions) {
+    const newX = curr.x + direction.x
+    const newY = curr.y + direction.y
     if (
       await dfs(
         updatedMaze,
-        direction,
+        {x: newX, y: newY},
         start,
         end,
         seen,
         path,
         delay,
         solvingRef,
+        iterationRef,
+        resultRef,
         setMaze,
         setSolving,
         setSolved,

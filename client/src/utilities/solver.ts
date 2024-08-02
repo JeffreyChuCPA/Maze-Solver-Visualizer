@@ -7,24 +7,19 @@ export const solver = (
   algorithmName: AlgorithmName,
   delay: number,
   solvingRef: React.MutableRefObject<boolean>,
+  iterationRef: React.MutableRefObject<number>,
+  resultRef: React.MutableRefObject<string>,
   setMaze: SetState<Maze>,
   setSolving: SetState<boolean>,
 	setSolved: SetState<boolean>,
 ): Point[] | void => {
 
-	console.log('called to solve');
-
   const seen: boolean[][] = [];
   const path: Point[] = [];
 
+  //!techincally need to change functions to return Point only
   const start = findStartPoint(maze);
   const end = findEndPoint(maze);
-  console.log(start);
-  // console.log(end);
-
-	if (start === null || end === null) {
-		return console.log("Maze has not start or end points");
-	}
 
   for (let i = 0; i < maze.length; i++) {
     seen.push(new Array(maze[0].length).fill(false));
@@ -42,9 +37,11 @@ export const solver = (
       path,
       delay,
       solvingRef,
+      iterationRef,
+      resultRef,
       setMaze,
       setSolving,
-			setSolved
+			setSolved,
     );}
 	else {
     console.error(`Algorithm ${algorithmName} not found.`);
