@@ -1131,7 +1131,7 @@ const mazeSample50_5 = [
   ],
 ];
 
-export default [
+export default {
   mazeSample10_1,
   mazeSample10_2,
   mazeSample10_3,
@@ -1146,4 +1146,4 @@ export default [
   mazeSample10_9,
   mazeSample10_10,
   mazeSample10_11,
-];
+};

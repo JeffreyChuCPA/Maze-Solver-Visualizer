@@ -187,5 +187,4 @@ export const generateBaseMaze = (
   }
   setMaze(baseMaze)
   return baseMaze
-
 }

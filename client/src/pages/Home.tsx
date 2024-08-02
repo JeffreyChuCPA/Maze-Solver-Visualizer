@@ -1,8 +1,8 @@
 import { useRef, useState } from "react";
 import Board from "../components/Board";
 import ClientControlPanel from "../components/ClientControlPanel";
-import DataDisplay from "../components/DataDisplay";
 import { AlgorithmName, GeneratingAlgorithmName, Maze } from "../utilities/types";
+import sampleMazes from "../utilities/sampleMazes"
 
 const Home = () => {
   const [mazeSize, setMazeSize] = useState<number>(50);
@@ -12,7 +12,7 @@ const Home = () => {
   const [generatingAlgorithm, setGeneratingAlgorithm] = useState<GeneratingAlgorithmName>(
     "Recursive Backtracking",
   );
-  const [maze, setMaze] = useState<Maze>([]);
+  const [maze, setMaze] = useState<Maze>(sampleMazes.mazeSample50_1);
   const [solving, setSolving] = useState<boolean>(false);
   const [generating, setGenerating] = useState<boolean>(false);
   const [solved, setSolved] = useState<boolean>(false);
@@ -45,7 +45,6 @@ const Home = () => {
         maze={maze}
         mazeSize={mazeSize}
       />
-      <DataDisplay iterationRef={iterationRef} resultRef={resultRef} />
     </>
   );
 };

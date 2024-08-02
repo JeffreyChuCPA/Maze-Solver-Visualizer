@@ -16,16 +16,16 @@ export type ClientControlPanelProps = {
 	iterationRef: React.MutableRefObject<number>;
   resultRef: React.MutableRefObject<string>
   algorithm: AlgorithmName;
-  generatingAlgorithm: GeneratingAlgorithmName;
-  generatingRef: React.MutableRefObject<boolean>;
-  generating: boolean
+  generatingAlgorithm?: GeneratingAlgorithmName;
+  generatingRef?: React.MutableRefObject<boolean>;
+  generating?: boolean
   setMazeSize: SetState<number>;
   setAlgorithm: SetState<AlgorithmName>;
-  setGeneratingAlgorithm: SetState<GeneratingAlgorithmName>
+  setGeneratingAlgorithm?: SetState<GeneratingAlgorithmName>
   setMaze: SetState<Maze>;
   setSolving: SetState<boolean>;
   setSolved: SetState<boolean>;
-  setGenerating: SetState<boolean>;
+  setGenerating?: SetState<boolean>;
 };
 
 export type BoardProps = {
