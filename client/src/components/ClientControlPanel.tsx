@@ -1,37 +1,33 @@
-import React, { useContext, useEffect, useState } from "react";
+import { useContext, useState } from "react";
 import "../styling/ClientControlPanel.css";
-import { ClientControlPanelProps } from "../utilities/types";
 import { algorithms, generateMazeAlgorithms } from "../utilities/objects";
 import { generateBaseBuildMaze, resetMaze } from "../utilities/utilities";
 import { solver } from "../utilities/solver";
 import { generate } from "../utilities/generate";
 import { PageContext } from "../PageProvider";
+import { MazeContext } from "../MazeProvider";
 
-const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
-  mazeSize,
-  maze,
-  solvingRef,
-  iterationRef,
-  resultRef,
-  algorithm,
-  generatingAlgorithm,
-  generatingRef,
-  generating,
-  setMazeSize,
-  setAlgorithm,
-  setGeneratingAlgorithm,
-  setMaze,
-  setSolving,
-  setSolved,
-  setGenerating,
-}) => {
+const ClientControlPanel = () => {
   const { currentPage } = useContext(PageContext);
   console.log(currentPage);
-  const [visualize, setVisualize] = useState<boolean>(false);
+  const {mazeSize,
+    maze,
+    solvingRef,
+    iterationRef,
+    resultRef,
+    algorithm,
+    generatingAlgorithm,
+    generatingRef,
+    generating,
+    setMazeSize,
+    setAlgorithm,
+    setGeneratingAlgorithm,
+    setMaze,
+    setSolving,
+    setSolved,
+    setGenerating} = useContext(MazeContext)
 
-  useEffect(() => {
-    setMaze(generateBaseBuildMaze(mazeSize))
-  }, [mazeSize, setMaze])  
+  const [visualize, setVisualize] = useState<boolean>(false);
 
   const generateMaze = () => {
     solvingRef.current = false;
@@ -46,7 +42,7 @@ const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
     generate(
       mazeSize,
       generatingAlgorithm ?? "Recursive Backtracking",
-      50,
+      0,
       iterationRef,
       resultRef,
       generatingRef || { current: true },
@@ -177,6 +173,7 @@ const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
               value={mazeSize}
               onChange={(e): void => {
                 setMazeSize(Number(e.target.value))
+                // setMaze(generateBaseBuildMaze(mazeSize))
               }}
             />
           </div>

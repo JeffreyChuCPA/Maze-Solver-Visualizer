@@ -1,20 +1,20 @@
 import React, { useContext } from "react";
 import "../styling/Maze.css";
 import { PageContext } from "../PageProvider";
-import { SetState, Maze, Point } from "../utilities/types";
-import { updateMaze } from "../utilities/utilities";
+import { Maze, Point } from "../utilities/types";
+import { isValidBoardPoint, isValidEndPoint, isValidStartPoint, updateMaze } from "../utilities/utilities";
+import { MazeContext } from "../MazeProvider";
 
 type BlockProps = {
   blockType: number;
-  mazeSize: number;
   maze: Maze;
   rowIndex: number;
   colIndex: number;
-  setMaze: SetState<Maze>;
 };
 
-const Block: React.FC<BlockProps> = ({ blockType, mazeSize, maze, rowIndex, colIndex, setMaze }) => {
+const Block: React.FC<BlockProps> = ({ blockType, maze, rowIndex, colIndex }) => {
   const {currentPage} = useContext(PageContext)
+  const {mazeSize, setMaze} = useContext(MazeContext)
   const cell: Point = {x: rowIndex, y: colIndex}
 
   const maze_block = {
@@ -38,11 +38,10 @@ const Block: React.FC<BlockProps> = ({ blockType, mazeSize, maze, rowIndex, colI
     const newMaze: Maze = maze
 
     //*Set start point at top row or most left column
-    if (cell.x === 0 && cell.y !== maze.length - 1 && cell.y !== 0 || cell.x !== 0 && cell.x !== maze.length - 1 && cell.y === 0 ) {
+    if (isValidStartPoint(cell.x, cell.y, newMaze)) {
       newMaze.map((row, rowIndex) => 
         row.map((cellValue, colIndex) => {
-          if ((rowIndex === 0 && colIndex !== 0 && colIndex !== maze.length - 1) ||
-          (colIndex === 0 && rowIndex !== 0 && rowIndex !== maze.length - 1)) {
+          if (isValidStartPoint(rowIndex, colIndex, newMaze)) {
             if (cellValue === 0) {
               newMaze[rowIndex][colIndex] = 1
             }
@@ -56,11 +55,10 @@ const Block: React.FC<BlockProps> = ({ blockType, mazeSize, maze, rowIndex, colI
     }
 
     //*Set end point at bottom row or most right column
-    if (cell.x === maze.length - 1 && cell.y !== maze.length - 1 && cell.y !== 0|| cell.x !== 0 && cell.x !== maze.length - 1 && cell.y === maze.length - 1 ) {
+    if (isValidEndPoint(cell.x, cell.y, newMaze)) {
       newMaze.map((row, rowIndex) => 
         row.map((cellValue, colIndex) => {
-          if ((rowIndex === maze.length - 1 && colIndex !== 0 && colIndex !== maze.length - 1) ||
-          (colIndex === maze.length - 1 && rowIndex !== 0 && rowIndex !== maze.length - 1)) {
+          if (isValidEndPoint(rowIndex, colIndex, newMaze)) {
             if (cellValue === 0) {
               newMaze[rowIndex][colIndex] = 1
             }
@@ -73,7 +71,8 @@ const Block: React.FC<BlockProps> = ({ blockType, mazeSize, maze, rowIndex, colI
       updateMaze(newMaze, cell, setMaze, 0)
     }
 
-    if (cell.x !== 0 && cell.x !== maze.length - 1 && cell.y !== 0 && cell.y !== maze.length - 1) {
+    //*Set wall point within board
+    if (isValidBoardPoint(cell.x, cell.y, newMaze)) {
       let cellValue: number;
       if (newMaze[cell.x][cell.y] === 0) {
         cellValue = 1
@@ -87,7 +86,7 @@ const Block: React.FC<BlockProps> = ({ blockType, mazeSize, maze, rowIndex, colI
   const handleHover = (e: React.MouseEvent<HTMLDivElement>) => {
     const newMaze: Maze = maze
     if (e.shiftKey) {   
-      if (cell.x !== 0 && cell.x !== maze.length - 1 && cell.y !== 0 && cell.y !== maze.length - 1) {
+      if (isValidBoardPoint(cell.x, cell.y, newMaze)) {
         let cellValue: number;
         if (newMaze[cell.x][cell.y] === 0) {
           cellValue = 1

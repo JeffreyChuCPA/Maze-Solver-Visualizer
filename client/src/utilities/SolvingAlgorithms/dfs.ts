@@ -64,7 +64,6 @@ export const dfs = async (
         maze[newX][newY] === 0 &&
         !seen[newX][newY]
       );
-      // console.log(`Direction (${direction.x}, ${direction.y}) leads to (${newX}, ${newY}): ${validMove ? "Valid" : "Invalid"}`);
       return validMove;
     });
 
@@ -84,14 +83,20 @@ export const dfs = async (
   //*2. recurse steps
   //* pre
   seen[curr.x][curr.y] = true;
+  let updatedMaze: Maze;
   path.push(curr);
-  const updatedMaze = updateMaze(maze, curr, setMaze, 2);
+  updatedMaze = updateMaze(maze, curr, setMaze, 4);
   iterationRef.current += 1 
   await new Promise((resolve) => setTimeout(resolve, delay));
 
   //* recurse
-
   for (const direction of directions) {
+    if (!solvingRef.current) {
+      console.log("Stopped solving");
+      return false;
+    }
+
+    updatedMaze = updateMaze(updatedMaze, curr, setMaze, 2);
     const newX = curr.x + direction.x
     const newY = curr.y + direction.y
     if (
@@ -121,7 +126,8 @@ export const dfs = async (
     const deleteCurr = path.pop();
 
     if (deleteCurr) {
-      updateMaze(maze, deleteCurr, setMaze, 0);
+      updatedMaze = updateMaze(updatedMaze, deleteCurr, setMaze, 4);
+      // await new Promise((resolve) => setTimeout(resolve, delay));
     }
 
     if (deleteCurr.x === start.x && deleteCurr.y === start.y) {

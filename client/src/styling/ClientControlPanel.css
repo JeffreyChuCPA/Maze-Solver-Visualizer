@@ -6,5 +6,6 @@
   border-radius: 20px;
   margin: 0 auto;
   margin-bottom: 2%;
+  max-width: 900px;
   /* background: drop-shadow(0 0 2em #61dafbaa); */
 }

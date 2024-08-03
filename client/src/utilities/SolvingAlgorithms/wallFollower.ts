@@ -63,6 +63,11 @@ export const wallFollower = async (
     });
 
     if (!hasValidMoves) {
+      if (!solvingRef.current) {
+        console.log("Stopped solving");
+        return false;
+      }
+
       const lastPoint = path.pop();
       if (!lastPoint) break;
 
@@ -89,6 +94,11 @@ export const wallFollower = async (
     const leftY = curr?.y + directions[leftDirIndex].y;
 
     if (isValid(seen, { x: leftX, y: leftY })) {
+      if (!solvingRef.current) {
+        console.log("Stopped solving");
+        return false;
+      }
+      
       //turn left
       directionIndex = leftDirIndex;
       prevPoint = curr;
@@ -102,6 +112,11 @@ export const wallFollower = async (
       const nextY = curr.y + directions[directionIndex].y;
 
       if (isValid(seen, { x: nextX, y: nextY })) {
+        if (!solvingRef.current) {
+          console.log("Stopped solving");
+          return false;
+        }
+
         prevPoint = curr;
         parents[nextX][nextY] = curr;
         curr = { x: nextX, y: nextY };
@@ -109,6 +124,10 @@ export const wallFollower = async (
         path.push(curr);
       } else {
         //otherwise turn right
+        if (!solvingRef.current) {
+        console.log("Stopped solving");
+        return false;
+      }
         directionIndex = (directionIndex + 1) % 4;
       }
     }
