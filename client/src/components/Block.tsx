@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import "../styling/Maze.css";
 import { PageContext } from "../PageProvider";
 import { Maze, Point } from "../utilities/types";
-import { isValidBoardPoint, isValidEndPoint, isValidStartPoint, updateMaze } from "../utilities/utilities";
+import { isValidBoardPoint, isValidEndPoint, isValidStartPoint, switchBlockType, updateMaze } from "../utilities/utilities";
 import { MazeContext } from "../MazeProvider";
 
 type BlockProps = {
@@ -73,12 +73,7 @@ const Block: React.FC<BlockProps> = ({ blockType, maze, rowIndex, colIndex }) =>
 
     //*Set wall point within board
     if (isValidBoardPoint(cell.x, cell.y, newMaze)) {
-      let cellValue: number;
-      if (newMaze[cell.x][cell.y] === 0) {
-        cellValue = 1
-      } else {
-        cellValue = 0
-      }
+      const cellValue: number = switchBlockType(newMaze[cell.x][cell.y])
       updateMaze(newMaze, cell, setMaze, cellValue)
     }
   }
@@ -87,12 +82,7 @@ const Block: React.FC<BlockProps> = ({ blockType, maze, rowIndex, colIndex }) =>
     const newMaze: Maze = maze
     if (e.shiftKey) {   
       if (isValidBoardPoint(cell.x, cell.y, newMaze)) {
-        let cellValue: number;
-        if (newMaze[cell.x][cell.y] === 0) {
-          cellValue = 1
-        } else {
-          cellValue = 0
-        }
+        const cellValue: number = switchBlockType(newMaze[cell.x][cell.y])
         updateMaze(newMaze, cell, setMaze, cellValue)
       }
     }

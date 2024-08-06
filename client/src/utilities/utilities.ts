@@ -40,6 +40,11 @@ export const isValidBoardPoint = (x: number, y: number, maze: Maze): boolean => 
   return (x !== 0 && x !== maze.length - 1 && y !== 0 && y !== maze.length - 1)
 }
 
+export const switchBlockType = (blockValue: number): number => {
+  if (blockValue === 0) return 1
+  else return 0
+}
+
 export const generateStartPoint = (maze: Maze, setMaze: SetState<Maze>, afterAlgoExecution: boolean): Maze => {
   const side: number = Math.floor(Math.random() * 2)
   const updatedMaze: Maze = maze
