@@ -8,13 +8,16 @@ import FetchedBoards from "../components/FetchedBoards";
 
 const Home = () => {
   const {currentPage} = useContext(PageContext)
-  const {setMaze} = useContext(MazeContext)
+  const {setMaze, iterationRef, resultRef} = useContext(MazeContext)
 
+  
   useEffect(() => {
-      if (currentPage === "Home") {
-        setMaze(sampleMazes.mazeSample50_1)
+    if (currentPage === "Home") {
+      setMaze(sampleMazes.mazeSample10_2)
+      iterationRef.current = 0
+      resultRef.current = ''
       }
-  }, [setMaze, currentPage])  
+  }, [setMaze, currentPage, iterationRef, resultRef])  
   
   return (
     <>

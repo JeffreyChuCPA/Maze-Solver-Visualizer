@@ -52,7 +52,7 @@ const MazeProvider: React.FC<MazeProviderProps> = ({ children }) => {
   );
   const [generatingAlgorithm, setGeneratingAlgorithm] =
     useState<GeneratingAlgorithmName>("Recursive Backtracking");
-  const [maze, setMaze] = useState<Maze>(sampleMazes.mazeSample50_1);
+  const [maze, setMaze] = useState<Maze>(sampleMazes.mazeSample10_2);
   const [solving, setSolving] = useState<boolean>(false);
   const [generating, setGenerating] = useState<boolean>(false);
   const [solved, setSolved] = useState<boolean>(false);

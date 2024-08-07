@@ -5,8 +5,8 @@ import { MazeContext } from "../MazeProvider";
 
 const Maze = () => {
 
-  const { maze} = useContext(MazeContext)
-
+  const { maze } = useContext(MazeContext)
+  
   return (
     <div className="maze">
       {maze.map((row, rowIndex) => (

@@ -173,7 +173,6 @@ const ClientControlPanel = () => {
               value={mazeSize}
               onChange={(e): void => {
                 setMazeSize(Number(e.target.value))
-                // setMaze(generateBaseBuildMaze(mazeSize))
               }}
             />
           </div>
