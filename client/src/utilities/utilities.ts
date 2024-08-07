@@ -37,12 +37,38 @@ export const isValidEndPoint = (x: number, y: number, maze: Maze): boolean => {
 }
 
 export const isValidBoardPoint = (x: number, y: number, maze: Maze): boolean => {
-  return (x !== 0 && x !== maze.length - 1 && y !== 0 && y !== maze.length - 1)
+  return (x !== 0 && x !== maze.length - 1 && y !== 0 && y !== maze[0].length - 1)
 }
 
 export const switchBlockType = (blockValue: number): number => {
-  if (blockValue === 0) return 1
-  else return 0
+  return blockValue === 0 ? 1 : 0
+}
+
+export const resetStartOrEndPoint = (mode: 'start' | 'end', maze: Maze) => {
+  let row: number;
+  let column: number;
+
+  if (mode === 'start') {
+    row = 0
+    column = 0
+  } else if (mode === 'end') {
+    row = maze.length - 1
+    column = maze.length - 1
+  } else {
+    throw new Error('Invalid Mode Selected')
+  }
+
+  if (maze.length === 0) return
+
+  //*looping through row
+  for (let i = 0; i < maze.length; i++) {
+    maze[row][i] = 1
+  }
+
+  //*looping through column
+  for (let i = 0; i < maze.length; i++) {
+    maze[i][column] = 1
+  }
 }
 
 export const generateStartPoint = (maze: Maze, setMaze: SetState<Maze>, afterAlgoExecution: boolean): Maze => {

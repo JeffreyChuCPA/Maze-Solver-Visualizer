@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import "../styling/Maze.css";
 import { PageContext } from "../PageProvider";
 import { Maze, Point } from "../utilities/types";
-import { isValidBoardPoint, isValidEndPoint, isValidStartPoint, switchBlockType, updateMaze } from "../utilities/utilities";
+import { isValidBoardPoint, isValidEndPoint, isValidStartPoint, resetStartOrEndPoint, switchBlockType, switchStartOrEndPoint, updateMaze } from "../utilities/utilities";
 import { MazeContext } from "../MazeProvider";
 
 type BlockProps = {
@@ -39,35 +39,13 @@ const Block: React.FC<BlockProps> = ({ blockType, maze, rowIndex, colIndex }) =>
 
     //*Set start point at top row or most left column
     if (isValidStartPoint(cell.x, cell.y, newMaze)) {
-      newMaze.map((row, rowIndex) => 
-        row.map((cellValue, colIndex) => {
-          if (isValidStartPoint(rowIndex, colIndex, newMaze)) {
-            if (cellValue === 0) {
-              newMaze[rowIndex][colIndex] = 1
-            }
-            if (rowIndex === cell.x && colIndex === cell.y) {
-              newMaze[rowIndex][colIndex] = 0
-            }
-          }
-        })
-      );
+      resetStartOrEndPoint('start', newMaze)
       updateMaze(newMaze, cell, setMaze, 0)
     }
 
     //*Set end point at bottom row or most right column
     if (isValidEndPoint(cell.x, cell.y, newMaze)) {
-      newMaze.map((row, rowIndex) => 
-        row.map((cellValue, colIndex) => {
-          if (isValidEndPoint(rowIndex, colIndex, newMaze)) {
-            if (cellValue === 0) {
-              newMaze[rowIndex][colIndex] = 1
-            }
-            if (rowIndex === cell.x && colIndex === cell.y) {
-              newMaze[rowIndex][colIndex] = 0
-            }
-          }
-        })
-      );
+      resetStartOrEndPoint('end', newMaze)
       updateMaze(newMaze, cell, setMaze, 0)
     }
 
