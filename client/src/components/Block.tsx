@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import "../styling/Maze.css";
 import { PageContext } from "../PageProvider";
 import { Maze, Point } from "../utilities/types";
-import { isValidBoardPoint, isValidEndPoint, isValidStartPoint, resetStartOrEndPoint, switchBlockType, switchStartOrEndPoint, updateMaze } from "../utilities/utilities";
+import { isValidBoardPoint, isValidEndPoint, isValidStartPoint, resetStartOrEndPoint, switchBlockType, updateMaze } from "../utilities/utilities";
 import { MazeContext } from "../MazeProvider";
 
 type BlockProps = {
@@ -14,25 +14,27 @@ type BlockProps = {
 
 const Block: React.FC<BlockProps> = ({ blockType, maze, rowIndex, colIndex }) => {
   const {currentPage} = useContext(PageContext)
-  const {mazeSize, setMaze} = useContext(MazeContext)
+  const {mazeSize, setMaze, pathColor, wallColor, walkedColor, queuedColor, shortPathColor} = useContext(MazeContext)
   const cell: Point = {x: rowIndex, y: colIndex}
+  
+  const blockTypeColor = (blockType: number, pathColor: string, wallColor: string, walkedColor: string, queuedColor: string, shortPathColor: string) => {
+    switch (blockType) {
+      case 0: return pathColor
+      case 1: return wallColor
+      case 2: return walkedColor
+      case 3: return queuedColor
+      case 4: return shortPathColor
+      default: return "#000000";
+    }
+  }
 
   const maze_block = {
     width: `${mazeSize}%`,
     aspectRatio: "1",
     border: "1px solid #ccc",
+    backgroundColor: `${blockTypeColor(blockType, pathColor, wallColor, walkedColor, queuedColor, shortPathColor)}`
   };
 
-  const blockTypeColor = (blockType: number) => {
-    switch (blockType) {
-      case 0: return "maze__path"
-      case 1: return "maze__wall"
-      case 2: return "maze__walked"
-      case 3: return "maze__queued"
-      case 4: return "maze__shortpath"
-      default: return "";
-    }
-  }
 
   const handleClick = () => {
     const newMaze: Maze = maze
@@ -70,11 +72,9 @@ const Block: React.FC<BlockProps> = ({ blockType, maze, rowIndex, colIndex }) =>
   return (
     <>
       {currentPage === 'Home' && (<div
-        className={blockTypeColor(blockType)}
         style={maze_block}
       />)}
       {currentPage === 'build-board' && (<div onClick={handleClick} onMouseOver={handleHover}
-        className={blockTypeColor(blockType)}
         style={maze_block}
       />)}
     </>
