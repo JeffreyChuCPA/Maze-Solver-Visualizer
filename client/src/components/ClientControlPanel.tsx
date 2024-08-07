@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import "../styling/ClientControlPanel.css";
 import { algorithms, generateMazeAlgorithms } from "../utilities/objects";
 import { generateBaseBuildMaze, resetMaze } from "../utilities/utilities";
@@ -28,6 +28,7 @@ const ClientControlPanel = () => {
     setGenerating} = useContext(MazeContext)
 
   const [visualize, setVisualize] = useState<boolean>(false);
+  const [delay, setDelay] = useState<number>(0)
 
   const generateMaze = () => {
     solvingRef.current = false;
@@ -42,7 +43,7 @@ const ClientControlPanel = () => {
     generate(
       mazeSize,
       generatingAlgorithm ?? "Recursive Backtracking",
-      0,
+      delay,
       iterationRef,
       resultRef,
       generatingRef || { current: true },
@@ -62,7 +63,7 @@ const ClientControlPanel = () => {
     solver(
       maze,
       algorithm,
-      0,
+      delay,
       solvingRef,
       iterationRef,
       resultRef,
@@ -83,10 +84,16 @@ const ClientControlPanel = () => {
     if (setGenerating) setGenerating(false);
     resetMaze(maze, setMaze, 0);
     console.log("Reset");
+    console.log(generatingRef?.current);
+    
   };
 
   const clearBuildBoard = () => {
     setMaze(generateBaseBuildMaze(mazeSize))
+  }
+
+  const delayCalculation = (delay: number): number => {
+    return -60 / 9 * delay + 6000 / 9
   }
 
   return (
@@ -110,6 +117,7 @@ const ClientControlPanel = () => {
             <select
               name="algorithm"
               id="algorithm"
+              value={algorithm}
               onChange={(e): void => {
                 setAlgorithm(e.target.value as keyof typeof algorithms);
                 clearMaze();
@@ -127,6 +135,7 @@ const ClientControlPanel = () => {
             <select
               name="generatingAlgorithm"
               id="generatingAlgorithm"
+              value={generatingAlgorithm}
               onChange={(e): void => {
                 if (setGeneratingAlgorithm)
                   setGeneratingAlgorithm(
@@ -156,6 +165,8 @@ const ClientControlPanel = () => {
               <button onClick={clearMaze}>Reset</button>
             </>
           )}
+          <input type="range" min={10} max={100} step={10} onChange={e => setDelay(delayCalculation(parseFloat(e.target.value)))} value={Math.round((delay - 6000/9) * 9 / -60)}/>
+          <div>Speed: {Math.round((delay - 6000/9) * 9 / -60)}%</div>
           <div>Number of Iterations: {iterationRef.current}</div>
           <div>Result: {resultRef.current}</div>
         </div>
@@ -181,6 +192,7 @@ const ClientControlPanel = () => {
             <select
               name="algorithm"
               id="algorithm"
+              value={algorithm}
               onChange={(e): void => {
                 setAlgorithm(e.target.value as keyof typeof algorithms);
                 clearMaze();
@@ -201,6 +213,8 @@ const ClientControlPanel = () => {
               <button onClick={clearMaze}>Reset</button>
             </>
           )}
+          <input type="range" min={10} max={100} step={10} onChange={e => setDelay(delayCalculation(parseFloat(e.target.value)))} value={Math.round((delay - 6000/9) * 9 / -60)}/>
+          <div>Speed: {Math.round((delay - 6000/9) * 9 / -60)}%</div>
           <div>Number of Iterations: {iterationRef.current}</div>
           <div>Result: {resultRef.current}</div>
         </div>
