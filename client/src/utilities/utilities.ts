@@ -60,13 +60,9 @@ export const resetStartOrEndPoint = (mode: 'start' | 'end', maze: Maze) => {
 
   if (maze.length === 0) return
 
-  //*looping through row
+  //*looping through row and column
   for (let i = 0; i < maze.length; i++) {
     maze[row][i] = 1
-  }
-
-  //*looping through column
-  for (let i = 0; i < maze.length; i++) {
     maze[i][column] = 1
   }
 }
