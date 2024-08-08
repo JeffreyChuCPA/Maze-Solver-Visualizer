@@ -1,6 +1,6 @@
 import { Maze, Point, SetState } from "./types";
 
-//* finding/generating a Point on maze
+//* finding/generating/validating a Point on maze
 export const findStartPoint = (maze: Maze): Point => {
   if (maze.length > 0) {
     for (let i: number = 0; i < maze.length; i++) {
@@ -28,11 +28,49 @@ export const findEndPoint = (maze: Maze): Point => {
   return {x: 0, y: 0};
 };
 
+export const isValidStartPoint = (x: number, y: number, maze: Maze): boolean => {
+  return (x === 0 && y !== maze.length - 1 && y !== 0 || x !== 0 && x !== maze.length - 1 && y === 0)
+}
+
+export const isValidEndPoint = (x: number, y: number, maze: Maze): boolean => {
+  return (x === maze.length - 1 && y !== maze.length - 1 && y !== 0|| x !== 0 && x !== maze.length - 1 && y === maze.length - 1)
+}
+
+export const isValidBoardPoint = (x: number, y: number, maze: Maze): boolean => {
+  return (x !== 0 && x !== maze.length - 1 && y !== 0 && y !== maze[0].length - 1)
+}
+
+export const switchBlockType = (blockValue: number): number => {
+  return blockValue === 0 ? 1 : 0
+}
+
+export const resetStartOrEndPoint = (mode: 'start' | 'end', maze: Maze) => {
+  let row: number;
+  let column: number;
+
+  if (mode === 'start') {
+    row = 0
+    column = 0
+  } else if (mode === 'end') {
+    row = maze.length - 1
+    column = maze.length - 1
+  } else {
+    throw new Error('Invalid Mode Selected')
+  }
+
+  if (maze.length === 0) return
+
+  //*looping through row and column
+  for (let i = 0; i < maze.length; i++) {
+    maze[row][i] = 1
+    maze[i][column] = 1
+  }
+}
+
 export const generateStartPoint = (maze: Maze, setMaze: SetState<Maze>, afterAlgoExecution: boolean): Maze => {
   const side: number = Math.floor(Math.random() * 2)
   const updatedMaze: Maze = maze
 
-  
   if (!afterAlgoExecution) {
     const startIndex: number = Math.floor(Math.random() *  (maze.length - 2)) + 1
     if (!side) {
@@ -105,7 +143,6 @@ export const generateEndPoint = (maze: Maze, setMaze: SetState<Maze>) => {
         const randomEndIndex = pathIndices[Math.floor(Math.random() * pathIndices.length)]
         for (let endRow = row; endRow < maze.length; endRow++) {
           updatedMaze[endRow][randomEndIndex] = 0
-          console.log(`end point x: ${endRow}, y: ${randomEndIndex}`);
         }
         setMaze(updatedMaze)
         break
@@ -123,7 +160,6 @@ export const generateEndPoint = (maze: Maze, setMaze: SetState<Maze>) => {
         const randomEndIndex = pathIndices[Math.floor(Math.random() * pathIndices.length)]
         for (let endCol = col; endCol < maze.length; endCol++) {
           updatedMaze[randomEndIndex][endCol] = 0
-          console.log(`end point x: ${randomEndIndex}, y: ${endCol}`);
         }
         setMaze(updatedMaze)
         break
@@ -186,5 +222,20 @@ export const generateBaseMaze = (
     baseMaze.push(new Array(mazeSize).fill(1))
   }
   setMaze(baseMaze)
+  return baseMaze
+}
+
+export const generateBaseBuildMaze = (
+  mazeSize: number,
+): number[][] => {
+  const baseMaze: number[][] = []
+  for (let i: number = 0; i < mazeSize; i++) {
+    if (i === 0 || i === mazeSize - 1) {
+      baseMaze.push(new Array(mazeSize).fill(1))
+    } else {
+      const row = [1, ...new Array(mazeSize - 2).fill(0) , 1]
+      baseMaze.push(row)
+    }
+  }
   return baseMaze
 }

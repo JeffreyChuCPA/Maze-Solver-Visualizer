@@ -56,8 +56,9 @@ export const greedyBestFirstSearch = async (
       return false;
     }
     
-    const currCell: QueuePoint = priorityQueue.dequeue()    
-    currentMaze = updateMaze(currentMaze, {x: currCell.x, y: currCell.y}, setMaze, 2);
+    const currCell: QueuePoint = priorityQueue.dequeue()
+    currentMaze = updateMaze(currentMaze, parents[currCell.x][currCell.y] as Point, setMaze, 2);
+    currentMaze = updateMaze(currentMaze, {x: currCell.x, y: currCell.y}, setMaze, 4);
     iterationRef.current += 1 
     await new Promise((resolve) => setTimeout(resolve, delay));
     if (!currCell) break
@@ -87,6 +88,11 @@ export const greedyBestFirstSearch = async (
     }
 
     for (const direction of directions) {
+      if (!solvingRef.current) {
+        console.log("Stopped solving");
+        return false;
+      }
+      
       const newX = currCell.x + direction.x
       const newY = currCell.y + direction.y
     
@@ -106,6 +112,11 @@ export const greedyBestFirstSearch = async (
         }
       }
     }
+    if (!solvingRef.current) {
+      console.log("Stopped solving");
+      return false;
+    }
+    currentMaze = updateMaze(currentMaze, {x: currCell.x, y: currCell.y}, setMaze, 2);
   }
   console.log("Not solvable");
   resultRef.current = 'Unsolvable'

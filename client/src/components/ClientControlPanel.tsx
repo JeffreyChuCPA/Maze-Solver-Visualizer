@@ -1,32 +1,30 @@
-import React, { useContext, useState } from "react";
+import { useContext, useState } from "react";
 import "../styling/ClientControlPanel.css";
-import { ClientControlPanelProps } from "../utilities/types";
 import { algorithms, generateMazeAlgorithms } from "../utilities/objects";
-import { resetMaze } from "../utilities/utilities";
+import { generateBaseBuildMaze, resetMaze } from "../utilities/utilities";
 import { solver } from "../utilities/solver";
 import { generate } from "../utilities/generate";
 import { PageContext } from "../PageProvider";
+import { MazeContext } from "../MazeProvider";
 
-const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
-  mazeSize,
-  maze,
-  solvingRef,
-  iterationRef,
-  resultRef,
-  algorithm,
-  generatingAlgorithm,
-  generatingRef,
-  generating,
-  setMazeSize,
-  setAlgorithm,
-  setGeneratingAlgorithm,
-  setMaze,
-  setSolving,
-  setSolved,
-  setGenerating,
-}) => {
+const ClientControlPanel = () => {
   const { currentPage } = useContext(PageContext);
-  console.log(currentPage);
+  const {mazeSize,
+    maze,
+    solvingRef,
+    iterationRef,
+    resultRef,
+    algorithm,
+    generatingAlgorithm,
+    generatingRef,
+    generating,
+    setMazeSize,
+    setAlgorithm,
+    setGeneratingAlgorithm,
+    setMaze,
+    setSolving,
+    setSolved,
+    setGenerating} = useContext(MazeContext)
 
   const [visualize, setVisualize] = useState<boolean>(false);
 
@@ -43,7 +41,7 @@ const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
     generate(
       mazeSize,
       generatingAlgorithm ?? "Recursive Backtracking",
-      50,
+      0,
       iterationRef,
       resultRef,
       generatingRef || { current: true },
@@ -85,6 +83,10 @@ const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
     resetMaze(maze, setMaze, 0);
     console.log("Reset");
   };
+
+  const clearBuildBoard = () => {
+    setMaze(generateBaseBuildMaze(mazeSize))
+  }
 
   return (
     <>
@@ -168,7 +170,9 @@ const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
               min="10"
               max="50"
               value={mazeSize}
-              onChange={(e): void => setMazeSize(Number(e.target.value))}
+              onChange={(e): void => {
+                setMazeSize(Number(e.target.value))
+              }}
             />
           </div>
           <div>
@@ -188,6 +192,7 @@ const ClientControlPanel: React.FC<ClientControlPanelProps> = ({
               ))}
             </select>
           </div>
+          <button onClick={clearBuildBoard}>Clear Board</button>
           {!visualize ? (
             <button onClick={startSolving}>Visualize Solver</button>
           ) : (

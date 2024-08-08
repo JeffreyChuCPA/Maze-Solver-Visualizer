@@ -67,7 +67,8 @@ export const aStarSearch = async (
     })
     
     const currentNode = openList.shift()! //* ! asserts as a non-null return value
-    currentMaze = updateMaze(currentMaze, currentNode, setMaze, 2);
+    currentMaze = updateMaze(currentMaze, {x: currentNode.parent?.x, y: currentNode.parent?.y} as Point, setMaze, 2);
+    currentMaze = updateMaze(currentMaze, currentNode, setMaze, 4);
     iterationRef.current += 1 
     await new Promise((resolve) => setTimeout(resolve, delay));
     closedList.push(currentNode)
@@ -98,6 +99,11 @@ export const aStarSearch = async (
     
     //  foreach neighbor of currentNode {
     for (const {x, y} of directions) {
+      if (!solvingRef.current) {
+        console.log("Stopped solving");
+        return false;
+      }
+      
       const newX = currentNode.x + x
       const newY = currentNode.y + y
 
@@ -136,8 +142,12 @@ export const aStarSearch = async (
           await new Promise((resolve) => setTimeout(resolve, delay));
         }
       }
-
     }
+    if (!solvingRef.current) {
+      console.log("Stopped solving");
+      return false;
+    }
+    currentMaze = updateMaze(currentMaze, currentNode, setMaze, 2);
   }
   console.log("Not solvable");
   resultRef.current = 'Unsolvable'

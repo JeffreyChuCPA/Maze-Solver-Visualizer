@@ -31,6 +31,7 @@ export type ClientControlPanelProps = {
 export type BoardProps = {
   mazeSize: number;
   maze: Maze;
+  setMaze: SetState<Maze>;
 };
 
 export type DataDisplayProps = {
@@ -41,6 +42,7 @@ export type DataDisplayProps = {
 export type MazeProps = {
   maze: Maze;
   mazeSize: number;
+  setMaze: SetState<Maze>;
 };
 
 export type Point = {

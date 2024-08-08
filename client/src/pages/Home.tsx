@@ -1,50 +1,29 @@
-import { useRef, useState } from "react";
+import { useContext, useEffect } from "react";
 import Board from "../components/Board";
 import ClientControlPanel from "../components/ClientControlPanel";
-import { AlgorithmName, GeneratingAlgorithmName, Maze } from "../utilities/types";
-import sampleMazes from "../utilities/sampleMazes"
+import { PageContext } from "../PageProvider";
+import { MazeContext } from "../MazeProvider";
+import sampleMazes from "../utilities/sampleMazes";
+import FetchedBoards from "../components/FetchedBoards";
 
 const Home = () => {
-  const [mazeSize, setMazeSize] = useState<number>(50);
-  const [algorithm, setAlgorithm] = useState<AlgorithmName>(
-    "Depth First Search (DFS)",
-  );
-  const [generatingAlgorithm, setGeneratingAlgorithm] = useState<GeneratingAlgorithmName>(
-    "Recursive Backtracking",
-  );
-  const [maze, setMaze] = useState<Maze>(sampleMazes.mazeSample50_1);
-  const [solving, setSolving] = useState<boolean>(false);
-  const [generating, setGenerating] = useState<boolean>(false);
-  const [solved, setSolved] = useState<boolean>(false);
-  const solvingRef = useRef<boolean>(false);
-  const generatingRef = useRef<boolean>(false);
-  const iterationRef = useRef<number>(0);
-  const resultRef = useRef<string>('');
+  const {currentPage} = useContext(PageContext)
+  const {setMaze, iterationRef, resultRef} = useContext(MazeContext)
 
+  
+  useEffect(() => {
+    if (currentPage === "Home") {
+      setMaze(sampleMazes.mazeSample10_2)
+      iterationRef.current = 0
+      resultRef.current = ''
+      }
+  }, [setMaze, currentPage, iterationRef, resultRef])  
+  
   return (
     <>
-      <ClientControlPanel
-        mazeSize={mazeSize}
-        maze={maze}
-        solvingRef={solvingRef}
-        iterationRef={iterationRef}
-        resultRef={resultRef}
-        algorithm={algorithm}
-        generatingAlgorithm={generatingAlgorithm}
-        generatingRef={generatingRef}
-        generating={generating}
-        setSolving={setSolving}
-        setGenerating={setGenerating}
-        setMazeSize={setMazeSize}
-        setAlgorithm={setAlgorithm}
-        setGeneratingAlgorithm={setGeneratingAlgorithm}
-        setMaze={setMaze}
-        setSolved={setSolved}
-      />
-      <Board
-        maze={maze}
-        mazeSize={mazeSize}
-      />
+      <ClientControlPanel/>
+      <Board/>
+      <FetchedBoards/> 
     </>
   );
 };

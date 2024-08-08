@@ -46,7 +46,8 @@ export const bfs = async (
     }
 
     const currCell = queue.shift();
-    currentMaze = updateMaze(currentMaze, currCell, setMaze, 2);
+    currentMaze = updateMaze(currentMaze, parentCells[`${currCell?.x},${currCell?.y}`] as Point, setMaze, 2);
+    currentMaze = updateMaze(currentMaze, currCell, setMaze, 4);
     iterationRef.current += 1 
     await new Promise((resolve) => setTimeout(resolve, delay));
 
@@ -76,6 +77,11 @@ export const bfs = async (
 
     //*explore adjacent cells and add to queue if valid cells
     for (const direction of directions) {
+      if (!solvingRef.current) {
+        console.log("Stopped solving");
+        return false;
+      }
+
       const newX = currCell?.x + direction.x;
       const newY = currCell?.y + direction.y;
       const newPoint: Point = { x: newX, y: newY }
@@ -95,6 +101,11 @@ export const bfs = async (
         }
       }
     }
+    if (!solvingRef.current) {
+      console.log("Stopped solving");
+      return false;
+    }
+    currentMaze = updateMaze(currentMaze, currCell, setMaze, 2);
   }
 
   console.log("Not solvable");

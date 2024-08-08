@@ -17,9 +17,14 @@ export const solver = (
   const seen: boolean[][] = [];
   const path: Point[] = [];
 
-  //!techincally need to change functions to return Point only
   const start = findStartPoint(maze);
   const end = findEndPoint(maze);
+
+  if (start.x === 0 && start.y === 0 || end.x === 0 && end.y === 0) {
+    console.log('No valid start or endpoint');
+    resultRef.current = 'No valid start or endpoint'
+    return 
+  }
 
   for (let i = 0; i < maze.length; i++) {
     seen.push(new Array(maze[0].length).fill(false));
