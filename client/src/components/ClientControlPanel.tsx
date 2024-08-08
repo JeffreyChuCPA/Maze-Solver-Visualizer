@@ -9,7 +9,6 @@ import { MazeContext } from "../MazeProvider";
 
 const ClientControlPanel = () => {
   const { currentPage } = useContext(PageContext);
-  console.log(currentPage);
   const {mazeSize,
     maze,
     solvingRef,

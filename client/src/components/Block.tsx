@@ -37,36 +37,40 @@ const Block: React.FC<BlockProps> = ({ blockType, maze, rowIndex, colIndex }) =>
 
 
   const handleClick = () => {
-    const newMaze: Maze = maze
+    setMaze(prevMaze => {
+      const newMaze: Maze = prevMaze.map(row => [...row])
 
-    //*Set start point at top row or most left column
-    if (isValidStartPoint(cell.x, cell.y, newMaze)) {
-      resetStartOrEndPoint('start', newMaze)
-      updateMaze(newMaze, cell, setMaze, 0)
-    }
-
-    //*Set end point at bottom row or most right column
-    if (isValidEndPoint(cell.x, cell.y, newMaze)) {
-      resetStartOrEndPoint('end', newMaze)
-      updateMaze(newMaze, cell, setMaze, 0)
-    }
-
-    //*Set wall point within board
-    if (isValidBoardPoint(cell.x, cell.y, newMaze)) {
-      const cellValue: number = switchBlockType(newMaze[cell.x][cell.y])
-      updateMaze(newMaze, cell, setMaze, cellValue)
-    }
+      //*Set start point at top row or most left column
+      if (isValidStartPoint(cell.x, cell.y, newMaze)) {
+        resetStartOrEndPoint('start', newMaze)
+        newMaze[cell.x][cell.y] = 0
+      }
+      
+      //*Set end point at bottom row or most right column
+      else if (isValidEndPoint(cell.x, cell.y, newMaze)) {
+        resetStartOrEndPoint('end', newMaze)
+        newMaze[cell.x][cell.y] = 0
+      }
+      //*Set wall point within board
+      if (isValidBoardPoint(cell.x, cell.y, newMaze)) {
+        const cellValue: number = switchBlockType(newMaze[cell.x][cell.y])
+        newMaze[cell.x][cell.y] = cellValue
+      }
+      return newMaze
+    })
   }
 
   const handleHover = (e: React.MouseEvent<HTMLDivElement>) => {
-    const newMaze: Maze = maze
-    if (e.shiftKey) {   
-      if (isValidBoardPoint(cell.x, cell.y, newMaze)) {
-        const cellValue: number = switchBlockType(newMaze[cell.x][cell.y])
-        updateMaze(newMaze, cell, setMaze, cellValue)
+    setMaze(prevMaze => {
+      const newMaze: Maze = prevMaze.map(row => [...row])
+      if (e.shiftKey) {   
+        if (isValidBoardPoint(cell.x, cell.y, newMaze)) {
+          const cellValue: number = switchBlockType(newMaze[cell.x][cell.y])
+          newMaze[cell.x][cell.y] = cellValue
+        }
       }
-    }
-
+      return newMaze
+    })
   }
 
   return (
