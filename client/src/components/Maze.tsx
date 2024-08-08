@@ -12,7 +12,7 @@ const Maze = () => {
       {maze.map((row, rowIndex) => (
         <div key={rowIndex} className="maze__row">
           {row.map((cell, colIndex) => (
-            <Block blockType={cell} rowIndex={rowIndex} colIndex={colIndex} key={colIndex} maze={maze}/>
+            <Block blockType={cell} rowIndex={rowIndex} colIndex={colIndex} key={colIndex}/>
           ))}
         </div>
       ))}
