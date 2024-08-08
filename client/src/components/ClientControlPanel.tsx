@@ -18,15 +18,26 @@ const ClientControlPanel = () => {
     generatingAlgorithm,
     generatingRef,
     generating,
+    pathColor,
+    wallColor,
+    walkedColor,
+    queuedColor,
+    shortPathColor,
     setMazeSize,
     setAlgorithm,
     setGeneratingAlgorithm,
     setMaze,
     setSolving,
     setSolved,
+    setPathColor,
+    setWallColor,
+    setWalkedColor,
+    setQueuedColor,
+    setShortPathColor,
     setGenerating} = useContext(MazeContext)
 
   const [visualize, setVisualize] = useState<boolean>(false);
+  const [delay, setDelay] = useState<number>(0)
 
   const generateMaze = () => {
     solvingRef.current = false;
@@ -41,7 +52,7 @@ const ClientControlPanel = () => {
     generate(
       mazeSize,
       generatingAlgorithm ?? "Recursive Backtracking",
-      0,
+      delay,
       iterationRef,
       resultRef,
       generatingRef || { current: true },
@@ -61,7 +72,7 @@ const ClientControlPanel = () => {
     solver(
       maze,
       algorithm,
-      0,
+      delay,
       solvingRef,
       iterationRef,
       resultRef,
@@ -82,126 +93,164 @@ const ClientControlPanel = () => {
     if (setGenerating) setGenerating(false);
     resetMaze(maze, setMaze, 0);
     console.log("Reset");
+    console.log(generatingRef?.current);
+    
   };
 
   const clearBuildBoard = () => {
     setMaze(generateBaseBuildMaze(mazeSize))
   }
 
+  const delayCalculation = (delay: number): number => {
+    return -60 / 9 * delay + 6000 / 9
+  }
+
+  console.log(pathColor);
+  console.log(wallColor);
+  console.log(walkedColor);
+  console.log(queuedColor);
+  console.log(shortPathColor);
+  
+
   return (
     <>
       {currentPage === "Home" && (
         <div className="clientcontrolpanel__card">
           <div>
-            Grid size:{" "}
-            <input
-              id="mazeSize"
-              name="mazeSize"
-              type="number"
-              min="10"
-              max="50"
-              value={mazeSize}
-              onChange={(e): void => setMazeSize(Number(e.target.value))}
-            />
+            <div>
+              Grid size:{" "}
+              <input
+                id="mazeSize"
+                name="mazeSize"
+                type="number"
+                min="10"
+                max="50"
+                value={mazeSize}
+                onChange={(e): void => setMazeSize(Number(e.target.value))}
+              />
+            </div>
+            <div>
+              Solving Algorithm:{" "}
+              <select
+                name="algorithm"
+                id="algorithm"
+                value={algorithm}
+                onChange={(e): void => {
+                  setAlgorithm(e.target.value as keyof typeof algorithms);
+                  clearMaze();
+                }}
+              >
+                {Object.keys(algorithms).map((key) => (
+                  <option id={key} key={key} value={key}>
+                    {key}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              Generating Algorithm:{" "}
+              <select
+                name="generatingAlgorithm"
+                id="generatingAlgorithm"
+                value={generatingAlgorithm}
+                onChange={(e): void => {
+                  if (setGeneratingAlgorithm)
+                    setGeneratingAlgorithm(
+                      e.target.value as keyof typeof generateMazeAlgorithms,
+                    );
+                  clearMaze();
+                }}
+              >
+                {Object.keys(generateMazeAlgorithms).map((key) => (
+                  <option id={key} key={key} value={key}>
+                    {key}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {!generating ? (
+              <button onClick={generateMaze}>Generate Maze</button>
+            ) : (
+              <>
+                <button onClick={clearMaze}>Stop</button>
+              </>
+            )}
+            {!visualize ? (
+              <button onClick={startSolving}>Visualize Solver</button>
+            ) : (
+              <>
+                <button onClick={clearMaze}>Reset</button>
+              </>
+            )}
+            <input type="range" min={10} max={100} step={10} onChange={e => setDelay(delayCalculation(parseFloat(e.target.value)))} value={Math.round((delay - 6000/9) * 9 / -60)}/>
+            <div>Speed: {Math.round((delay - 6000/9) * 9 / -60)}%</div>
+            <div>Number of Iterations: {iterationRef.current}</div>
+            <div>Result: {resultRef.current}</div>
           </div>
           <div>
-            Solving Algorithm:{" "}
-            <select
-              name="algorithm"
-              id="algorithm"
-              onChange={(e): void => {
-                setAlgorithm(e.target.value as keyof typeof algorithms);
-                clearMaze();
-              }}
-            >
-              {Object.keys(algorithms).map((key) => (
-                <option id={key} key={key} value={key}>
-                  {key}
-                </option>
-              ))}
-            </select>
+            <div>Path Color: <input type="color" value={pathColor} onChange={e => setPathColor(e.target.value)}/></div>
+            <div>Wall Color: <input type="color" value={wallColor} onChange={e => setWallColor(e.target.value)}/></div>
+            <div>Walked Color: <input type="color" value={walkedColor} onChange={e => setWalkedColor(e.target.value)}/></div>
+            <div>Queued Color: <input type="color" value={queuedColor} onChange={e => setQueuedColor(e.target.value)}/></div>
+            <div>Current Color: <input type="color" value={shortPathColor} onChange={e => setShortPathColor(e.target.value)}/></div>
           </div>
-          <div>
-            Generating Algorithm:{" "}
-            <select
-              name="generatingAlgorithm"
-              id="generatingAlgorithm"
-              onChange={(e): void => {
-                if (setGeneratingAlgorithm)
-                  setGeneratingAlgorithm(
-                    e.target.value as keyof typeof generateMazeAlgorithms,
-                  );
-                clearMaze();
-              }}
-            >
-              {Object.keys(generateMazeAlgorithms).map((key) => (
-                <option id={key} key={key} value={key}>
-                  {key}
-                </option>
-              ))}
-            </select>
-          </div>
-          {!generating ? (
-            <button onClick={generateMaze}>Generate Maze</button>
-          ) : (
-            <>
-              <button onClick={clearMaze}>Stop</button>
-            </>
-          )}
-          {!visualize ? (
-            <button onClick={startSolving}>Visualize Solver</button>
-          ) : (
-            <>
-              <button onClick={clearMaze}>Reset</button>
-            </>
-          )}
-          <div>Number of Iterations: {iterationRef.current}</div>
-          <div>Result: {resultRef.current}</div>
         </div>
       )}{" "}
       {currentPage === "build-board" && (
         <div className="clientcontrolpanel__card">
           <div>
-            Grid size:{" "}
-            <input
-              id="mazeSize"
-              name="mazeSize"
-              type="number"
-              min="10"
-              max="50"
-              value={mazeSize}
-              onChange={(e): void => {
-                setMazeSize(Number(e.target.value))
-              }}
-            />
+            <div>
+              Grid size:{" "}
+              <input
+                id="mazeSize"
+                name="mazeSize"
+                type="number"
+                min="10"
+                max="50"
+                value={mazeSize}
+                onChange={(e): void => {
+                  setMazeSize(Number(e.target.value))
+                }}
+              />
+            </div>
+            <div>
+              Solving Algorithm:{" "}
+              <select
+                name="algorithm"
+                id="algorithm"
+                value={algorithm}
+                onChange={(e): void => {
+                  setAlgorithm(e.target.value as keyof typeof algorithms);
+                  clearMaze();
+                }}
+              >
+                {Object.keys(algorithms).map((key) => (
+                  <option id={key} key={key} value={key}>
+                    {key}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <button onClick={clearBuildBoard}>Clear Board</button>
+            {!visualize ? (
+              <button onClick={startSolving}>Visualize Solver</button>
+            ) : (
+              <>
+                <button onClick={clearMaze}>Reset</button>
+              </>
+            )}
+            <input type="range" min={10} max={100} step={10} onChange={e => setDelay(delayCalculation(parseFloat(e.target.value)))} value={Math.round((delay - 6000/9) * 9 / -60)}/>
+            <div>Speed: {Math.round((delay - 6000/9) * 9 / -60)}%</div>
+            <div>Number of Iterations: {iterationRef.current}</div>
+            <div>Result: {resultRef.current}</div>
           </div>
           <div>
-            Solving Algorithm:{" "}
-            <select
-              name="algorithm"
-              id="algorithm"
-              onChange={(e): void => {
-                setAlgorithm(e.target.value as keyof typeof algorithms);
-                clearMaze();
-              }}
-            >
-              {Object.keys(algorithms).map((key) => (
-                <option id={key} key={key} value={key}>
-                  {key}
-                </option>
-              ))}
-            </select>
+            <div>Path Color: <input type="color" value={pathColor} onChange={e => setPathColor(e.target.value)}/></div>
+            <div>Wall Color: <input type="color" value={wallColor} onChange={e => setWallColor(e.target.value)}/></div>
+            <div>Walked Color: <input type="color" value={walkedColor} onChange={e => setWalkedColor(e.target.value)}/></div>
+            <div>Queued Color: <input type="color" value={queuedColor} onChange={e => setQueuedColor(e.target.value)}/></div>
+            <div>Current Color: <input type="color" value={shortPathColor} onChange={e => setShortPathColor(e.target.value)}/></div>
           </div>
-          <button onClick={clearBuildBoard}>Clear Board</button>
-          {!visualize ? (
-            <button onClick={startSolving}>Visualize Solver</button>
-          ) : (
-            <>
-              <button onClick={clearMaze}>Reset</button>
-            </>
-          )}
-          <div>Number of Iterations: {iterationRef.current}</div>
-          <div>Result: {resultRef.current}</div>
         </div>
       )}
     </>

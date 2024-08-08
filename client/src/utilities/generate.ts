@@ -12,7 +12,7 @@ export const generate = (
   setMaze: SetState<Maze>,
   setGenerating: SetState<boolean>,
 ): Maze => {
-
+  
   const baseMaze = generateBaseMaze(mazeSize, setMaze)
 
   const algorithmFunction = generateMazeAlgorithms[generatingAlgorithm];
