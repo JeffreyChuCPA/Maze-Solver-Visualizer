@@ -10,16 +10,16 @@ export const kruskals = async (
   setMaze: SetState<Maze>,
   setGenerating: SetState<boolean>,
 ): Promise<boolean> => {
-  type Cell = [number, number]
-  type Wall = [Cell, Cell]
+  type Cell = [number, number];
+  type Wall = [Cell, Cell];
 
   class DisjointSet {
-    parent: Map<string, string>
-    rank: Map<string, number>
+    parent: Map<string, string>;
+    rank: Map<string, number>;
 
     constructor() {
-      this.parent = new Map()
-      this.rank = new Map()
+      this.parent = new Map();
+      this.rank = new Map();
     }
 
     makeSet(cell: Cell) {
@@ -31,33 +31,36 @@ export const kruskals = async (
     find(cell: Cell): string {
       const key = cell.toString();
       if (this.parent.get(key) !== key) {
-      this.parent.set(key, this.find(this.parent.get(key)!.split(',').map(Number) as Cell));
+        this.parent.set(
+          key,
+          this.find(this.parent.get(key)!.split(",").map(Number) as Cell),
+        );
       }
       return this.parent.get(key)!;
     }
 
     join(cell1: Cell, cell2: Cell) {
-      const root1: string = this.find(cell1)
-      const root2: string = this.find(cell2)
+      const root1: string = this.find(cell1);
+      const root2: string = this.find(cell2);
 
       if (root1 !== root2) {
-        const rank1: number | undefined = this.rank.get(root1)! 
-        const rank2: number | undefined = this.rank.get(root2)!
-        
+        const rank1: number | undefined = this.rank.get(root1)!;
+        const rank2: number | undefined = this.rank.get(root2)!;
+
         if (rank1 > rank2) {
-          this.parent.set(root2, root1)
+          this.parent.set(root2, root1);
         } else if (rank1 < rank2) {
-          this.parent.set(root1, root2)
+          this.parent.set(root1, root2);
         } else {
-          this.parent.set(root2, root1)
-          this.rank.set(root1, rank1 + 1)
+          this.parent.set(root2, root1);
+          this.rank.set(root1, rank1 + 1);
         }
       }
     }
   }
 
-  const walls: Wall[] = []
-  const disjointSet = new DisjointSet()
+  const walls: Wall[] = [];
+  const disjointSet = new DisjointSet();
   let currentMaze: Maze = baseMaze;
 
   for (let i = 1; i < currentMaze.length - 1; i += 2) {
@@ -87,26 +90,40 @@ export const kruskals = async (
       console.log("Stopped generating");
       return false;
     }
-    const [cell1, cell2] = wall
-    
-    if (disjointSet.find(cell1) !== disjointSet.find(cell2)) {
+    const [cell1, cell2] = wall;
 
-      disjointSet.join(cell1, cell2)
-      
+    if (disjointSet.find(cell1) !== disjointSet.find(cell2)) {
+      disjointSet.join(cell1, cell2);
+
       const midCell: Cell = [
         (cell1[0] + cell2[0]) / 2,
-        (cell1[1] + cell2[1]) / 2
-      ]
-      
-      currentMaze = updateMaze(currentMaze, {x: cell1[0], y: cell1[1]}, setMaze, 0)
-      currentMaze = updateMaze(currentMaze, {x: cell2[0], y: cell2[1]}, setMaze, 0)
-      currentMaze = updateMaze(currentMaze, {x: midCell[0], y: midCell[1]}, setMaze, 0)
+        (cell1[1] + cell2[1]) / 2,
+      ];
+
+      currentMaze = updateMaze(
+        currentMaze,
+        { x: cell1[0], y: cell1[1] },
+        setMaze,
+        0,
+      );
+      currentMaze = updateMaze(
+        currentMaze,
+        { x: cell2[0], y: cell2[1] },
+        setMaze,
+        0,
+      );
+      currentMaze = updateMaze(
+        currentMaze,
+        { x: midCell[0], y: midCell[1] },
+        setMaze,
+        0,
+      );
       iterationRef.current += 1;
       await new Promise((resolve) => setTimeout(resolve, delay));
     }
   }
 
-// Return after maze generated
+  // Return after maze generated
   if (generatingRef.current) {
     generateStartPoint(currentMaze, setMaze, true);
     generateEndPoint(currentMaze, setMaze);
@@ -121,4 +138,4 @@ export const kruskals = async (
   setGenerating(false);
   console.log("Done Generating");
   return false;
-}
+};

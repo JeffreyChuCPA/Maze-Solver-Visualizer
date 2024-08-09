@@ -1,13 +1,9 @@
-import React, {
-  createContext,
-  useState,
-  ReactNode,
-  useRef,
-} from "react";
+import React, { createContext, useState, ReactNode, useRef } from "react";
 import {
   AlgorithmName,
   GeneratingAlgorithmName,
   Maze,
+  Point,
   SetState,
 } from "./utilities/types";
 import sampleMazes from "./utilities/sampleMazes";
@@ -18,15 +14,15 @@ interface MazeContextType {
   solvingRef: React.MutableRefObject<boolean>;
   solving: boolean;
   solved: boolean;
-	iterationRef: React.MutableRefObject<number>;
-  resultRef: React.MutableRefObject<string>
+  iterationRef: React.MutableRefObject<number>;
+  resultRef: React.MutableRefObject<string>;
   algorithm: AlgorithmName;
   generatingAlgorithm?: GeneratingAlgorithmName;
   generatingRef?: React.MutableRefObject<boolean>;
-  generating?: boolean
+  generating?: boolean;
   setMazeSize: SetState<number>;
   setAlgorithm: SetState<AlgorithmName>;
-  setGeneratingAlgorithm?: SetState<GeneratingAlgorithmName>
+  setGeneratingAlgorithm?: SetState<GeneratingAlgorithmName>;
   setMaze: SetState<Maze>;
   setSolving: SetState<boolean>;
   setSolved: SetState<boolean>;
@@ -41,6 +37,8 @@ interface MazeContextType {
   setQueuedColor: SetState<string>;
   shortPathColor: string;
   setShortPathColor: SetState<string>;
+  highlightedRow: Point | null;
+  setHighlightedRow: SetState<Point | null>;
 }
 
 const MazeContext = createContext<MazeContextType>();
@@ -50,7 +48,6 @@ interface MazeProviderProps {
 }
 
 const MazeProvider: React.FC<MazeProviderProps> = ({ children }) => {
-
   const [mazeSize, setMazeSize] = useState<number>(30);
   const [algorithm, setAlgorithm] = useState<AlgorithmName>(
     "Depth First Search (DFS)",
@@ -65,16 +62,17 @@ const MazeProvider: React.FC<MazeProviderProps> = ({ children }) => {
   const generatingRef = useRef<boolean>(false);
   const iterationRef = useRef<number>(0);
   const resultRef = useRef<string>("");
-  const [pathColor, setPathColor] = useState<string>('#FFFFFF')
-  const [wallColor, setWallColor] = useState<string>('#000000')
-  const [walkedColor, setWalkedColor] = useState<string>('#16dbe9')
-  const [queuedColor, setQueuedColor] = useState<string>('#1f666b')
-  const [shortPathColor, setShortPathColor] = useState<string>('#fdf90d')
+  const [pathColor, setPathColor] = useState<string>("#FFFFFF");
+  const [wallColor, setWallColor] = useState<string>("#000000");
+  const [walkedColor, setWalkedColor] = useState<string>("#16dbe9");
+  const [queuedColor, setQueuedColor] = useState<string>("#1f666b");
+  const [shortPathColor, setShortPathColor] = useState<string>("#fdf90d");
+  const [highlightedRow, setHighlightedRow] = useState<number | null>(null);
 
   return (
     <MazeContext.Provider
-      value={
-        {mazeSize,
+      value={{
+        mazeSize,
         setMazeSize,
         algorithm,
         setAlgorithm,
@@ -101,13 +99,14 @@ const MazeProvider: React.FC<MazeProviderProps> = ({ children }) => {
         queuedColor,
         setQueuedColor,
         shortPathColor,
-        setShortPathColor
-      }
-      }
+        setShortPathColor,
+        highlightedRow,
+        setHighlightedRow,
+      }}
     >
       {children}
     </MazeContext.Provider>
   );
 };
 
-export {MazeContext, MazeProvider};
+export { MazeContext, MazeProvider };

@@ -6,7 +6,9 @@ import { bfs } from "./SolvingAlgorithms/bfs";
 import { dfs } from "./SolvingAlgorithms/dfs";
 import { dijkstraAlgorithm } from "./SolvingAlgorithms/dijkstraAlgorithm";
 import { greedyBestFirstSearch } from "./SolvingAlgorithms/greedyBestFirstSearch";
-import { wallFollower } from "./SolvingAlgorithms/wallFollower";
+import { wallFollowerLeft } from "./SolvingAlgorithms/wallFollowerLeft";
+import { wallFollowerRight } from "./SolvingAlgorithms/wallFollowerRight";
+import { huntAndKill } from "./GeneratingAlgorithms/huntAndKill";
 import { Point } from "./types";
 
 export const algorithms = {
@@ -14,15 +16,17 @@ export const algorithms = {
   "Breadth First Search (BFS)": bfs,
   "A* Search": aStarSearch,
   "Dijkstra's Algorithm": dijkstraAlgorithm,
-  "Wall Follower": wallFollower,
-  "Greedy Best-First Search": greedyBestFirstSearch
+  "Wall Follower - Left": wallFollowerLeft,
+  "Wall Follower - Right": wallFollowerRight,
+  "Greedy Best-First Search": greedyBestFirstSearch,
 };
 
 export const generateMazeAlgorithms = {
   "Recursive Backtracking": recursiveBacktracking,
   "Prim's Algorithm": prims,
   "Kruskal's Algorithm": kruskals,
-}
+  "Hunt and Kill Algorithm": huntAndKill,
+};
 
 export const directions: Point[] = [
   { x: 0, y: 1 },

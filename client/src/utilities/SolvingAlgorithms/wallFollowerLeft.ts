@@ -2,7 +2,7 @@ import { directions } from "../objects";
 import { Maze, Point, SetState } from "../types";
 import { updateMaze, updateMazePath } from "../utilities";
 
-export const wallFollower = async (
+export const wallFollowerLeft = async (
   maze: Maze,
   curr: Point | null,
   start: Point | null,
@@ -17,7 +17,6 @@ export const wallFollower = async (
   setSolving: SetState<boolean>,
   setSolved: SetState<boolean>,
 ): Promise<boolean> => {
-
   const isValid = (seen: boolean[][], cell: Point | null) => {
     if (
       cell.x < 0 ||
@@ -98,7 +97,7 @@ export const wallFollower = async (
         console.log("Stopped solving");
         return false;
       }
-      
+
       //turn left
       directionIndex = leftDirIndex;
       prevPoint = curr;
@@ -125,9 +124,9 @@ export const wallFollower = async (
       } else {
         //otherwise turn right
         if (!solvingRef.current) {
-        console.log("Stopped solving");
-        return false;
-      }
+          console.log("Stopped solving");
+          return false;
+        }
         directionIndex = (directionIndex + 1) % 4;
       }
     }

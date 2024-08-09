@@ -57,13 +57,11 @@ export const prims = async (
 
   shuffleDirections(directions);
   for (const direction of directions) {
-    const frontier = {x: start.x + direction.x, y: start.y + direction.y}
-    if (
-      isValid(currentMaze, frontier)
-    ) {
+    const frontier = { x: start.x + direction.x, y: start.y + direction.y };
+    if (isValid(currentMaze, frontier)) {
       frontierCells.push({
-        point: frontier ,
-        parent: start
+        point: frontier,
+        parent: start,
       });
     }
   }
@@ -78,7 +76,8 @@ export const prims = async (
     }
 
     //pick random frontier cell from list
-    const randomFrontierCell: { point: Point, parent: Point} = frontierCells[Math.floor(Math.random() * frontierCells.length)];
+    const randomFrontierCell: { point: Point; parent: Point } =
+      frontierCells[Math.floor(Math.random() * frontierCells.length)];
 
     //Set the cell inbetween to a path
     if (
@@ -109,7 +108,7 @@ export const prims = async (
         const frontier = {
           x: randomFrontierCell.point.x + direction.x,
           y: randomFrontierCell.point.y + direction.y,
-        }
+        };
         if (
           isValid(currentMaze, frontier) &&
           !inFrontierCellsList(frontierCells, frontier)

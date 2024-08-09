@@ -7,21 +7,22 @@ import { generateBaseBuildMaze } from "../utilities/utilities";
 import { MazeContext } from "../MazeProvider";
 
 const BuildBoard = () => {
-  const {currentPage} = useContext(PageContext)
-  const {mazeSize, setMaze, iterationRef, resultRef} = useContext(MazeContext)
-  
+  const { currentPage } = useContext(PageContext);
+  const { mazeSize, setMaze, iterationRef, resultRef } =
+    useContext(MazeContext);
+
   useEffect(() => {
     if (currentPage === "build-board") {
-      setMaze(generateBaseBuildMaze(mazeSize))
-      iterationRef.current = 0
-      resultRef.current = ''
+      setMaze(generateBaseBuildMaze(mazeSize));
+      iterationRef.current = 0;
+      resultRef.current = "";
     }
-  }, [mazeSize, setMaze, currentPage, iterationRef, resultRef])  
-  
+  }, [mazeSize, setMaze, currentPage, iterationRef, resultRef]);
+
   return (
     <>
-      <ClientControlPanel/>
-      <Board/>
+      <ClientControlPanel />
+      <Board />
     </>
   );
 };

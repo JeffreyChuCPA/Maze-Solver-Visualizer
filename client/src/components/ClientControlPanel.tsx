@@ -9,7 +9,8 @@ import { MazeContext } from "../MazeProvider";
 
 const ClientControlPanel = () => {
   const { currentPage } = useContext(PageContext);
-  const {mazeSize,
+  const {
+    mazeSize,
     maze,
     solvingRef,
     iterationRef,
@@ -34,10 +35,12 @@ const ClientControlPanel = () => {
     setWalkedColor,
     setQueuedColor,
     setShortPathColor,
-    setGenerating} = useContext(MazeContext)
+    setGenerating,
+    setHighlightedRow,
+  } = useContext(MazeContext);
 
   const [visualize, setVisualize] = useState<boolean>(false);
-  const [delay, setDelay] = useState<number>(0)
+  const [delay, setDelay] = useState<number>(0);
 
   const generateMaze = () => {
     solvingRef.current = false;
@@ -58,6 +61,7 @@ const ClientControlPanel = () => {
       generatingRef || { current: true },
       setMaze,
       setGenerating,
+      setHighlightedRow,
     );
   };
 
@@ -94,23 +98,15 @@ const ClientControlPanel = () => {
     resetMaze(maze, setMaze, 0);
     console.log("Reset");
     console.log(generatingRef?.current);
-    
   };
 
   const clearBuildBoard = () => {
-    setMaze(generateBaseBuildMaze(mazeSize))
-  }
+    setMaze(generateBaseBuildMaze(mazeSize));
+  };
 
   const delayCalculation = (delay: number): number => {
-    return -60 / 9 * delay + 6000 / 9
-  }
-
-  console.log(pathColor);
-  console.log(wallColor);
-  console.log(walkedColor);
-  console.log(queuedColor);
-  console.log(shortPathColor);
-  
+    return (-60 / 9) * delay + 6000 / 9;
+  };
 
   return (
     <>
@@ -182,17 +178,61 @@ const ClientControlPanel = () => {
                 <button onClick={clearMaze}>Reset</button>
               </>
             )}
-            <input type="range" min={10} max={100} step={10} onChange={e => setDelay(delayCalculation(parseFloat(e.target.value)))} value={Math.round((delay - 6000/9) * 9 / -60)}/>
-            <div>Speed: {Math.round((delay - 6000/9) * 9 / -60)}%</div>
+            <input
+              type="range"
+              min={10}
+              max={100}
+              step={10}
+              onChange={(e) =>
+                setDelay(delayCalculation(parseFloat(e.target.value)))
+              }
+              value={Math.round(((delay - 6000 / 9) * 9) / -60)}
+            />
+            <div>Speed: {Math.round(((delay - 6000 / 9) * 9) / -60)}%</div>
             <div>Number of Iterations: {iterationRef.current}</div>
             <div>Result: {resultRef.current}</div>
           </div>
           <div>
-            <div>Path Color: <input type="color" value={pathColor} onChange={e => setPathColor(e.target.value)}/></div>
-            <div>Wall Color: <input type="color" value={wallColor} onChange={e => setWallColor(e.target.value)}/></div>
-            <div>Walked Color: <input type="color" value={walkedColor} onChange={e => setWalkedColor(e.target.value)}/></div>
-            <div>Queued Color: <input type="color" value={queuedColor} onChange={e => setQueuedColor(e.target.value)}/></div>
-            <div>Current Color: <input type="color" value={shortPathColor} onChange={e => setShortPathColor(e.target.value)}/></div>
+            <div>
+              Path Color:{" "}
+              <input
+                type="color"
+                value={pathColor}
+                onChange={(e) => setPathColor(e.target.value)}
+              />
+            </div>
+            <div>
+              Wall Color:{" "}
+              <input
+                type="color"
+                value={wallColor}
+                onChange={(e) => setWallColor(e.target.value)}
+              />
+            </div>
+            <div>
+              Walked Color:{" "}
+              <input
+                type="color"
+                value={walkedColor}
+                onChange={(e) => setWalkedColor(e.target.value)}
+              />
+            </div>
+            <div>
+              Queued Color:{" "}
+              <input
+                type="color"
+                value={queuedColor}
+                onChange={(e) => setQueuedColor(e.target.value)}
+              />
+            </div>
+            <div>
+              Current Color:{" "}
+              <input
+                type="color"
+                value={shortPathColor}
+                onChange={(e) => setShortPathColor(e.target.value)}
+              />
+            </div>
           </div>
         </div>
       )}{" "}
@@ -209,7 +249,7 @@ const ClientControlPanel = () => {
                 max="50"
                 value={mazeSize}
                 onChange={(e): void => {
-                  setMazeSize(Number(e.target.value))
+                  setMazeSize(Number(e.target.value));
                 }}
               />
             </div>
@@ -239,17 +279,61 @@ const ClientControlPanel = () => {
                 <button onClick={clearMaze}>Reset</button>
               </>
             )}
-            <input type="range" min={10} max={100} step={10} onChange={e => setDelay(delayCalculation(parseFloat(e.target.value)))} value={Math.round((delay - 6000/9) * 9 / -60)}/>
-            <div>Speed: {Math.round((delay - 6000/9) * 9 / -60)}%</div>
+            <input
+              type="range"
+              min={10}
+              max={100}
+              step={10}
+              onChange={(e) =>
+                setDelay(delayCalculation(parseFloat(e.target.value)))
+              }
+              value={Math.round(((delay - 6000 / 9) * 9) / -60)}
+            />
+            <div>Speed: {Math.round(((delay - 6000 / 9) * 9) / -60)}%</div>
             <div>Number of Iterations: {iterationRef.current}</div>
             <div>Result: {resultRef.current}</div>
           </div>
           <div>
-            <div>Path Color: <input type="color" value={pathColor} onChange={e => setPathColor(e.target.value)}/></div>
-            <div>Wall Color: <input type="color" value={wallColor} onChange={e => setWallColor(e.target.value)}/></div>
-            <div>Walked Color: <input type="color" value={walkedColor} onChange={e => setWalkedColor(e.target.value)}/></div>
-            <div>Queued Color: <input type="color" value={queuedColor} onChange={e => setQueuedColor(e.target.value)}/></div>
-            <div>Current Color: <input type="color" value={shortPathColor} onChange={e => setShortPathColor(e.target.value)}/></div>
+            <div>
+              Path Color:{" "}
+              <input
+                type="color"
+                value={pathColor}
+                onChange={(e) => setPathColor(e.target.value)}
+              />
+            </div>
+            <div>
+              Wall Color:{" "}
+              <input
+                type="color"
+                value={wallColor}
+                onChange={(e) => setWallColor(e.target.value)}
+              />
+            </div>
+            <div>
+              Walked Color:{" "}
+              <input
+                type="color"
+                value={walkedColor}
+                onChange={(e) => setWalkedColor(e.target.value)}
+              />
+            </div>
+            <div>
+              Queued Color:{" "}
+              <input
+                type="color"
+                value={queuedColor}
+                onChange={(e) => setQueuedColor(e.target.value)}
+              />
+            </div>
+            <div>
+              Current Color:{" "}
+              <input
+                type="color"
+                value={shortPathColor}
+                onChange={(e) => setShortPathColor(e.target.value)}
+              />
+            </div>
           </div>
         </div>
       )}

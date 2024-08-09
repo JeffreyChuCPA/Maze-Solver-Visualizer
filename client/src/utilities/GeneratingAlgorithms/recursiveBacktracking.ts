@@ -1,5 +1,10 @@
-import { Maze, Point, SetState } from "../types"
-import { findStartPoint, generateEndPoint, generateStartPoint, updateMaze } from "../utilities"
+import { Maze, Point, SetState } from "../types";
+import {
+  findStartPoint,
+  generateEndPoint,
+  generateStartPoint,
+  updateMaze,
+} from "../utilities";
 
 export const recursiveBacktracking = async (
   baseMaze: Maze,
@@ -9,13 +14,13 @@ export const recursiveBacktracking = async (
   generatingRef: React.MutableRefObject<boolean>,
   setMaze: SetState<Maze>,
   setGenerating: SetState<boolean>,
-):Promise<boolean> => {
-  
-  
-  const start: Point = findStartPoint(generateStartPoint(baseMaze, setMaze, false))
+): Promise<boolean> => {
+  const start: Point = findStartPoint(
+    generateStartPoint(baseMaze, setMaze, false),
+  );
 
   console.log(generatingRef);
-  
+
   const directions: Point[] = [
     { x: 0, y: 2 },
     { x: 2, y: 0 },
@@ -24,7 +29,12 @@ export const recursiveBacktracking = async (
   ];
 
   const isValid = (maze: Maze, cell: Point) => {
-    return cell.x > 0 && cell.x < maze.length - 1 && cell.y > 0 && cell.y < maze[0].length - 1;
+    return (
+      cell.x > 0 &&
+      cell.x < maze.length - 1 &&
+      cell.y > 0 &&
+      cell.y < maze[0].length - 1
+    );
   };
 
   const shuffleDirections = (directions: Point[]) => {
@@ -35,15 +45,14 @@ export const recursiveBacktracking = async (
   };
 
   const carvePath = async (maze: Maze, cell: Point) => {
-
     shuffleDirections(directions);
     for (const { x: dx, y: dy } of directions) {
       const nx = cell.x + dx;
       const ny = cell.y + dy;
       const mx = cell.x + dx / 2;
       const my = cell.y + dy / 2;
-  
-      if (isValid(maze, {x: nx, y: ny}) && maze[nx][ny] === 1) {
+
+      if (isValid(maze, { x: nx, y: ny }) && maze[nx][ny] === 1) {
         if (!generatingRef.current) {
           console.log("Stopped generating");
           return false;
@@ -51,25 +60,25 @@ export const recursiveBacktracking = async (
 
         maze[nx][ny] = 0;
         maze[mx][my] = 0;
-        updateMaze(maze, {x: nx, y: ny}, setMaze, 0);
-        updateMaze(maze, {x: mx, y: my}, setMaze, 0);
-        iterationRef.current += 1 
+        updateMaze(maze, { x: nx, y: ny }, setMaze, 0);
+        updateMaze(maze, { x: mx, y: my }, setMaze, 0);
+        iterationRef.current += 1;
         await new Promise((resolve) => setTimeout(resolve, delay));
-        await carvePath(maze, {x: nx, y: ny});
+        await carvePath(maze, { x: nx, y: ny });
       }
     }
   };
 
-  await carvePath(baseMaze, start)
+  await carvePath(baseMaze, start);
   if (generatingRef.current) {
-    generateEndPoint(baseMaze, setMaze)
-    resultRef.current = 'Generation Successful' 
+    generateEndPoint(baseMaze, setMaze);
+    resultRef.current = "Generation Successful";
     setGenerating(false);
     console.log("Done Generating");
-    return true
+    return true;
   }
-  resultRef.current = 'Generation Unsuccessful' 
+  resultRef.current = "Generation Unsuccessful";
   setGenerating(false);
   console.log("Done Generating");
-  return false
-}
+  return false;
+};

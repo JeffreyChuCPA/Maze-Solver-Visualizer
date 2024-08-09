@@ -17,7 +17,6 @@ export const dfs = async (
   setSolving: SetState<boolean>,
   setSolved: SetState<boolean>,
 ): Promise<boolean> => {
-
   if (!solvingRef.current) {
     console.log("Stopped solving");
     return false;
@@ -42,34 +41,38 @@ export const dfs = async (
   //* At the end, end recursion
   if (curr.x === end.x && curr.y === end.y) {
     path.push(end);
-    iterationRef.current += 1
-    resultRef.current = 'Solved' 
+    iterationRef.current += 1;
+    resultRef.current = "Solved";
     updateMazePath(maze, path, setMaze, 4);
     setSolving(false);
-    setSolved(true)
+    setSolved(true);
     console.log("Solved");
     return true;
   }
 
   // //*No more possible moves after checking and returning to start cell
-  if (curr.x === start.x && curr.y === start.y && !seen.flat().includes(true) && path.length > 0) {
+  if (
+    curr.x === start.x &&
+    curr.y === start.y &&
+    !seen.flat().includes(true) &&
+    path.length > 0
+  ) {
     const hasValidMoves = directions.some((direction) => {
-      const newX = curr.x + direction.x
-      const newY = curr.y + direction.y
-      const validMove = (
+      const newX = curr.x + direction.x;
+      const newY = curr.y + direction.y;
+      const validMove =
         newX >= 0 &&
         newX < maze.length &&
         newY >= 0 &&
         newY < maze[0].length &&
         maze[newX][newY] === 0 &&
-        !seen[newX][newY]
-      );
+        !seen[newX][newY];
       return validMove;
     });
 
     if (!hasValidMoves) {
       console.log("Not solvable");
-      resultRef.current = 'Unsolvable' 
+      resultRef.current = "Unsolvable";
       setSolving(false);
       return false;
     }
@@ -86,7 +89,7 @@ export const dfs = async (
   let updatedMaze: Maze;
   path.push(curr);
   updatedMaze = updateMaze(maze, curr, setMaze, 4);
-  iterationRef.current += 1 
+  iterationRef.current += 1;
   await new Promise((resolve) => setTimeout(resolve, delay));
 
   //* recurse
@@ -97,12 +100,12 @@ export const dfs = async (
     }
 
     updatedMaze = updateMaze(updatedMaze, curr, setMaze, 2);
-    const newX = curr.x + direction.x
-    const newY = curr.y + direction.y
+    const newX = curr.x + direction.x;
+    const newY = curr.y + direction.y;
     if (
       await dfs(
         updatedMaze,
-        {x: newX, y: newY},
+        { x: newX, y: newY },
         start,
         end,
         seen,
@@ -132,7 +135,7 @@ export const dfs = async (
 
     if (deleteCurr.x === start.x && deleteCurr.y === start.y) {
       console.log("Not solvable");
-      resultRef.current = 'Unsolvable' 
+      resultRef.current = "Unsolvable";
       setSolving(false);
     }
   }

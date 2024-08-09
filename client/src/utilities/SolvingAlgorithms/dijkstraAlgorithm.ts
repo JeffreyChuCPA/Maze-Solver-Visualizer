@@ -1,5 +1,5 @@
 import { Maze, Point, QueuePoint, SetState } from "../types";
-import PriorityQueue from 'js-priority-queue'
+import PriorityQueue from "js-priority-queue";
 import { updateMaze } from "../utilities";
 import { directions } from "../objects";
 
@@ -18,7 +18,6 @@ export const dijkstraAlgorithm = async (
   setSolving: SetState<boolean>,
   setSolved: SetState<boolean>,
 ): Promise<boolean> => {
-
   const isValid = (seen: boolean[][], cell: Point | null) => {
     if (
       cell.x < 0 ||
@@ -32,12 +31,18 @@ export const dijkstraAlgorithm = async (
     return true;
   };
 
-  const distances: number[][] = Array.from({ length: maze.length}, () => Array(maze[0].length).fill(Infinity))
-  const parents: Point[][] | null = Array.from({length: maze.length}, () => Array(maze[0].length).fill(null))
-  const priorityQueue = new PriorityQueue({ comparator: (a: QueuePoint, b: QueuePoint) => a.cost - b.cost})
+  const distances: number[][] = Array.from({ length: maze.length }, () =>
+    Array(maze[0].length).fill(Infinity),
+  );
+  const parents: Point[][] | null = Array.from({ length: maze.length }, () =>
+    Array(maze[0].length).fill(null),
+  );
+  const priorityQueue = new PriorityQueue({
+    comparator: (a: QueuePoint, b: QueuePoint) => a.cost - b.cost,
+  });
 
-  distances[start.x][start.y] = 0
-  priorityQueue.queue({x: start?.x, y: start?.y, cost: 0})
+  distances[start.x][start.y] = 0;
+  priorityQueue.queue({ x: start?.x, y: start?.y, cost: 0 });
   seen[start.x][start.y] = true;
   let currentMaze = maze;
 
@@ -47,34 +52,49 @@ export const dijkstraAlgorithm = async (
       return false;
     }
 
-    const currCell: QueuePoint = priorityQueue.dequeue()
-    currentMaze = updateMaze(currentMaze, parents[currCell.x][currCell.y], setMaze, 2);
-    currentMaze = updateMaze(currentMaze, {x: currCell.x, y: currCell.y}, setMaze, 4);
-    iterationRef.current += 1 
+    const currCell: QueuePoint = priorityQueue.dequeue();
+    currentMaze = updateMaze(
+      currentMaze,
+      parents[currCell.x][currCell.y],
+      setMaze,
+      2,
+    );
+    currentMaze = updateMaze(
+      currentMaze,
+      { x: currCell.x, y: currCell.y },
+      setMaze,
+      4,
+    );
+    iterationRef.current += 1;
     await new Promise((resolve) => setTimeout(resolve, delay));
 
     if (currCell.x === end?.x && currCell.y === end?.y) {
-      currentMaze = updateMaze(currentMaze, {x: currCell.x, y: currCell.y}, setMaze, 2);
+      currentMaze = updateMaze(
+        currentMaze,
+        { x: currCell.x, y: currCell.y },
+        setMaze,
+        2,
+      );
 
-      let cell: Point | null | undefined = {x: currCell.x, y: currCell.y}
+      let cell: Point | null | undefined = { x: currCell.x, y: currCell.y };
       while (cell) {
         if (!solvingRef.current) {
           console.log("Stopped solving");
           return false;
         }
 
-        path.unshift(cell)
+        path.unshift(cell);
         currentMaze = updateMaze(currentMaze, cell, setMaze, 4);
-        iterationRef.current += 1 
+        iterationRef.current += 1;
         await new Promise((resolve) => setTimeout(resolve, delay));
-        cell = parents[cell.x][cell.y]
+        cell = parents[cell.x][cell.y];
       }
 
-      resultRef.current = 'Solved'
+      resultRef.current = "Solved";
       setSolving(false);
       setSolved(true);
       console.log("Solved!");
-      return true
+      return true;
     }
     for (const direction of directions) {
       if (!solvingRef.current) {
@@ -82,20 +102,20 @@ export const dijkstraAlgorithm = async (
         return false;
       }
 
-      const newX = currCell.x + direction.x
-      const newY = currCell.y + direction.y
+      const newX = currCell.x + direction.x;
+      const newY = currCell.y + direction.y;
 
-      if (isValid(seen, {x: newX, y: newY})) {
+      if (isValid(seen, { x: newX, y: newY })) {
         if (solvingRef.current) {
-          const newCost = currCell.cost + 1
-  
+          const newCost = currCell.cost + 1;
+
           if (newCost < distances[newX][newY]) {
-            distances[newX][newY] = newCost
-            parents[newX][newY] = {x: currCell.x, y: currCell.y}
-            priorityQueue.queue({ x: newX, y: newY, cost: newCost})
+            distances[newX][newY] = newCost;
+            parents[newX][newY] = { x: currCell.x, y: currCell.y };
+            priorityQueue.queue({ x: newX, y: newY, cost: newCost });
             currentMaze = updateMaze(
               currentMaze,
-              {x: newX, y: newY},
+              { x: newX, y: newY },
               setMaze,
               3,
             );
@@ -109,12 +129,16 @@ export const dijkstraAlgorithm = async (
       console.log("Stopped solving");
       return false;
     }
-    currentMaze = updateMaze(currentMaze, {x: currCell.x, y: currCell.y}, setMaze, 2);
+    currentMaze = updateMaze(
+      currentMaze,
+      { x: currCell.x, y: currCell.y },
+      setMaze,
+      2,
+    );
   }
   console.log("Not solvable");
-  resultRef.current = 'Unsolvable'
-  setSolved(false)
+  resultRef.current = "Unsolvable";
+  setSolved(false);
   setSolving(false);
-  return false
+  return false;
 };
-
