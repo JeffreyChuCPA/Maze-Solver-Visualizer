@@ -9,13 +9,17 @@
 - About page with general algorithm info and additional resources. (WIP)
 
 ## User and Engineer stories
-User Story: As a User, I want to be able to select Wall Follower left or right algorithm
+DONE - User Story: As a User, I want to be able to select Wall Follower left or right algorithm
 1. Implement options for selecting left and right wall follower algorithm
 2. Implement the algorithm for both left and right wall follower algorithm
 
-User Story: As a User, I want to be able to select the hunt-and-kill maze generation algorithm
+DONE - User Story: As a User, I want to be able to select the hunt-and-kill maze generation algorithm
 1. Implement options for selecting hunt and kill maze generation algorithm
 2. Implement the algorithm for hunt and kill maze generation algorithm
+
+User Story: As a User, I want to be able to select the dead-end fill maze-solving algorithm
+1. Implement options for selecting dead-end fill maze-solving algorithm
+2. Implement the algorithm for dead-end fill maze-solving algorithm
 
 User Story: As a User, I want to be able to post my created maze
 1. Implement Post feature and button to make a POST request to the BE
