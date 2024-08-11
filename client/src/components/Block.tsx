@@ -10,6 +10,7 @@ import {
   switchBlockType,
 } from "../utilities/utilities";
 import { MazeContext } from "../MazeProvider";
+import { ColorContext, ColorContextType } from "../ColorProvider";
 
 type BlockProps = {
   blockType: number;
@@ -19,52 +20,45 @@ type BlockProps = {
 
 const Block: React.FC<BlockProps> = ({ blockType, rowIndex, colIndex }) => {
   const { currentPage } = useContext(PageContext);
-  const {
-    mazeSize,
-    setMaze,
-    pathColor,
-    wallColor,
-    walkedColor,
-    queuedColor,
-    shortPathColor,
-    highlightedRow,
-  } = useContext(MazeContext);
+  const { mazeSize, setMaze } = useContext(MazeContext);
+  const colorStates: ColorContextType = useContext(ColorContext);
   const cell: Point = { x: rowIndex, y: colIndex };
 
-  const blockTypeColor = (
-    blockType: number,
-    pathColor: string,
-    wallColor: string,
-    walkedColor: string,
-    queuedColor: string,
-    shortPathColor: string,
-  ) => {
+  const blockTypeColor = (blockType: number, colorStates: ColorContextType) => {
     switch (blockType) {
       case 0:
-        return pathColor;
+        return colorStates.pathColor;
       case 1:
-        return wallColor;
+        return colorStates.wallColor;
       case 2:
-        return walkedColor;
+        return colorStates.walkedColor;
       case 3:
-        return queuedColor;
+        return colorStates.queuedColor;
       case 4:
-        return shortPathColor;
+        return colorStates.shortPathColor;
       default:
         return "#000000";
     }
   };
 
+  let selectedBackgroundColor;
+
+  if (
+    cell.x === colorStates.highlightedRow?.x &&
+    cell.y === colorStates.highlightedRow?.y
+  ) {
+    selectedBackgroundColor = colorStates.shortPathColor;
+  } else if (cell.x === colorStates.highlightedRow?.x) {
+    selectedBackgroundColor = colorStates.queuedColor;
+  } else {
+    selectedBackgroundColor = `${blockTypeColor(blockType, colorStates)}`;
+  }
+
   const maze_block = {
     width: `${mazeSize}%`,
     aspectRatio: "1",
     border: "1px solid #ccc",
-    backgroundColor:
-      cell.x === highlightedRow?.x && cell.y === highlightedRow?.y
-        ? shortPathColor
-        : cell.x === highlightedRow?.x
-          ? queuedColor
-          : `${blockTypeColor(blockType, pathColor, wallColor, walkedColor, queuedColor, shortPathColor)}`,
+    backgroundColor: selectedBackgroundColor,
   };
 
   const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {

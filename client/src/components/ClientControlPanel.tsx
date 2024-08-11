@@ -6,6 +6,7 @@ import { solver } from "../utilities/solver";
 import { generate } from "../utilities/generate";
 import { PageContext } from "../PageProvider";
 import { MazeContext } from "../MazeProvider";
+import { ColorContext, ColorContextType } from "../ColorProvider";
 
 const ClientControlPanel = () => {
   const { currentPage } = useContext(PageContext);
@@ -19,25 +20,15 @@ const ClientControlPanel = () => {
     generatingAlgorithm,
     generatingRef,
     generating,
-    pathColor,
-    wallColor,
-    walkedColor,
-    queuedColor,
-    shortPathColor,
     setMazeSize,
     setAlgorithm,
     setGeneratingAlgorithm,
     setMaze,
     setSolving,
     setSolved,
-    setPathColor,
-    setWallColor,
-    setWalkedColor,
-    setQueuedColor,
-    setShortPathColor,
     setGenerating,
-    setHighlightedRow,
   } = useContext(MazeContext);
+  const colorStates: ColorContextType = useContext(ColorContext)
 
   const [visualize, setVisualize] = useState<boolean>(false);
   const [delay, setDelay] = useState<number>(0);
@@ -61,7 +52,7 @@ const ClientControlPanel = () => {
       generatingRef || { current: true },
       setMaze,
       setGenerating,
-      setHighlightedRow,
+      colorStates.setHighlightedRow,
     );
   };
 
@@ -197,40 +188,40 @@ const ClientControlPanel = () => {
               Path Color:{" "}
               <input
                 type="color"
-                value={pathColor}
-                onChange={(e) => setPathColor(e.target.value)}
+                value={colorStates.pathColor}
+                onChange={(e) => colorStates.setPathColor(e.target.value)}
               />
             </div>
             <div>
               Wall Color:{" "}
               <input
                 type="color"
-                value={wallColor}
-                onChange={(e) => setWallColor(e.target.value)}
+                value={colorStates.wallColor}
+                onChange={(e) => colorStates.setWallColor(e.target.value)}
               />
             </div>
             <div>
               Walked Color:{" "}
               <input
                 type="color"
-                value={walkedColor}
-                onChange={(e) => setWalkedColor(e.target.value)}
+                value={colorStates.walkedColor}
+                onChange={(e) => colorStates.setWalkedColor(e.target.value)}
               />
             </div>
             <div>
               Queued Color:{" "}
               <input
                 type="color"
-                value={queuedColor}
-                onChange={(e) => setQueuedColor(e.target.value)}
+                value={colorStates.queuedColor}
+                onChange={(e) => colorStates.setQueuedColor(e.target.value)}
               />
             </div>
             <div>
               Current Color:{" "}
               <input
                 type="color"
-                value={shortPathColor}
-                onChange={(e) => setShortPathColor(e.target.value)}
+                value={colorStates.shortPathColor}
+                onChange={(e) => colorStates.setShortPathColor(e.target.value)}
               />
             </div>
           </div>
@@ -298,40 +289,40 @@ const ClientControlPanel = () => {
               Path Color:{" "}
               <input
                 type="color"
-                value={pathColor}
-                onChange={(e) => setPathColor(e.target.value)}
+                value={colorStates.pathColor}
+                onChange={(e) => colorStates.setPathColor(e.target.value)}
               />
             </div>
             <div>
               Wall Color:{" "}
               <input
                 type="color"
-                value={wallColor}
-                onChange={(e) => setWallColor(e.target.value)}
+                value={colorStates.wallColor}
+                onChange={(e) => colorStates.setWallColor(e.target.value)}
               />
             </div>
             <div>
               Walked Color:{" "}
               <input
                 type="color"
-                value={walkedColor}
-                onChange={(e) => setWalkedColor(e.target.value)}
+                value={colorStates.walkedColor}
+                onChange={(e) => colorStates.setWalkedColor(e.target.value)}
               />
             </div>
             <div>
               Queued Color:{" "}
               <input
                 type="color"
-                value={queuedColor}
-                onChange={(e) => setQueuedColor(e.target.value)}
+                value={colorStates.queuedColor}
+                onChange={(e) => colorStates.setQueuedColor(e.target.value)}
               />
             </div>
             <div>
               Current Color:{" "}
               <input
                 type="color"
-                value={shortPathColor}
-                onChange={(e) => setShortPathColor(e.target.value)}
+                value={colorStates.shortPathColor}
+                onChange={(e) => colorStates.setShortPathColor(e.target.value)}
               />
             </div>
           </div>

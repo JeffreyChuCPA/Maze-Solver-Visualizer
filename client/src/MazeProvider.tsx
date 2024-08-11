@@ -27,18 +27,6 @@ interface MazeContextType {
   setSolving: SetState<boolean>;
   setSolved: SetState<boolean>;
   setGenerating?: SetState<boolean>;
-  pathColor: string;
-  setPathColor: SetState<string>;
-  wallColor: string;
-  setWallColor: SetState<string>;
-  walkedColor: string;
-  setWalkedColor: SetState<string>;
-  queuedColor: string;
-  setQueuedColor: SetState<string>;
-  shortPathColor: string;
-  setShortPathColor: SetState<string>;
-  highlightedRow: Point | null;
-  setHighlightedRow: SetState<Point | null>;
 }
 
 const MazeContext = createContext<MazeContextType>();
@@ -62,12 +50,6 @@ const MazeProvider: React.FC<MazeProviderProps> = ({ children }) => {
   const generatingRef = useRef<boolean>(false);
   const iterationRef = useRef<number>(0);
   const resultRef = useRef<string>("");
-  const [pathColor, setPathColor] = useState<string>("#FFFFFF");
-  const [wallColor, setWallColor] = useState<string>("#000000");
-  const [walkedColor, setWalkedColor] = useState<string>("#16dbe9");
-  const [queuedColor, setQueuedColor] = useState<string>("#1f666b");
-  const [shortPathColor, setShortPathColor] = useState<string>("#fdf90d");
-  const [highlightedRow, setHighlightedRow] = useState<number | null>(null);
 
   return (
     <MazeContext.Provider
@@ -90,18 +72,6 @@ const MazeProvider: React.FC<MazeProviderProps> = ({ children }) => {
         generatingRef,
         iterationRef,
         resultRef,
-        pathColor,
-        setPathColor,
-        wallColor,
-        setWallColor,
-        walkedColor,
-        setWalkedColor,
-        queuedColor,
-        setQueuedColor,
-        shortPathColor,
-        setShortPathColor,
-        highlightedRow,
-        setHighlightedRow,
       }}
     >
       {children}
