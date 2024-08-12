@@ -7,5 +7,7 @@
   margin: 0 auto;
   margin-bottom: 2%;
   max-width: 900px;
+  display: flex;
+  justify-content: space-between;
   /* background: drop-shadow(0 0 2em #61dafbaa); */
 }

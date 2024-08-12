@@ -1,18 +1,12 @@
-import React, {
-  createContext,
-  useState,
-  ReactNode,
-  useRef,
-  useContext,
-} from "react";
+import React, { createContext, useState, ReactNode, useRef } from "react";
 import {
   AlgorithmName,
   GeneratingAlgorithmName,
   Maze,
+  Point,
   SetState,
 } from "./utilities/types";
 import sampleMazes from "./utilities/sampleMazes";
-import { PageContext } from "./PageProvider";
 
 interface MazeContextType {
   mazeSize: number;
@@ -20,15 +14,15 @@ interface MazeContextType {
   solvingRef: React.MutableRefObject<boolean>;
   solving: boolean;
   solved: boolean;
-	iterationRef: React.MutableRefObject<number>;
-  resultRef: React.MutableRefObject<string>
+  iterationRef: React.MutableRefObject<number>;
+  resultRef: React.MutableRefObject<string>;
   algorithm: AlgorithmName;
   generatingAlgorithm?: GeneratingAlgorithmName;
   generatingRef?: React.MutableRefObject<boolean>;
-  generating?: boolean
+  generating?: boolean;
   setMazeSize: SetState<number>;
   setAlgorithm: SetState<AlgorithmName>;
-  setGeneratingAlgorithm?: SetState<GeneratingAlgorithmName>
+  setGeneratingAlgorithm?: SetState<GeneratingAlgorithmName>;
   setMaze: SetState<Maze>;
   setSolving: SetState<boolean>;
   setSolved: SetState<boolean>;
@@ -41,11 +35,7 @@ interface MazeProviderProps {
   children: ReactNode;
 }
 
-
-
-
 const MazeProvider: React.FC<MazeProviderProps> = ({ children }) => {
-
   const [mazeSize, setMazeSize] = useState<number>(30);
   const [algorithm, setAlgorithm] = useState<AlgorithmName>(
     "Depth First Search (DFS)",
@@ -63,8 +53,8 @@ const MazeProvider: React.FC<MazeProviderProps> = ({ children }) => {
 
   return (
     <MazeContext.Provider
-      value={
-        {mazeSize,
+      value={{
+        mazeSize,
         setMazeSize,
         algorithm,
         setAlgorithm,
@@ -81,13 +71,12 @@ const MazeProvider: React.FC<MazeProviderProps> = ({ children }) => {
         solvingRef,
         generatingRef,
         iterationRef,
-        resultRef
-      }
-      }
+        resultRef,
+      }}
     >
       {children}
     </MazeContext.Provider>
   );
 };
 
-export {MazeContext, MazeProvider};
+export { MazeContext, MazeProvider };

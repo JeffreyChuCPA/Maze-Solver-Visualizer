@@ -9,24 +9,5 @@
 .maze__row {
   display: flex;
   border: 1px solid white;
-}
-
-.maze__wall {
-  background-color: black; /* Color for walls (1) */
-}
-
-.maze__path {
-  background-color: white; /* Color for paths (0) */
-}
-
-.maze__walked {
-  background-color: var(--first-color); /* Color for paths (0) */
-}
-
-.maze__queued {
-  background-color: var(--second-color); /* Color for paths (0) */
-}
-
-.maze__shortpath {
-  background-color: var(--third-color); /* Color for paths (0) */
+  z-index: 5;
 }

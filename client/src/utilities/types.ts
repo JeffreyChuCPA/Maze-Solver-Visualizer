@@ -13,15 +13,15 @@ export type ClientControlPanelProps = {
   mazeSize: number;
   maze: Maze;
   solvingRef: React.MutableRefObject<boolean>;
-	iterationRef: React.MutableRefObject<number>;
-  resultRef: React.MutableRefObject<string>
+  iterationRef: React.MutableRefObject<number>;
+  resultRef: React.MutableRefObject<string>;
   algorithm: AlgorithmName;
   generatingAlgorithm?: GeneratingAlgorithmName;
   generatingRef?: React.MutableRefObject<boolean>;
-  generating?: boolean
+  generating?: boolean;
   setMazeSize: SetState<number>;
   setAlgorithm: SetState<AlgorithmName>;
-  setGeneratingAlgorithm?: SetState<GeneratingAlgorithmName>
+  setGeneratingAlgorithm?: SetState<GeneratingAlgorithmName>;
   setMaze: SetState<Maze>;
   setSolving: SetState<boolean>;
   setSolved: SetState<boolean>;
@@ -36,7 +36,7 @@ export type BoardProps = {
 
 export type DataDisplayProps = {
   iterationRef: React.MutableRefObject<number>;
-  resultRef: React.MutableRefObject<string>
+  resultRef: React.MutableRefObject<string>;
 };
 
 export type MazeProps = {
@@ -53,5 +53,5 @@ export type Point = {
 export type QueuePoint = {
   x: number;
   y: number;
-  cost: number
+  cost: number;
 };

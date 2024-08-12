@@ -1,19 +1,19 @@
 import { generateMazeAlgorithms } from "./objects";
-import { GeneratingAlgorithmName, Maze, SetState } from "./types";
+import { GeneratingAlgorithmName, Maze, Point, SetState } from "./types";
 import { generateBaseMaze } from "./utilities";
 
 export const generate = (
   mazeSize: number,
-  generatingAlgorithm:  GeneratingAlgorithmName,
+  generatingAlgorithm: GeneratingAlgorithmName,
   delay: number,
   iterationRef: React.MutableRefObject<number>,
   resultRef: React.MutableRefObject<string>,
   generatingRef: React.MutableRefObject<boolean>,
   setMaze: SetState<Maze>,
   setGenerating: SetState<boolean>,
+  setHighlightedRow: SetState<Point | null>,
 ): Maze => {
-
-  const baseMaze = generateBaseMaze(mazeSize, setMaze)
+  const baseMaze = generateBaseMaze(mazeSize, setMaze);
 
   const algorithmFunction = generateMazeAlgorithms[generatingAlgorithm];
   if (algorithmFunction) {
@@ -25,11 +25,11 @@ export const generate = (
       generatingRef,
       setMaze,
       setGenerating,
-    )
-  }
-	else {
+      setHighlightedRow,
+    );
+  } else {
     console.error(`Algorithm ${generatingAlgorithm} not found.`);
   }
 
-  return baseMaze
-}
+  return baseMaze;
+};

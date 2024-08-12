@@ -1,15 +1,22 @@
 import { useContext, useState } from "react";
 import "../styling/ClientControlPanel.css";
 import { algorithms, generateMazeAlgorithms } from "../utilities/objects";
-import { generateBaseBuildMaze, resetMaze } from "../utilities/utilities";
+import {
+  delayCalculation,
+  delayPercentage,
+  generateBaseBuildMaze,
+  resetMaze,
+} from "../utilities/utilities";
 import { solver } from "../utilities/solver";
 import { generate } from "../utilities/generate";
 import { PageContext } from "../PageProvider";
 import { MazeContext } from "../MazeProvider";
+import { ColorContext, ColorContextType } from "../ColorProvider";
 
 const ClientControlPanel = () => {
   const { currentPage } = useContext(PageContext);
-  const {mazeSize,
+  const {
+    mazeSize,
     maze,
     solvingRef,
     iterationRef,
@@ -24,9 +31,12 @@ const ClientControlPanel = () => {
     setMaze,
     setSolving,
     setSolved,
-    setGenerating} = useContext(MazeContext)
+    setGenerating,
+  } = useContext(MazeContext);
+  const colorStates: ColorContextType = useContext(ColorContext);
 
   const [visualize, setVisualize] = useState<boolean>(false);
+  const [delay, setDelay] = useState<number>(0);
 
   const generateMaze = () => {
     solvingRef.current = false;
@@ -41,12 +51,13 @@ const ClientControlPanel = () => {
     generate(
       mazeSize,
       generatingAlgorithm ?? "Recursive Backtracking",
-      0,
+      delay,
       iterationRef,
       resultRef,
       generatingRef || { current: true },
       setMaze,
       setGenerating,
+      colorStates.setHighlightedRow,
     );
   };
 
@@ -61,7 +72,7 @@ const ClientControlPanel = () => {
     solver(
       maze,
       algorithm,
-      0,
+      delay,
       solvingRef,
       iterationRef,
       resultRef,
@@ -85,123 +96,236 @@ const ClientControlPanel = () => {
   };
 
   const clearBuildBoard = () => {
-    setMaze(generateBaseBuildMaze(mazeSize))
-  }
+    setMaze(generateBaseBuildMaze(mazeSize));
+  };
 
   return (
     <>
       {currentPage === "Home" && (
         <div className="clientcontrolpanel__card">
           <div>
-            Grid size:{" "}
+            <div>
+              Grid size:{" "}
+              <input
+                id="mazeSize"
+                name="mazeSize"
+                type="number"
+                min="10"
+                max="50"
+                value={mazeSize}
+                onChange={(e): void => setMazeSize(Number(e.target.value))}
+              />
+            </div>
+            <div>
+              Solving Algorithm:{" "}
+              <select
+                name="algorithm"
+                id="algorithm"
+                value={algorithm}
+                onChange={(e): void => {
+                  setAlgorithm(e.target.value as keyof typeof algorithms);
+                  clearMaze();
+                }}
+              >
+                {Object.keys(algorithms).map((key) => (
+                  <option id={key} key={key} value={key}>
+                    {key}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div>
+              Generating Algorithm:{" "}
+              <select
+                name="generatingAlgorithm"
+                id="generatingAlgorithm"
+                value={generatingAlgorithm}
+                onChange={(e): void => {
+                  if (setGeneratingAlgorithm)
+                    setGeneratingAlgorithm(
+                      e.target.value as keyof typeof generateMazeAlgorithms,
+                    );
+                  clearMaze();
+                }}
+              >
+                {Object.keys(generateMazeAlgorithms).map((key) => (
+                  <option id={key} key={key} value={key}>
+                    {key}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {!generating ? (
+              <button onClick={generateMaze}>Generate Maze</button>
+            ) : (
+              <>
+                <button onClick={clearMaze}>Stop</button>
+              </>
+            )}
+            {!visualize ? (
+              <button onClick={startSolving}>Visualize Solver</button>
+            ) : (
+              <>
+                <button onClick={clearMaze}>Reset</button>
+              </>
+            )}
             <input
-              id="mazeSize"
-              name="mazeSize"
-              type="number"
-              min="10"
-              max="50"
-              value={mazeSize}
-              onChange={(e): void => setMazeSize(Number(e.target.value))}
+              type="range"
+              min={10}
+              max={100}
+              step={10}
+              onChange={(e) =>
+                setDelay(delayCalculation(parseFloat(e.target.value)))
+              }
+              value={delayPercentage(delay)}
             />
+            <div>Speed: {delayPercentage(delay)}%</div>
+            <div>Number of Iterations: {iterationRef.current}</div>
+            <div>Result: {resultRef.current}</div>
           </div>
           <div>
-            Solving Algorithm:{" "}
-            <select
-              name="algorithm"
-              id="algorithm"
-              onChange={(e): void => {
-                setAlgorithm(e.target.value as keyof typeof algorithms);
-                clearMaze();
-              }}
-            >
-              {Object.keys(algorithms).map((key) => (
-                <option id={key} key={key} value={key}>
-                  {key}
-                </option>
-              ))}
-            </select>
+            <div>
+              Path Color:{" "}
+              <input
+                type="color"
+                value={colorStates.pathColor}
+                onChange={(e) => colorStates.setPathColor(e.target.value)}
+              />
+            </div>
+            <div>
+              Wall Color:{" "}
+              <input
+                type="color"
+                value={colorStates.wallColor}
+                onChange={(e) => colorStates.setWallColor(e.target.value)}
+              />
+            </div>
+            <div>
+              Walked Color:{" "}
+              <input
+                type="color"
+                value={colorStates.walkedColor}
+                onChange={(e) => colorStates.setWalkedColor(e.target.value)}
+              />
+            </div>
+            <div>
+              Queued Color:{" "}
+              <input
+                type="color"
+                value={colorStates.queuedColor}
+                onChange={(e) => colorStates.setQueuedColor(e.target.value)}
+              />
+            </div>
+            <div>
+              Current Color:{" "}
+              <input
+                type="color"
+                value={colorStates.shortPathColor}
+                onChange={(e) => colorStates.setShortPathColor(e.target.value)}
+              />
+            </div>
           </div>
-          <div>
-            Generating Algorithm:{" "}
-            <select
-              name="generatingAlgorithm"
-              id="generatingAlgorithm"
-              onChange={(e): void => {
-                if (setGeneratingAlgorithm)
-                  setGeneratingAlgorithm(
-                    e.target.value as keyof typeof generateMazeAlgorithms,
-                  );
-                clearMaze();
-              }}
-            >
-              {Object.keys(generateMazeAlgorithms).map((key) => (
-                <option id={key} key={key} value={key}>
-                  {key}
-                </option>
-              ))}
-            </select>
-          </div>
-          {!generating ? (
-            <button onClick={generateMaze}>Generate Maze</button>
-          ) : (
-            <>
-              <button onClick={clearMaze}>Stop</button>
-            </>
-          )}
-          {!visualize ? (
-            <button onClick={startSolving}>Visualize Solver</button>
-          ) : (
-            <>
-              <button onClick={clearMaze}>Reset</button>
-            </>
-          )}
-          <div>Number of Iterations: {iterationRef.current}</div>
-          <div>Result: {resultRef.current}</div>
         </div>
       )}{" "}
       {currentPage === "build-board" && (
         <div className="clientcontrolpanel__card">
           <div>
-            Grid size:{" "}
+            <div>
+              Grid size:{" "}
+              <input
+                id="mazeSize"
+                name="mazeSize"
+                type="number"
+                min="10"
+                max="50"
+                value={mazeSize}
+                onChange={(e): void => {
+                  setMazeSize(Number(e.target.value));
+                }}
+              />
+            </div>
+            <div>
+              Solving Algorithm:{" "}
+              <select
+                name="algorithm"
+                id="algorithm"
+                value={algorithm}
+                onChange={(e): void => {
+                  setAlgorithm(e.target.value as keyof typeof algorithms);
+                  clearMaze();
+                }}
+              >
+                {Object.keys(algorithms).map((key) => (
+                  <option id={key} key={key} value={key}>
+                    {key}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <button onClick={clearBuildBoard}>Clear Board</button>
+            {!visualize ? (
+              <button onClick={startSolving}>Visualize Solver</button>
+            ) : (
+              <>
+                <button onClick={clearMaze}>Reset</button>
+              </>
+            )}
             <input
-              id="mazeSize"
-              name="mazeSize"
-              type="number"
-              min="10"
-              max="50"
-              value={mazeSize}
-              onChange={(e): void => {
-                setMazeSize(Number(e.target.value))
-              }}
+              type="range"
+              min={10}
+              max={100}
+              step={10}
+              onChange={(e) =>
+                setDelay(delayCalculation(parseFloat(e.target.value)))
+              }
+              value={delayPercentage(delay)}
             />
+            <div>Speed: {delayPercentage(delay)}%</div>
+            <div>Number of Iterations: {iterationRef.current}</div>
+            <div>Result: {resultRef.current}</div>
           </div>
           <div>
-            Solving Algorithm:{" "}
-            <select
-              name="algorithm"
-              id="algorithm"
-              onChange={(e): void => {
-                setAlgorithm(e.target.value as keyof typeof algorithms);
-                clearMaze();
-              }}
-            >
-              {Object.keys(algorithms).map((key) => (
-                <option id={key} key={key} value={key}>
-                  {key}
-                </option>
-              ))}
-            </select>
+            <div>
+              Path Color:{" "}
+              <input
+                type="color"
+                value={colorStates.pathColor}
+                onChange={(e) => colorStates.setPathColor(e.target.value)}
+              />
+            </div>
+            <div>
+              Wall Color:{" "}
+              <input
+                type="color"
+                value={colorStates.wallColor}
+                onChange={(e) => colorStates.setWallColor(e.target.value)}
+              />
+            </div>
+            <div>
+              Walked Color:{" "}
+              <input
+                type="color"
+                value={colorStates.walkedColor}
+                onChange={(e) => colorStates.setWalkedColor(e.target.value)}
+              />
+            </div>
+            <div>
+              Queued Color:{" "}
+              <input
+                type="color"
+                value={colorStates.queuedColor}
+                onChange={(e) => colorStates.setQueuedColor(e.target.value)}
+              />
+            </div>
+            <div>
+              Current Color:{" "}
+              <input
+                type="color"
+                value={colorStates.shortPathColor}
+                onChange={(e) => colorStates.setShortPathColor(e.target.value)}
+              />
+            </div>
           </div>
-          <button onClick={clearBuildBoard}>Clear Board</button>
-          {!visualize ? (
-            <button onClick={startSolving}>Visualize Solver</button>
-          ) : (
-            <>
-              <button onClick={clearMaze}>Reset</button>
-            </>
-          )}
-          <div>Number of Iterations: {iterationRef.current}</div>
-          <div>Result: {resultRef.current}</div>
         </div>
       )}
     </>

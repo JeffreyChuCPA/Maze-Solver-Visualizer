@@ -11,19 +11,18 @@ export const solver = (
   resultRef: React.MutableRefObject<string>,
   setMaze: SetState<Maze>,
   setSolving: SetState<boolean>,
-	setSolved: SetState<boolean>,
+  setSolved: SetState<boolean>,
 ): Point[] | void => {
-
   const seen: boolean[][] = [];
   const path: Point[] = [];
 
   const start = findStartPoint(maze);
   const end = findEndPoint(maze);
 
-  if (start.x === 0 && start.y === 0 || end.x === 0 && end.y === 0) {
-    console.log('No valid start or endpoint');
-    resultRef.current = 'No valid start or endpoint'
-    return 
+  if ((start.x === 0 && start.y === 0) || (end.x === 0 && end.y === 0)) {
+    console.log("No valid start or endpoint");
+    resultRef.current = "No valid start or endpoint";
+    return;
   }
 
   for (let i = 0; i < maze.length; i++) {
@@ -46,10 +45,9 @@ export const solver = (
       resultRef,
       setMaze,
       setSolving,
-			setSolved,
-    )
-  }
-	else {
+      setSolved,
+    );
+  } else {
     console.error(`Algorithm ${algorithmName} not found.`);
   }
 

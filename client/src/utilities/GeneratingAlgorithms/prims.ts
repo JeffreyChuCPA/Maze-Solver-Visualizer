@@ -57,28 +57,24 @@ export const prims = async (
 
   shuffleDirections(directions);
   for (const direction of directions) {
-    const frontier = {x: start.x + direction.x, y: start.y + direction.y}
-    if (
-      isValid(currentMaze, frontier)
-    ) {
+    const frontier = { x: start.x + direction.x, y: start.y + direction.y };
+    if (isValid(currentMaze, frontier)) {
       frontierCells.push({
-        point: frontier ,
-        parent: start
+        point: frontier,
+        parent: start,
       });
     }
   }
 
   while (frontierCells.length > 0) {
-    // console.log(frontierCells.length);
-    // console.log(frontierCells);
-
     if (!generatingRef.current) {
       console.log("Stopped generating");
       return false;
     }
 
     //pick random frontier cell from list
-    const randomFrontierCell: { point: Point, parent: Point} = frontierCells[Math.floor(Math.random() * frontierCells.length)];
+    const randomFrontierCell: { point: Point; parent: Point } =
+      frontierCells[Math.floor(Math.random() * frontierCells.length)];
 
     //Set the cell inbetween to a path
     if (
@@ -109,7 +105,7 @@ export const prims = async (
         const frontier = {
           x: randomFrontierCell.point.x + direction.x,
           y: randomFrontierCell.point.y + direction.y,
-        }
+        };
         if (
           isValid(currentMaze, frontier) &&
           !inFrontierCellsList(frontierCells, frontier)
@@ -118,14 +114,12 @@ export const prims = async (
             point: frontier,
             parent: randomFrontierCell.point,
           });
-          // console.log(`pushed: x: ${randomFrontierCell.point.x + direction.x}, y: ${randomFrontierCell.point.y + direction.y}}`);
         }
       }
 
       //remove chosen frontier cell from the list
       const removeIndex = frontierCells.indexOf(randomFrontierCell);
       frontierCells.splice(removeIndex, 1);
-      // console.log(`removed: x: ${removedPoint[0].point.x}, y: ${removedPoint[0].point.y}`);
     }
   }
 

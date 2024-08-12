@@ -17,7 +17,6 @@ export const bfs = async (
   setSolving: SetState<boolean>,
   setSolved: SetState<boolean>,
 ): Promise<boolean> => {
-  
   const isValid = (seen: boolean[][], cell: Point | null) => {
     if (
       cell.x < 0 ||
@@ -31,9 +30,9 @@ export const bfs = async (
     return true;
   };
 
-  const queue: Point[] = []
-  queue.push(curr); 
-  const parentCells: { [key: string]: Point | null | undefined} = {}
+  const queue: Point[] = [];
+  queue.push(curr);
+  const parentCells: { [key: string]: Point | null | undefined } = {};
   parentCells[`${curr.x},${curr.y}`] = null;
   seen[curr.x][curr.y] = true;
   let currentMaze = maze;
@@ -46,29 +45,34 @@ export const bfs = async (
     }
 
     const currCell = queue.shift();
-    currentMaze = updateMaze(currentMaze, parentCells[`${currCell?.x},${currCell?.y}`] as Point, setMaze, 2);
+    currentMaze = updateMaze(
+      currentMaze,
+      parentCells[`${currCell?.x},${currCell?.y}`] as Point,
+      setMaze,
+      2,
+    );
     currentMaze = updateMaze(currentMaze, currCell, setMaze, 4);
-    iterationRef.current += 1 
+    iterationRef.current += 1;
     await new Promise((resolve) => setTimeout(resolve, delay));
 
     if (currCell?.x === end.x && currCell?.y === end.y) {
       currentMaze = updateMaze(currentMaze, currCell, setMaze, 2);
 
-      let cell: Point | null | undefined = currCell
+      let cell: Point | null | undefined = currCell;
       while (cell) {
         if (!solvingRef.current) {
           console.log("Stopped solving");
           return false;
         }
 
-        path.unshift(cell)
+        path.unshift(cell);
         currentMaze = updateMaze(currentMaze, cell, setMaze, 4);
-        iterationRef.current += 1 
+        iterationRef.current += 1;
         await new Promise((resolve) => setTimeout(resolve, delay));
-        cell = parentCells[`${cell.x},${cell.y}`]
+        cell = parentCells[`${cell.x},${cell.y}`];
       }
 
-      resultRef.current = 'Solved'
+      resultRef.current = "Solved";
       setSolving(false);
       setSolved(true);
       console.log("Solved!");
@@ -84,18 +88,13 @@ export const bfs = async (
 
       const newX = currCell?.x + direction.x;
       const newY = currCell?.y + direction.y;
-      const newPoint: Point = { x: newX, y: newY }
+      const newPoint: Point = { x: newX, y: newY };
 
       if (isValid(seen, newPoint)) {
         if (solvingRef.current) {
           queue.push(newPoint);
           parentCells[`${newPoint.x},${newPoint.y}`] = currCell;
-          currentMaze = updateMaze(
-            currentMaze,
-            newPoint,
-            setMaze,
-            3,
-          );
+          currentMaze = updateMaze(currentMaze, newPoint, setMaze, 3);
           seen[newX][newY] = true;
           await new Promise((resolve) => setTimeout(resolve, delay));
         }
@@ -109,8 +108,8 @@ export const bfs = async (
   }
 
   console.log("Not solvable");
-  resultRef.current = 'Unsolvable'
-  setSolved(false)
+  resultRef.current = "Unsolvable";
+  setSolved(false);
   setSolving(false);
   return false;
 };

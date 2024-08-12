@@ -7,23 +7,22 @@ import sampleMazes from "../utilities/sampleMazes";
 import FetchedBoards from "../components/FetchedBoards";
 
 const Home = () => {
-  const {currentPage} = useContext(PageContext)
-  const {setMaze, iterationRef, resultRef} = useContext(MazeContext)
+  const { currentPage } = useContext(PageContext);
+  const { setMaze, iterationRef, resultRef } = useContext(MazeContext);
 
-  
   useEffect(() => {
     if (currentPage === "Home") {
-      setMaze(sampleMazes.mazeSample10_2)
-      iterationRef.current = 0
-      resultRef.current = ''
-      }
-  }, [setMaze, currentPage, iterationRef, resultRef])  
-  
+      setMaze(sampleMazes.mazeSample10_2);
+      iterationRef.current = 0;
+      resultRef.current = "";
+    }
+  }, [setMaze, currentPage, iterationRef, resultRef]);
+
   return (
     <>
-      <ClientControlPanel/>
-      <Board/>
-      <FetchedBoards/> 
+      <ClientControlPanel />
+      <Board />
+      <FetchedBoards />
     </>
   );
 };

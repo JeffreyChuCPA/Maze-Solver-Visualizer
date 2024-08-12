@@ -1,5 +1,5 @@
 import { Maze, Point, QueuePoint, SetState } from "../types";
-import PriorityQueue from 'js-priority-queue'
+import PriorityQueue from "js-priority-queue";
 import { updateMaze } from "../utilities";
 import { directions } from "../objects";
 
@@ -16,18 +16,17 @@ export const greedyBestFirstSearch = async (
   resultRef: React.MutableRefObject<string>,
   setMaze: SetState<Maze>,
   setSolving: SetState<boolean>,
-	setSolved: SetState<boolean>,
+  setSolved: SetState<boolean>,
 ): Promise<boolean> => {
-
   if (!curr || !start || !end) {
-    console.log('Provided points are not usable');
-    return false
+    console.log("Provided points are not usable");
+    return false;
   }
 
   //calc distance between 2 points via Manhattan Distance
-  const heuristic = (a: Point | null , b: Point | null ): number => {
-    return Math.abs(a.x - b.x) + Math.abs(a.y - b.y)
-  }
+  const heuristic = (a: Point | null, b: Point | null): number => {
+    return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
+  };
 
   const isValid = (seen: boolean[][], cell: Point | null) => {
     if (
@@ -42,49 +41,71 @@ export const greedyBestFirstSearch = async (
     return true;
   };
 
-  const priorityQueue = new PriorityQueue({ comparator: (a: QueuePoint, b: QueuePoint) => a.cost - b.cost})
-  const parents: Point[][] | null = Array.from({length: maze.length}, () => Array(maze[0].length).fill(null))
-  
-  priorityQueue.queue({x: start?.x, y: start?.y, cost: heuristic(start, end)})
+  const priorityQueue = new PriorityQueue({
+    comparator: (a: QueuePoint, b: QueuePoint) => a.cost - b.cost,
+  });
+  const parents: Point[][] | null = Array.from({ length: maze.length }, () =>
+    Array(maze[0].length).fill(null),
+  );
+
+  priorityQueue.queue({
+    x: start?.x,
+    y: start?.y,
+    cost: heuristic(start, end),
+  });
   seen[start.x][start.y] = true;
   let currentMaze = maze;
-
 
   while (priorityQueue.length > 0) {
     if (!solvingRef.current) {
       console.log("Stopped solving");
       return false;
     }
-    
-    const currCell: QueuePoint = priorityQueue.dequeue()
-    currentMaze = updateMaze(currentMaze, parents[currCell.x][currCell.y] as Point, setMaze, 2);
-    currentMaze = updateMaze(currentMaze, {x: currCell.x, y: currCell.y}, setMaze, 4);
-    iterationRef.current += 1 
+
+    const currCell: QueuePoint = priorityQueue.dequeue();
+    currentMaze = updateMaze(
+      currentMaze,
+      parents[currCell.x][currCell.y] as Point,
+      setMaze,
+      2,
+    );
+    currentMaze = updateMaze(
+      currentMaze,
+      { x: currCell.x, y: currCell.y },
+      setMaze,
+      4,
+    );
+    iterationRef.current += 1;
     await new Promise((resolve) => setTimeout(resolve, delay));
-    if (!currCell) break
+    if (!currCell) break;
 
     if (currCell.x === end?.x && currCell.y === end?.y) {
-      currentMaze = updateMaze(currentMaze, {x: currCell.x, y: currCell.y}, setMaze, 2);
+      currentMaze = updateMaze(
+        currentMaze,
+        { x: currCell.x, y: currCell.y },
+        setMaze,
+        2,
+      );
 
-      let cell: Point | null | undefined = {x: currCell.x, y: currCell.y}
+      let cell: Point | null | undefined = { x: currCell.x, y: currCell.y };
       while (cell) {
         if (!solvingRef.current) {
           console.log("Stopped solving");
           return false;
         }
 
-        path.unshift(cell)
+        path.unshift(cell);
         currentMaze = updateMaze(currentMaze, cell, setMaze, 4);
-        iterationRef.current += 1 
+        iterationRef.current += 1;
         await new Promise((resolve) => setTimeout(resolve, delay));
-        cell = parents[cell.x][cell.y]
+        cell = parents[cell.x][cell.y];
       }
 
-      resultRef.current = 'Solved'
+      resultRef.current = "Solved";
       setSolving(false);
       setSolved(true);
       console.log("Solved!");
-      return true
+      return true;
     }
 
     for (const direction of directions) {
@@ -92,18 +113,21 @@ export const greedyBestFirstSearch = async (
         console.log("Stopped solving");
         return false;
       }
-      
-      const newX = currCell.x + direction.x
-      const newY = currCell.y + direction.y
-    
-      if (isValid(seen, {x: newX, y: newY})) {
+
+      const newX = currCell.x + direction.x;
+      const newY = currCell.y + direction.y;
+
+      if (isValid(seen, { x: newX, y: newY })) {
         if (solvingRef.current) {
-  
-          parents[newX][newY] = {x: currCell.x, y: currCell.y}
-          priorityQueue.queue({ x: newX, y: newY, cost: heuristic({x: newX, y: newY}, end)})
+          parents[newX][newY] = { x: currCell.x, y: currCell.y };
+          priorityQueue.queue({
+            x: newX,
+            y: newY,
+            cost: heuristic({ x: newX, y: newY }, end),
+          });
           currentMaze = updateMaze(
             currentMaze,
-            {x: newX, y: newY},
+            { x: newX, y: newY },
             setMaze,
             3,
           );
@@ -116,11 +140,16 @@ export const greedyBestFirstSearch = async (
       console.log("Stopped solving");
       return false;
     }
-    currentMaze = updateMaze(currentMaze, {x: currCell.x, y: currCell.y}, setMaze, 2);
+    currentMaze = updateMaze(
+      currentMaze,
+      { x: currCell.x, y: currCell.y },
+      setMaze,
+      2,
+    );
   }
   console.log("Not solvable");
-  resultRef.current = 'Unsolvable'
-  setSolved(false)
+  resultRef.current = "Unsolvable";
+  setSolved(false);
   setSolving(false);
-  return false
-}
+  return false;
+};
