@@ -19,8 +19,6 @@ export const recursiveBacktracking = async (
     generateStartPoint(baseMaze, setMaze, false),
   );
 
-  console.log(generatingRef);
-
   const directions: Point[] = [
     { x: 0, y: 2 },
     { x: 2, y: 0 },
@@ -77,7 +75,7 @@ export const recursiveBacktracking = async (
     console.log("Done Generating");
     return true;
   }
-  resultRef.current = "Generation Unsuccessful";
+
   setGenerating(false);
   console.log("Done Generating");
   return false;

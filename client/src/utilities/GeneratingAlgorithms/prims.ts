@@ -67,9 +67,6 @@ export const prims = async (
   }
 
   while (frontierCells.length > 0) {
-    // console.log(frontierCells.length);
-    // console.log(frontierCells);
-
     if (!generatingRef.current) {
       console.log("Stopped generating");
       return false;
@@ -117,14 +114,12 @@ export const prims = async (
             point: frontier,
             parent: randomFrontierCell.point,
           });
-          // console.log(`pushed: x: ${randomFrontierCell.point.x + direction.x}, y: ${randomFrontierCell.point.y + direction.y}}`);
         }
       }
 
       //remove chosen frontier cell from the list
       const removeIndex = frontierCells.indexOf(randomFrontierCell);
       frontierCells.splice(removeIndex, 1);
-      // console.log(`removed: x: ${removedPoint[0].point.x}, y: ${removedPoint[0].point.y}`);
     }
   }
 

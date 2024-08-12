@@ -270,3 +270,12 @@ export const generateBaseBuildMaze = (mazeSize: number): number[][] => {
   }
   return baseMaze;
 };
+
+//*calculate delay value
+export const delayCalculation = (delay: number): number => {
+  return (-60 / 9) * delay + 6000 / 9;
+};
+
+export const delayPercentage = (delay: number): number => {
+  return Math.round(((delay - 6000 / 9) * 9) / -60);
+};

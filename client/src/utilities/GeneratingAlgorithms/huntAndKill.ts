@@ -219,11 +219,13 @@ export const huntAndKill = async (
     }
   }
 
-  generateEndPoint(baseMaze, setMaze);
-  resultRef.current = "Maze Generated";
-  setGenerating(false);
-  setMaze(currentMaze);
-  console.log("Maze Generation Completed!");
+  if (generatingRef.current) {
+    generateEndPoint(baseMaze, setMaze);
+    resultRef.current = "Maze Generated";
+    setGenerating(false);
+    setMaze(currentMaze);
+    console.log("Maze Generation Completed!");
+  }
 
   return true;
 };

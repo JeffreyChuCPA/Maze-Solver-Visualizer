@@ -1,7 +1,12 @@
 import { useContext, useState } from "react";
 import "../styling/ClientControlPanel.css";
 import { algorithms, generateMazeAlgorithms } from "../utilities/objects";
-import { generateBaseBuildMaze, resetMaze } from "../utilities/utilities";
+import {
+  delayCalculation,
+  delayPercentage,
+  generateBaseBuildMaze,
+  resetMaze,
+} from "../utilities/utilities";
 import { solver } from "../utilities/solver";
 import { generate } from "../utilities/generate";
 import { PageContext } from "../PageProvider";
@@ -28,7 +33,7 @@ const ClientControlPanel = () => {
     setSolved,
     setGenerating,
   } = useContext(MazeContext);
-  const colorStates: ColorContextType = useContext(ColorContext)
+  const colorStates: ColorContextType = useContext(ColorContext);
 
   const [visualize, setVisualize] = useState<boolean>(false);
   const [delay, setDelay] = useState<number>(0);
@@ -88,15 +93,10 @@ const ClientControlPanel = () => {
     if (setGenerating) setGenerating(false);
     resetMaze(maze, setMaze, 0);
     console.log("Reset");
-    console.log(generatingRef?.current);
   };
 
   const clearBuildBoard = () => {
     setMaze(generateBaseBuildMaze(mazeSize));
-  };
-
-  const delayCalculation = (delay: number): number => {
-    return (-60 / 9) * delay + 6000 / 9;
   };
 
   return (
@@ -177,9 +177,9 @@ const ClientControlPanel = () => {
               onChange={(e) =>
                 setDelay(delayCalculation(parseFloat(e.target.value)))
               }
-              value={Math.round(((delay - 6000 / 9) * 9) / -60)}
+              value={delayPercentage(delay)}
             />
-            <div>Speed: {Math.round(((delay - 6000 / 9) * 9) / -60)}%</div>
+            <div>Speed: {delayPercentage(delay)}%</div>
             <div>Number of Iterations: {iterationRef.current}</div>
             <div>Result: {resultRef.current}</div>
           </div>
@@ -278,9 +278,9 @@ const ClientControlPanel = () => {
               onChange={(e) =>
                 setDelay(delayCalculation(parseFloat(e.target.value)))
               }
-              value={Math.round(((delay - 6000 / 9) * 9) / -60)}
+              value={delayPercentage(delay)}
             />
-            <div>Speed: {Math.round(((delay - 6000 / 9) * 9) / -60)}%</div>
+            <div>Speed: {delayPercentage(delay)}%</div>
             <div>Number of Iterations: {iterationRef.current}</div>
             <div>Result: {resultRef.current}</div>
           </div>

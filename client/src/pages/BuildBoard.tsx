@@ -1,6 +1,5 @@
-import React, { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { useContext, useEffect } from "react";
 import { PageContext } from "../PageProvider";
-import { AlgorithmName, Maze } from "../utilities/types";
 import ClientControlPanel from "../components/ClientControlPanel";
 import Board from "../components/Board";
 import { generateBaseBuildMaze } from "../utilities/utilities";

@@ -130,8 +130,6 @@ export const kruskals = async (
     resultRef.current = "Generation Successful";
     setGenerating(false);
     console.log("Done Generating");
-    // disjointSet.printParents()
-    // disjointSet.printRanks()
     return true;
   }
   resultRef.current = "Generation Unsuccessful";
