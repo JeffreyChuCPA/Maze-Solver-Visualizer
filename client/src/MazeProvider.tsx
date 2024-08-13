@@ -16,6 +16,7 @@ interface MazeContextType {
   solved: boolean;
   iterationRef: React.MutableRefObject<number>;
   resultRef: React.MutableRefObject<string>;
+  imageRef: React.MutableRefObject<HTMLInputElement | null>;
   algorithm: AlgorithmName;
   generatingAlgorithm?: GeneratingAlgorithmName;
   generatingRef?: React.MutableRefObject<boolean>;
@@ -50,6 +51,7 @@ const MazeProvider: React.FC<MazeProviderProps> = ({ children }) => {
   const generatingRef = useRef<boolean>(false);
   const iterationRef = useRef<number>(0);
   const resultRef = useRef<string>("");
+  const imageRef = useRef<HTMLInputElement>(null);
 
   return (
     <MazeContext.Provider
@@ -72,6 +74,7 @@ const MazeProvider: React.FC<MazeProviderProps> = ({ children }) => {
         generatingRef,
         iterationRef,
         resultRef,
+        imageRef
       }}
     >
       {children}

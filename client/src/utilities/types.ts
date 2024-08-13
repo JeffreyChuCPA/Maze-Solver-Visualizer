@@ -55,3 +55,19 @@ export type QueuePoint = {
   y: number;
   cost: number;
 };
+
+export type BoardPost = {
+  name: string,
+  mazeID: string,
+  maze: Maze,
+  mazeSize: number,
+  date: string,
+  image: string,
+  numberSolved: number,
+  numberLikes: number,
+  pathColor: string,
+  wallColor: string,
+  walkedColor: string,
+  queuedColor: string,
+  shortPathColor: string
+}

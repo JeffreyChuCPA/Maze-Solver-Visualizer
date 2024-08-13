@@ -4,6 +4,7 @@ import ClientControlPanel from "../components/ClientControlPanel";
 import Board from "../components/Board";
 import { generateBaseBuildMaze } from "../utilities/utilities";
 import { MazeContext } from "../MazeProvider";
+import SubmitBoard from "../components/SubmitBoard";
 
 const BuildBoard = () => {
   const { currentPage } = useContext(PageContext);
@@ -22,6 +23,7 @@ const BuildBoard = () => {
     <>
       <ClientControlPanel />
       <Board />
+      <SubmitBoard/>
     </>
   );
 };

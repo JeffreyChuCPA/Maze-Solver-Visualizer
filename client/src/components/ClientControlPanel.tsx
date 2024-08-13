@@ -96,6 +96,8 @@ const ClientControlPanel = () => {
   };
 
   const clearBuildBoard = () => {
+    iterationRef.current = 0;
+    resultRef.current = "";
     setMaze(generateBaseBuildMaze(mazeSize));
   };
 
