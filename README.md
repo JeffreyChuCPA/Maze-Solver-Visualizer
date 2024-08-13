@@ -46,3 +46,8 @@ Engineering Story: As an engineer, I want to see DRY patterns
 1. Implement linting
 2. Checkout ESlint
 3. Refactor repeated logic in algorithm files
+
+Engineering Story: As an engineer, I want to optimize the best I can for saving and displaying the images of the mazes created by users
+1. Convert the base 64 encoded string to a different type for storage
+2. In the backend, have it set up so that the posted maze object data is tied with the image 
+3. In the backend, put the image and posted maze data in the response
