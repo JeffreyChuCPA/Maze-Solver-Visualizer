@@ -16,7 +16,22 @@ export interface ColorContextType {
   setHighlightedRow: SetState<Point | null>;
 }
 
-const ColorContext = createContext<ColorContextType | undefined>(undefined);
+const defaultColorContextValue: ColorContextType = {
+  pathColor: "#FFFFFF",
+  setPathColor: () => {},
+  wallColor: "#000000",
+  setWallColor: () => {},
+  walkedColor: "#16dbe9",
+  setWalkedColor: () => {},
+  queuedColor: "#1f666b",
+  setQueuedColor: () => {},
+  shortPathColor: "#fdf90d",
+  setShortPathColor: () => {},
+  highlightedRow: null,
+  setHighlightedRow: () => {},
+};
+
+const ColorContext = createContext<ColorContextType>(defaultColorContextValue);
 
 interface ColorProviderProps {
   children: ReactNode;

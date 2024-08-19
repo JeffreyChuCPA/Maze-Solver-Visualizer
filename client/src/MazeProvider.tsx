@@ -37,7 +37,37 @@ interface MazeContextType {
   setNumberSolved: SetState<number>;
 }
 
-const MazeContext = createContext<MazeContextType | undefined>(undefined);
+const defaultContextValue: MazeContextType = {
+  mazeSize: 30,
+  maze: sampleMazes.welcome,
+  solvingRef: { current: false } as React.MutableRefObject<boolean>,
+  solving: false,
+  solved: false,
+  iterationRef: { current: 0 } as React.MutableRefObject<number>,
+  resultRef: { current: "" } as React.MutableRefObject<string>,
+  imageRef: { current: null } as React.MutableRefObject<HTMLInputElement | null>,
+  algorithm: "Wall Follower - Left",
+  generatingAlgorithm: "Recursive Backtracking",
+  generatingRef: { current: false } as React.MutableRefObject<boolean>,
+  generating: false,
+  visualize: false,
+  likes: 0,
+  mazeID: "",
+  numberSolved: 0,
+  setMazeSize: () => {},
+  setAlgorithm: () => {},
+  setGeneratingAlgorithm: () => {},
+  setMaze: () => {},
+  setSolving: () => {},
+  setSolved: () => {},
+  setGenerating: () => {},
+  setVisualize: () => {},
+  setLikes: () => {},
+  setMazeID: () => {},
+  setNumberSolved: () => {},
+};
+
+const MazeContext = createContext<MazeContextType>(defaultContextValue);
 
 interface MazeProviderProps {
   children: ReactNode;
