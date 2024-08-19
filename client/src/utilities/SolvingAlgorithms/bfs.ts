@@ -5,7 +5,7 @@ import { updateMaze } from "../utilities";
 export const bfs = async (
   maze: Maze,
   curr: Point,
-  start: Point,
+  _start: Point,
   end: Point,
   seen: boolean[][],
   path: Point[],
@@ -17,7 +17,7 @@ export const bfs = async (
   setSolving: SetState<boolean>,
   setSolved?: SetState<boolean>,
 ): Promise<boolean> => {
-  const isValid = (seen: boolean[][], cell: Point | null) => {
+  const isValid = (seen: boolean[][], cell: Point) => {
     if (
       cell.x < 0 ||
       cell.x >= maze[0].length ||
@@ -45,6 +45,10 @@ export const bfs = async (
     }
 
     const currCell = queue.shift();
+    if (!currCell) {
+      return false;
+    }
+
     currentMaze = updateMaze(
       currentMaze,
       parentCells[`${currCell?.x},${currCell?.y}`] as Point,

@@ -24,7 +24,6 @@ const SubmitBoard = () => {
     resultRef,
     solvingRef,
     setMaze,
-    setSolved,
     setSolving,
     imageRef,
   } = useContext(MazeContext);
@@ -134,6 +133,8 @@ const SubmitBoard = () => {
     resetMaze(maze, setMaze, 0);
     iterationRef.current = 0;
     resultRef.current = "";
+    console.log(boardPost);
+    
   };
 
   return (

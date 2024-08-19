@@ -4,8 +4,8 @@ import { updateMaze, updateMazePath } from "../utilities";
 
 export const wallFollowerRight = async (
   maze: Maze,
-  curr: Point | null,
-  start: Point | null,
+  curr: Point,
+  start: Point,
   end: Point | null,
   seen: boolean[][],
   path: Point[],
@@ -17,7 +17,7 @@ export const wallFollowerRight = async (
   setSolving: SetState<boolean>,
   setSolved?: SetState<boolean>,
 ): Promise<boolean> => {
-  const isValid = (seen: boolean[][], cell: Point | null) => {
+  const isValid = (seen: boolean[][], cell: Point) => {
     if (
       cell.x < 0 ||
       cell.x >= maze[0].length ||
@@ -131,7 +131,7 @@ export const wallFollowerRight = async (
       }
     }
 
-    currentMaze = updateMaze(currentMaze, prevPoint, setMaze, 2);
+    currentMaze = updateMaze(currentMaze, prevPoint!, setMaze, 2);
     currentMaze = updateMaze(currentMaze, curr, setMaze, 4);
     await new Promise((resolve) => setTimeout(resolve, delay));
     seen[curr.x][curr.y] = true;

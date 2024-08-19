@@ -30,7 +30,6 @@ export const solver = (
     for (let i = 0; i < maze.length; i++) {
       seen.push(new Array(maze[0].length).fill(false));
     }
-    console.log(solvingRef.current);
 
     const algorithmFunction = algorithms[algorithmName];
     //!Update to switch case, then update to useContext

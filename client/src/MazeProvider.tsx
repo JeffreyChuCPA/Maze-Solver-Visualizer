@@ -17,9 +17,9 @@ interface MazeContextType {
   resultRef: React.MutableRefObject<string>;
   imageRef: React.MutableRefObject<HTMLInputElement | null>;
   algorithm: AlgorithmName;
-  generatingAlgorithm?: GeneratingAlgorithmName;
-  generatingRef?: React.MutableRefObject<boolean>;
-  generating?: boolean;
+  generatingAlgorithm: GeneratingAlgorithmName;
+  generatingRef: React.MutableRefObject<boolean>;
+  generating: boolean;
   visualize: boolean;
   likes: number;
   mazeID: string;
@@ -30,14 +30,14 @@ interface MazeContextType {
   setMaze: SetState<Maze>;
   setSolving: SetState<boolean>;
   setSolved: SetState<boolean>;
-  setGenerating?: SetState<boolean>;
+  setGenerating: SetState<boolean>;
   setVisualize: SetState<boolean>;
   setLikes: SetState<number>;
   setMazeID: SetState<string>;
   setNumberSolved: SetState<number>;
 }
 
-const MazeContext = createContext<MazeContextType>();
+const MazeContext = createContext<MazeContextType | undefined>(undefined);
 
 interface MazeProviderProps {
   children: ReactNode;

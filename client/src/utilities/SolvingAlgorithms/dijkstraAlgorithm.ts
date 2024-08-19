@@ -5,7 +5,7 @@ import { directions } from "../objects";
 
 export const dijkstraAlgorithm = async (
   maze: Maze,
-  curr: Point,
+  _curr: Point,
   start: Point,
   end: Point,
   seen: boolean[][],
@@ -18,7 +18,7 @@ export const dijkstraAlgorithm = async (
   setSolving: SetState<boolean>,
   setSolved?: SetState<boolean>,
 ): Promise<boolean> => {
-  const isValid = (seen: boolean[][], cell: Point | null) => {
+  const isValid = (seen: boolean[][], cell: Point) => {
     if (
       cell.x < 0 ||
       cell.x >= maze[0].length ||

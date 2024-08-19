@@ -24,11 +24,11 @@ export const greedyBestFirstSearch = async (
   }
 
   //calc distance between 2 points via Manhattan Distance
-  const heuristic = (a: Point | null, b: Point | null): number => {
+  const heuristic = (a: Point, b: Point): number => {
     return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
   };
 
-  const isValid = (seen: boolean[][], cell: Point | null) => {
+  const isValid = (seen: boolean[][], cell: Point) => {
     if (
       cell.x < 0 ||
       cell.x >= maze[0].length ||

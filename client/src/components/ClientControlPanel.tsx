@@ -43,13 +43,13 @@ const ClientControlPanel = () => {
 
   const generateMaze = () => {
     solvingRef.current = false;
-    if (generatingRef) generatingRef.current = true;
+    generatingRef.current = true;
     iterationRef.current = 0;
     resultRef.current = "";
     setSolving(false);
     setSolved(false);
     setVisualize(false);
-    if (setGenerating) setGenerating(true);
+    setGenerating(true);
     setMazeID("");
 
     generate(

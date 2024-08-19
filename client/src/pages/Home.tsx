@@ -75,6 +75,7 @@ const Home = () => {
       });
     }
   }, [debounceMutate, mazeID, setNumberSolved, solved]);
+  
 
   return (
     <>

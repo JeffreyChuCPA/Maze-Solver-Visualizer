@@ -1,4 +1,3 @@
-import { UseMutationResult } from "@tanstack/react-query";
 import { Maze, Point, SetState } from "./types";
 
 //* finding/generating/validating a Point on maze
@@ -312,18 +311,20 @@ export const remainingWallsNeeded = (
 };
 
 //*Debounce function for event handlers that trigger an HTTP request
+type DebouncedFunction = (param1: string, param2: number) => void;
+
 export const debounce = (
-  networkCall: (...args: any[]) => void,
+  networkCall: DebouncedFunction,
   delay: number,
 ) => {
-  let timeoutId;
+  let timeoutId: ReturnType<typeof setTimeout>;
 
-  return (...args: any[]) => {
+  return (param1: string, param2: number) => {
     if (timeoutId) {
       clearTimeout(timeoutId);
     }
     timeoutId = setTimeout(() => {
-      networkCall(...args);
+      networkCall(param1, param2);
     }, delay);
   };
 };

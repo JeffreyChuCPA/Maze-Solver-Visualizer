@@ -128,6 +128,10 @@ export const dfs = async (
   if (solvingRef.current) {
     const deleteCurr = path.pop();
 
+    if (!deleteCurr) {
+      return false
+    }
+
     if (deleteCurr) {
       updatedMaze = updateMaze(updatedMaze, deleteCurr, setMaze, 4);
       // await new Promise((resolve) => setTimeout(resolve, delay));

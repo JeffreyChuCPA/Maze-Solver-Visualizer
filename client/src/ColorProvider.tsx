@@ -16,7 +16,7 @@ export interface ColorContextType {
   setHighlightedRow: SetState<Point | null>;
 }
 
-const ColorContext = createContext<ColorContextType>();
+const ColorContext = createContext<ColorContextType | undefined>(undefined);
 
 interface ColorProviderProps {
   children: ReactNode;
