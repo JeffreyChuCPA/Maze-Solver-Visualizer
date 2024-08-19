@@ -15,7 +15,7 @@ export const wallFollowerLeft = async (
   resultRef: React.MutableRefObject<string>,
   setMaze: SetState<Maze>,
   setSolving: SetState<boolean>,
-  setSolved: SetState<boolean>,
+  setSolved?: SetState<boolean>,
 ): Promise<boolean> => {
   const isValid = (seen: boolean[][], cell: Point | null) => {
     if (
@@ -81,7 +81,7 @@ export const wallFollowerLeft = async (
         // No more parent node to reference, then maze is unsolvable
         resultRef.current = "Unsolvable";
         setSolving(false);
-        setSolved(false);
+        setSolved && setSolved(false);
         console.log("Unsolvable!");
         return false;
       }
@@ -141,7 +141,7 @@ export const wallFollowerLeft = async (
   path.push(curr);
   updateMazePath(currentMaze, path, setMaze, 4);
   setSolving(false);
-  setSolved(true);
+  setSolved && setSolved(true);
   console.log("Solved!");
   return true;
 };

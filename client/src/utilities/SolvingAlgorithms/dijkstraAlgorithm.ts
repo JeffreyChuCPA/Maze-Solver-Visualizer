@@ -16,7 +16,7 @@ export const dijkstraAlgorithm = async (
   resultRef: React.MutableRefObject<string>,
   setMaze: SetState<Maze>,
   setSolving: SetState<boolean>,
-  setSolved: SetState<boolean>,
+  setSolved?: SetState<boolean>,
 ): Promise<boolean> => {
   const isValid = (seen: boolean[][], cell: Point | null) => {
     if (
@@ -92,7 +92,7 @@ export const dijkstraAlgorithm = async (
 
       resultRef.current = "Solved";
       setSolving(false);
-      setSolved(true);
+      setSolved && setSolved(true);
       console.log("Solved!");
       return true;
     }
@@ -138,7 +138,7 @@ export const dijkstraAlgorithm = async (
   }
   console.log("Not solvable");
   resultRef.current = "Unsolvable";
-  setSolved(false);
+  setSolved && setSolved(false);
   setSolving(false);
   return false;
 };

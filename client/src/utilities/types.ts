@@ -34,15 +34,21 @@ export type BoardProps = {
   setMaze: SetState<Maze>;
 };
 
-export type DataDisplayProps = {
-  iterationRef: React.MutableRefObject<number>;
-  resultRef: React.MutableRefObject<string>;
-};
-
 export type MazeProps = {
   maze: Maze;
   mazeSize: number;
   setMaze: SetState<Maze>;
+};
+
+export type FetchedBoardsProps = {
+  displayedBoards: BoardPost[];
+  isLoading: boolean;
+  isError: boolean;
+  error: Error | null;
+};
+
+export type UserCreatedBoardProps = {
+  boardData: BoardPost;
 };
 
 export type Point = {
@@ -57,17 +63,17 @@ export type QueuePoint = {
 };
 
 export type BoardPost = {
-  name: string,
-  mazeID: string,
-  maze: Maze,
-  mazeSize: number,
-  date: string,
-  image: string,
-  numberSolved: number,
-  numberLikes: number,
-  pathColor: string,
-  wallColor: string,
-  walkedColor: string,
-  queuedColor: string,
-  shortPathColor: string
-}
+  name: string;
+  mazeID: string;
+  maze: Maze;
+  mazeSize: number;
+  date: string;
+  image: string;
+  numberSolved: number;
+  numberLikes: number;
+  pathColor: string;
+  wallColor: string;
+  walkedColor: string;
+  queuedColor: string;
+  shortPathColor: string;
+};

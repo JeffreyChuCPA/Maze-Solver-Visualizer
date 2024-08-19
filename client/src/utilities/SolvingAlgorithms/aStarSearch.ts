@@ -15,7 +15,7 @@ export const aStarSearch = async (
   resultRef: React.MutableRefObject<string>,
   setMaze: SetState<Maze>,
   setSolving: SetState<boolean>,
-  setSolved: SetState<boolean>,
+  setSolved?: SetState<boolean>,
 ): Promise<boolean> => {
   if (!curr || !start || !end) {
     console.log("Provided points are not usable");
@@ -45,7 +45,7 @@ export const aStarSearch = async (
   };
 
   const openList: Node[] = []; //queue of nodes to visit and check base case
-  const closedList: Node[] = []; //list of nodes already visted and checked for base case
+  const closedList: Node[] = []; //list of nodes already visited and checked for base case
   const startNode = new Node(start.x, start.y, 0, heuristic(start, end));
   const endNode = new Node(end.x, end.y);
   let currentMaze = maze;
@@ -96,7 +96,7 @@ export const aStarSearch = async (
       }
       resultRef.current = "Solved";
       setSolving(false);
-      setSolved(true);
+      setSolved && setSolved(true);
       console.log("Solved!");
       return true;
     }
@@ -171,7 +171,7 @@ export const aStarSearch = async (
   }
   console.log("Not solvable");
   resultRef.current = "Unsolvable";
-  setSolved(false);
+  setSolved && setSolved(false);
   setSolving(false);
   return false;
 };

@@ -1,4 +1,3 @@
-import { resolvePath } from "react-router-dom";
 import { algorithms } from "./objects";
 import { AlgorithmName, Maze, Point, SetState } from "./types";
 import { findEndPoint, findStartPoint } from "./utilities";
@@ -12,31 +11,31 @@ export const solver = (
   resultRef: React.MutableRefObject<string>,
   setMaze: SetState<Maze>,
   setSolving: SetState<boolean>,
-  setSolved: SetState<boolean>,
+  setSolved?: SetState<boolean>,
 ): Promise<Point[] | void> => {
   return new Promise((resolve) => {
     const seen: boolean[][] = [];
     const path: Point[] = [];
-  
+
     const start = findStartPoint(maze);
     const end = findEndPoint(maze);
-  
+
     if (!start || !end) {
       console.log("No valid start or endpoint");
       resultRef.current = "No valid start or endpoint";
-      resolve(path)
+      resolve(path);
       return;
     }
-  
+
     for (let i = 0; i < maze.length; i++) {
       seen.push(new Array(maze[0].length).fill(false));
     }
-  
+    console.log(solvingRef.current);
+
     const algorithmFunction = algorithms[algorithmName];
     //!Update to switch case, then update to useContext
     if (algorithmFunction) {
       const runAlgorithm = async () => {
-
         await algorithmFunction(
           maze,
           start,
@@ -54,12 +53,11 @@ export const solver = (
         );
         console.log("Final path:", path);
         resolve(path);
-      }
-      runAlgorithm()
+      };
+      runAlgorithm();
     } else {
       console.error(`Algorithm ${algorithmName} not found.`);
-      resolve(path)
+      resolve(path);
     }
-
-  })
+  });
 };

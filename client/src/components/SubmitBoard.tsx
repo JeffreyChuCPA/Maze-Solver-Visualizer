@@ -4,7 +4,16 @@ import { MazeContext } from "../MazeProvider";
 import { BoardPost } from "../utilities/types";
 import { ColorContext } from "../ColorProvider";
 import { solver } from "../utilities/solver";
-import { findEndPoint, findStartPoint, isEnoughWalls, minWalls, postBoard, remainingWallsNeeded, resetMaze, totalWalls } from "../utilities/utilities";
+import {
+  findEndPoint,
+  findStartPoint,
+  isEnoughWalls,
+  minWalls,
+  remainingWallsNeeded,
+  resetMaze,
+  totalWalls,
+} from "../utilities/utilities";
+import { postBoard } from "../utilities/api";
 import html2canvas from "html2canvas";
 
 const SubmitBoard = () => {
@@ -17,7 +26,7 @@ const SubmitBoard = () => {
     setMaze,
     setSolved,
     setSolving,
-    imageRef
+    imageRef,
   } = useContext(MazeContext);
   const colorStates = useContext(ColorContext);
   const [boardPost, setBoardPost] = useState<BoardPost>({
@@ -41,21 +50,32 @@ const SubmitBoard = () => {
   const handleBoardSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsValidating(true);
-    
+
     //is there a start and end point
     const start = findStartPoint(maze);
     const end = findEndPoint(maze);
-    
+
     if (!start || !end) {
       setIsValidating(false);
       return alert("No valid start or endpoint");
     }
 
-    //validate maze with x walls    
+    //validate maze with x walls
     if (!isEnoughWalls(maze, mazeSize)) {
       setIsValidating(false);
-      console.log(`Need to place ${remainingWallsNeeded(minWalls(mazeSize), totalWalls(maze))} block(s)`);
-      return alert(`Need to place ${remainingWallsNeeded(minWalls(mazeSize), totalWalls(maze))} block(s)`);
+      console.log(
+        `Need to place ${remainingWallsNeeded(minWalls(mazeSize), totalWalls(maze))} block(s)`,
+      );
+      return alert(
+        `Need to place ${remainingWallsNeeded(minWalls(mazeSize), totalWalls(maze))} block(s)`,
+      );
+    }
+
+    //*create image to be added to boardpost whnen maze is considered solvable
+    let imageData = "";
+    if (imageRef.current) {
+      const image = await html2canvas(imageRef.current);
+      imageData = image.toDataURL("image/png");
     }
 
     //validate maze is solvable via DFS
@@ -73,26 +93,18 @@ const SubmitBoard = () => {
         resultRef,
         setMaze,
         setSolving,
-        setSolved,
       );
     };
 
     await isSolvable();
-    
+
     //*to add custom modal when condition met as alert() interferes with the rendering timing
-    if (resultRef.current !== "Solvable") {
+    if (resultRef.current !== "Solved") {
       iterationRef.current = 0;
       resultRef.current = "";
       setIsValidating(false);
-      resetMaze(maze, setMaze, 0)
-      return console.log("Can't submit an unsolvable maze")
-    }
-    
-    //*create image to be added to boardpost whnen maze is considered solvable
-    let imageData = ''
-    if (imageRef.current) {
-      const image = await html2canvas(imageRef.current)
-      imageData = image.toDataURL("image/png")
+      resetMaze(maze, setMaze, 0);
+      return console.log("Can't submit an unsolvable maze");
     }
 
     //add name, maze, mazesize, date, etc to board post
@@ -114,11 +126,14 @@ const SubmitBoard = () => {
       };
 
       //post to API
-      postBoard(updatedBoardPost)
+      postBoard(updatedBoardPost);
       return updatedBoardPost;
     });
-    
+
     setIsValidating(false);
+    resetMaze(maze, setMaze, 0);
+    iterationRef.current = 0;
+    resultRef.current = "";
   };
 
   return (

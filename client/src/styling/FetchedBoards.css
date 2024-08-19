@@ -1,4 +1,4 @@
-.fetchboards__card {
+.fetchboards__section {
   width: 80%;
   min-height: 20rem;
   border: 2px solid var(--first-color);
@@ -6,8 +6,66 @@
   border-radius: 20px;
   margin: 0 auto;
   margin-bottom: 2%;
-  display: flex;
+  /* background: drop-shadow(0 0 2em #61dafbaa); */
+}
+
+.fetchboards__displayedboards {
+  display: grid;
   justify-content: center;
   align-items: center;
-  /* background: drop-shadow(0 0 2em #61dafbaa); */
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  grid-gap: 20px;
+  padding: 10px;
+}
+
+.fetchboards__sortoptions {
+  padding: 10px;
+}
+
+.fetchboards__card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.7);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 10px;
+}
+
+.fetchboards__image {
+  width: 70%;
+  border: 1px solid black;
+}
+
+.fetchboards__text {
+  text-align: center;
+}
+
+.fetchboards__loading {
+  text-align: center;
+  width: 80%;
+  min-height: 20rem;
+  border: 2px solid var(--first-color);
+  background-color: var(--first-color);
+  border-radius: 20px;
+  margin: 0 auto;
+  margin-bottom: 2%;
+  display: grid;
+  justify-content: center;
+  align-items: center;
+}
+
+.fetchboards__error {
+  text-align: center;
+  width: 80%;
+  min-height: 20rem;
+  border: 2px solid var(--first-color);
+  background-color: var(--first-color);
+  border-radius: 20px;
+  margin: 0 auto;
+  margin-bottom: 2%;
+  display: grid;
+  justify-content: center;
+  align-items: center;
 }

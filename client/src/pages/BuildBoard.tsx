@@ -8,22 +8,41 @@ import SubmitBoard from "../components/SubmitBoard";
 
 const BuildBoard = () => {
   const { currentPage } = useContext(PageContext);
-  const { mazeSize, setMaze, iterationRef, resultRef } =
-    useContext(MazeContext);
+  const {
+    mazeSize,
+    setMaze,
+    iterationRef,
+    resultRef,
+    setVisualize,
+    solvingRef,
+    setSolved,
+  } = useContext(MazeContext);
 
   useEffect(() => {
     if (currentPage === "build-board") {
       setMaze(generateBaseBuildMaze(mazeSize));
       iterationRef.current = 0;
       resultRef.current = "";
+      solvingRef.current = false;
+      setVisualize(false);
+      setSolved(false);
     }
-  }, [mazeSize, setMaze, currentPage, iterationRef, resultRef]);
+  }, [
+    mazeSize,
+    setMaze,
+    currentPage,
+    iterationRef,
+    resultRef,
+    setVisualize,
+    solvingRef,
+    setSolved,
+  ]);
 
   return (
     <>
       <ClientControlPanel />
       <Board />
-      <SubmitBoard/>
+      <SubmitBoard />
     </>
   );
 };

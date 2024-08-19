@@ -5,6 +5,7 @@ import {
   delayCalculation,
   delayPercentage,
   generateBaseBuildMaze,
+  generateBaseMaze,
   resetMaze,
 } from "../utilities/utilities";
 import { solver } from "../utilities/solver";
@@ -25,6 +26,8 @@ const ClientControlPanel = () => {
     generatingAlgorithm,
     generatingRef,
     generating,
+    visualize,
+    setVisualize,
     setMazeSize,
     setAlgorithm,
     setGeneratingAlgorithm,
@@ -32,10 +35,10 @@ const ClientControlPanel = () => {
     setSolving,
     setSolved,
     setGenerating,
+    setMazeID,
   } = useContext(MazeContext);
   const colorStates: ColorContextType = useContext(ColorContext);
 
-  const [visualize, setVisualize] = useState<boolean>(false);
   const [delay, setDelay] = useState<number>(0);
 
   const generateMaze = () => {
@@ -47,6 +50,7 @@ const ClientControlPanel = () => {
     setSolved(false);
     setVisualize(false);
     if (setGenerating) setGenerating(true);
+    setMazeID("");
 
     generate(
       mazeSize,
@@ -96,9 +100,19 @@ const ClientControlPanel = () => {
   };
 
   const clearBuildBoard = () => {
+    setVisualize(false);
     iterationRef.current = 0;
     resultRef.current = "";
+    solvingRef.current = false;
     setMaze(generateBaseBuildMaze(mazeSize));
+  };
+
+  const fillBuildBoard = () => {
+    setVisualize(false);
+    iterationRef.current = 0;
+    resultRef.current = "";
+    solvingRef.current = false;
+    setMaze(generateBaseMaze(mazeSize, setMaze));
   };
 
   return (
@@ -185,41 +199,41 @@ const ClientControlPanel = () => {
             <div>Number of Iterations: {iterationRef.current}</div>
             <div>Result: {resultRef.current}</div>
           </div>
-          <div>
-            <div>
-              Path Color:{" "}
+          <div className="clientcontrolpanel__colorselection">
+            <div className="clientcontrolpanel__colorselector">
+              <span>Path Color: </span>
               <input
                 type="color"
                 value={colorStates.pathColor}
                 onChange={(e) => colorStates.setPathColor(e.target.value)}
               />
             </div>
-            <div>
-              Wall Color:{" "}
+            <div className="clientcontrolpanel__colorselector">
+              <span>Wall Color: </span>
               <input
                 type="color"
                 value={colorStates.wallColor}
                 onChange={(e) => colorStates.setWallColor(e.target.value)}
               />
             </div>
-            <div>
-              Walked Color:{" "}
+            <div className="clientcontrolpanel__colorselector">
+              <span> Walked Color: </span>
               <input
                 type="color"
                 value={colorStates.walkedColor}
                 onChange={(e) => colorStates.setWalkedColor(e.target.value)}
               />
             </div>
-            <div>
-              Queued Color:{" "}
+            <div className="clientcontrolpanel__colorselector">
+              <span>Queued Color: </span>
               <input
                 type="color"
                 value={colorStates.queuedColor}
                 onChange={(e) => colorStates.setQueuedColor(e.target.value)}
               />
             </div>
-            <div>
-              Current Color:{" "}
+            <div className="clientcontrolpanel__colorselector">
+              <span> Current Color: </span>
               <input
                 type="color"
                 value={colorStates.shortPathColor}
@@ -265,6 +279,7 @@ const ClientControlPanel = () => {
               </select>
             </div>
             <button onClick={clearBuildBoard}>Clear Board</button>
+            <button onClick={fillBuildBoard}>Fill Board</button>
             {!visualize ? (
               <button onClick={startSolving}>Visualize Solver</button>
             ) : (
@@ -286,41 +301,41 @@ const ClientControlPanel = () => {
             <div>Number of Iterations: {iterationRef.current}</div>
             <div>Result: {resultRef.current}</div>
           </div>
-          <div>
-            <div>
-              Path Color:{" "}
+          <div className="clientcontrolpanel__colorselection">
+            <div className="clientcontrolpanel__colorselector">
+              <span>Path Color: </span>
               <input
                 type="color"
                 value={colorStates.pathColor}
                 onChange={(e) => colorStates.setPathColor(e.target.value)}
               />
             </div>
-            <div>
-              Wall Color:{" "}
+            <div className="clientcontrolpanel__colorselector">
+              <span>Wall Color: </span>
               <input
                 type="color"
                 value={colorStates.wallColor}
                 onChange={(e) => colorStates.setWallColor(e.target.value)}
               />
             </div>
-            <div>
-              Walked Color:{" "}
+            <div className="clientcontrolpanel__colorselector">
+              <span> Walked Color: </span>
               <input
                 type="color"
                 value={colorStates.walkedColor}
                 onChange={(e) => colorStates.setWalkedColor(e.target.value)}
               />
             </div>
-            <div>
-              Queued Color:{" "}
+            <div className="clientcontrolpanel__colorselector">
+              <span>Queued Color: </span>
               <input
                 type="color"
                 value={colorStates.queuedColor}
                 onChange={(e) => colorStates.setQueuedColor(e.target.value)}
               />
             </div>
-            <div>
-              Current Color:{" "}
+            <div className="clientcontrolpanel__colorselector">
+              <span> Current Color: </span>
               <input
                 type="color"
                 value={colorStates.shortPathColor}

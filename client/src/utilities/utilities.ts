@@ -1,4 +1,5 @@
-import { BoardPost, Maze, Point, SetState } from "./types";
+import { UseMutationResult } from "@tanstack/react-query";
+import { Maze, Point, SetState } from "./types";
 
 //* finding/generating/validating a Point on maze
 export const findStartPoint = (maze: Maze): Point | false => {
@@ -163,7 +164,7 @@ export const generateStartPoint = (
 
 export const generateEndPoint = (maze: Maze, setMaze: SetState<Maze>) => {
   const updatedMaze: Maze = maze;
-  const { x, y } = findStartPoint(maze);
+  const { x, y } = findStartPoint(maze) as Point;
 
   if (x === 0) {
     for (let row = maze.length - 2; row > 0; row--) {
@@ -282,51 +283,54 @@ export const delayPercentage = (delay: number): number => {
 
 //*calculate minimum walls to be added to maze (for walls to be 40% of the whole board)
 export const minWalls = (mazeSize: number): number => {
-  return 0.4 * (mazeSize ** 2) 
-}
+  return Math.round(0.4 * mazeSize ** 2);
+};
 
 export const totalWalls = (maze: Maze): number => {
-  let totalWalls = 0
+  let totalWalls = 0;
 
   for (let i = 0; i < maze.length; i++) {
     for (let j = 0; j < maze[0].length; j++) {
       if (maze[i][j] === 1) {
-        totalWalls += 1
+        totalWalls += 1;
       }
     }
   }
 
-  return totalWalls
-  
-}
+  return totalWalls;
+};
 
 export const isEnoughWalls = (maze: Maze, mazeSize: number): boolean => {
-  return totalWalls(maze) >= minWalls(mazeSize)
-}
+  return totalWalls(maze) >= minWalls(mazeSize);
+};
 
-export const remainingWallsNeeded = (minWalls: number, totalWalls: number): number => {
-  return minWalls - (totalWalls)
-}
+export const remainingWallsNeeded = (
+  minWalls: number,
+  totalWalls: number,
+): number => {
+  return minWalls - totalWalls;
+};
 
-//*Post method to API
-export const postBoard = async (board: BoardPost) => {
-  try {
-    const response = await fetch(`https://ee5df1c8-48e8-4f41-b0b9-57a66763a048.mock.pstmn.io/boards`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(board)
-    })
-    if (response.ok) {
-      console.log('successfully submitted');
-      
-      alert('Maze has been successfully posted.')
-    } else {
-      alert('Failed to submit board post.')
+//*Debounce function for event handlers that trigger an HTTP request
+export const debounce = (
+  networkCall: (...args: any[]) => void,
+  delay: number,
+) => {
+  let timeoutId;
+
+  return (...args: any[]) => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
     }
+    timeoutId = setTimeout(() => {
+      networkCall(...args);
+    }, delay);
+  };
+};
 
-  } catch (error) {
-    alert(`Error occurred: ${error}`);
-  }
-}
+//*Local Storage manipulation function
+export const fetchLocalClientLikedState = (mazeID: string): boolean => {
+  const savedLikeState: string | null = localStorage.getItem("likes");
+  const parsedLikeState = savedLikeState ? JSON.parse(savedLikeState) : {};
+  return parsedLikeState[mazeID] || false;
+};

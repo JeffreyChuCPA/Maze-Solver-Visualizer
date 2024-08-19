@@ -70,13 +70,13 @@ const Block: React.FC<BlockProps> = ({ blockType, rowIndex, colIndex }) => {
     if (!resultRef.current) {
       setMaze((prevMaze) => {
         const newMaze: Maze = prevMaze.map((row) => [...row]);
-  
+
         //*Set start point at top row or most left column
         if (isValidStartPoint(cell.x, cell.y, newMaze)) {
           resetStartOrEndPoint("start", newMaze);
           newMaze[cell.x][cell.y] = 0;
         }
-  
+
         //*Set end point at bottom row or most right column
         else if (isValidEndPoint(cell.x, cell.y, newMaze)) {
           resetStartOrEndPoint("end", newMaze);
@@ -97,12 +97,12 @@ const Block: React.FC<BlockProps> = ({ blockType, rowIndex, colIndex }) => {
       if (e.buttons === 1) {
         setMaze((prevMaze) => {
           const newMaze: Maze = prevMaze.map((row) => [...row]);
-  
+
           if (isValidBoardPoint(cell.x, cell.y, newMaze)) {
             const cellValue: number = switchBlockType(newMaze[cell.x][cell.y]);
             newMaze[cell.x][cell.y] = cellValue;
           }
-  
+
           return newMaze;
         });
       }

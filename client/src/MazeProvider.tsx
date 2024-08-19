@@ -3,7 +3,6 @@ import {
   AlgorithmName,
   GeneratingAlgorithmName,
   Maze,
-  Point,
   SetState,
 } from "./utilities/types";
 import sampleMazes from "./utilities/sampleMazes";
@@ -21,6 +20,10 @@ interface MazeContextType {
   generatingAlgorithm?: GeneratingAlgorithmName;
   generatingRef?: React.MutableRefObject<boolean>;
   generating?: boolean;
+  visualize: boolean;
+  likes: number;
+  mazeID: string;
+  numberSolved: number;
   setMazeSize: SetState<number>;
   setAlgorithm: SetState<AlgorithmName>;
   setGeneratingAlgorithm?: SetState<GeneratingAlgorithmName>;
@@ -28,6 +31,10 @@ interface MazeContextType {
   setSolving: SetState<boolean>;
   setSolved: SetState<boolean>;
   setGenerating?: SetState<boolean>;
+  setVisualize: SetState<boolean>;
+  setLikes: SetState<number>;
+  setMazeID: SetState<string>;
+  setNumberSolved: SetState<number>;
 }
 
 const MazeContext = createContext<MazeContextType>();
@@ -39,14 +46,18 @@ interface MazeProviderProps {
 const MazeProvider: React.FC<MazeProviderProps> = ({ children }) => {
   const [mazeSize, setMazeSize] = useState<number>(30);
   const [algorithm, setAlgorithm] = useState<AlgorithmName>(
-    "Depth First Search (DFS)",
+    "Wall Follower - Left",
   );
   const [generatingAlgorithm, setGeneratingAlgorithm] =
     useState<GeneratingAlgorithmName>("Recursive Backtracking");
-  const [maze, setMaze] = useState<Maze>(sampleMazes.mazeSample10_2);
+  const [maze, setMaze] = useState<Maze>(sampleMazes.welcome);
   const [solving, setSolving] = useState<boolean>(false);
   const [generating, setGenerating] = useState<boolean>(false);
   const [solved, setSolved] = useState<boolean>(false);
+  const [visualize, setVisualize] = useState<boolean>(false);
+  const [likes, setLikes] = useState<number>(0);
+  const [numberSolved, setNumberSolved] = useState<number>(0);
+  const [mazeID, setMazeID] = useState<string>("");
   const solvingRef = useRef<boolean>(false);
   const generatingRef = useRef<boolean>(false);
   const iterationRef = useRef<number>(0);
@@ -57,24 +68,32 @@ const MazeProvider: React.FC<MazeProviderProps> = ({ children }) => {
     <MazeContext.Provider
       value={{
         mazeSize,
-        setMazeSize,
         algorithm,
-        setAlgorithm,
         generatingAlgorithm,
-        setGeneratingAlgorithm,
         maze,
-        setMaze,
         solving,
-        setSolving,
         generating,
-        setGenerating,
         solved,
-        setSolved,
+        visualize,
+        likes,
+        mazeID,
+        numberSolved,
         solvingRef,
         generatingRef,
         iterationRef,
         resultRef,
-        imageRef
+        imageRef,
+        setMazeSize,
+        setAlgorithm,
+        setGeneratingAlgorithm,
+        setMaze,
+        setSolving,
+        setGenerating,
+        setSolved,
+        setVisualize,
+        setLikes,
+        setMazeID,
+        setNumberSolved,
       }}
     >
       {children}

@@ -15,7 +15,7 @@ export const dfs = async (
   resultRef: React.MutableRefObject<string>,
   setMaze: SetState<Maze>,
   setSolving: SetState<boolean>,
-  setSolved: SetState<boolean>,
+  setSolved?: SetState<boolean>,
 ): Promise<boolean> => {
   if (!solvingRef.current) {
     console.log("Stopped solving");
@@ -45,7 +45,7 @@ export const dfs = async (
     resultRef.current = "Solved";
     updateMazePath(maze, path, setMaze, 4);
     setSolving(false);
-    setSolved(true);
+    setSolved && setSolved(true);
     console.log("Solved");
     return true;
   }
@@ -136,6 +136,7 @@ export const dfs = async (
     if (deleteCurr.x === start.x && deleteCurr.y === start.y) {
       console.log("Not solvable");
       resultRef.current = "Unsolvable";
+      setSolved && setSolved(false);
       setSolving(false);
     }
   }

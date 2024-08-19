@@ -16,7 +16,7 @@ export const greedyBestFirstSearch = async (
   resultRef: React.MutableRefObject<string>,
   setMaze: SetState<Maze>,
   setSolving: SetState<boolean>,
-  setSolved: SetState<boolean>,
+  setSolved?: SetState<boolean>,
 ): Promise<boolean> => {
   if (!curr || !start || !end) {
     console.log("Provided points are not usable");
@@ -103,7 +103,7 @@ export const greedyBestFirstSearch = async (
 
       resultRef.current = "Solved";
       setSolving(false);
-      setSolved(true);
+      setSolved && setSolved(true);
       console.log("Solved!");
       return true;
     }
@@ -149,7 +149,7 @@ export const greedyBestFirstSearch = async (
   }
   console.log("Not solvable");
   resultRef.current = "Unsolvable";
-  setSolved(false);
+  setSolved && setSolved(false);
   setSolving(false);
   return false;
 };
