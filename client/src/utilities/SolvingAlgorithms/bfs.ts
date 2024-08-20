@@ -5,7 +5,7 @@ import { updateMaze } from "../utilities";
 export const bfs = async (
   maze: Maze,
   curr: Point,
-  start: Point,
+  _start: Point,
   end: Point,
   seen: boolean[][],
   path: Point[],
@@ -15,9 +15,9 @@ export const bfs = async (
   resultRef: React.MutableRefObject<string>,
   setMaze: SetState<Maze>,
   setSolving: SetState<boolean>,
-  setSolved: SetState<boolean>,
+  setSolved?: SetState<boolean>,
 ): Promise<boolean> => {
-  const isValid = (seen: boolean[][], cell: Point | null) => {
+  const isValid = (seen: boolean[][], cell: Point) => {
     if (
       cell.x < 0 ||
       cell.x >= maze[0].length ||
@@ -45,6 +45,10 @@ export const bfs = async (
     }
 
     const currCell = queue.shift();
+    if (!currCell) {
+      return false;
+    }
+
     currentMaze = updateMaze(
       currentMaze,
       parentCells[`${currCell?.x},${currCell?.y}`] as Point,
@@ -74,7 +78,7 @@ export const bfs = async (
 
       resultRef.current = "Solved";
       setSolving(false);
-      setSolved(true);
+      setSolved && setSolved(true);
       console.log("Solved!");
       return true;
     }
@@ -109,7 +113,7 @@ export const bfs = async (
 
   console.log("Not solvable");
   resultRef.current = "Unsolvable";
-  setSolved(false);
+  setSolved && setSolved(false);
   setSolving(false);
   return false;
 };

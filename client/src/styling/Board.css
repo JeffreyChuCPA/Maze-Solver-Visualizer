@@ -7,8 +7,22 @@
   margin: 0 auto;
   margin-bottom: 2%;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
   max-width: 900px;
+  flex-direction: column;
   /* background: drop-shadow(0 0 2em #61dafbaa); */
+}
+
+.board__buttons {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  gap: 20px;
+}
+
+.board__like {
+}
+
+.board__download {
 }

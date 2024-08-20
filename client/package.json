@@ -11,6 +11,8 @@
     "format": "npx prettier . --write"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.51.23",
+    "html2canvas": "^1.4.1",
     "js-priority-queue": "^0.1.5",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -19,6 +21,7 @@
     "react-router-dom": "^6.25.1"
   },
   "devDependencies": {
+    "@types/js-priority-queue": "^0.0.9",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.15.0",

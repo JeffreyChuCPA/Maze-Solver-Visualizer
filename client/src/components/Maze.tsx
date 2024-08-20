@@ -4,10 +4,10 @@ import Block from "./Block";
 import { MazeContext } from "../MazeProvider";
 
 const Maze = () => {
-  const { maze } = useContext(MazeContext);
+  const { maze, imageRef } = useContext(MazeContext);
 
   return (
-    <div className="maze">
+    <div className="maze" id="maze" ref={imageRef}>
       {maze.map((row, rowIndex) => (
         <div key={rowIndex} className="maze__row">
           {row.map((cell, colIndex) => (

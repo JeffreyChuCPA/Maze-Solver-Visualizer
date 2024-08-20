@@ -15,7 +15,7 @@ export const recursiveBacktracking = async (
   setMaze: SetState<Maze>,
   setGenerating: SetState<boolean>,
 ): Promise<boolean> => {
-  const start: Point = findStartPoint(
+  const start: Point | boolean = findStartPoint(
     generateStartPoint(baseMaze, setMaze, false),
   );
 
@@ -42,7 +42,11 @@ export const recursiveBacktracking = async (
     }
   };
 
-  const carvePath = async (maze: Maze, cell: Point) => {
+  const carvePath = async (maze: Maze, cell: Point | boolean) => {
+    if (typeof cell === "boolean") {
+      return false
+    }
+
     shuffleDirections(directions);
     for (const { x: dx, y: dy } of directions) {
       const nx = cell.x + dx;

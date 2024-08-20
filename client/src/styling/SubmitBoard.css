@@ -1,4 +1,4 @@
-.clientcontrolpanel__card {
+.submitboard__card {
   width: 80%;
   height: 10rem;
   border: 2px solid var(--first-color);
@@ -7,16 +7,8 @@
   margin: 0 auto;
   margin-bottom: 2%;
   max-width: 900px;
-  display: flex;
-  justify-content: space-between;
-  padding: 10px;
   /* background: drop-shadow(0 0 2em #61dafbaa); */
 }
 
-.clientcontrolpanel__colorselection {
-}
-
-.clientcontrolpanel__colorselector {
-  display: flex;
-  justify-content: space-between;
+.submitboard__name {
 }

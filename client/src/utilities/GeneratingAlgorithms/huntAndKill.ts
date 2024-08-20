@@ -16,7 +16,7 @@ export const huntAndKill = async (
   setGenerating: SetState<boolean>,
   setHighlightedRow: SetState<Point | null>,
 ): Promise<boolean> => {
-  const start: Point = findStartPoint(
+  const start: Point | boolean = findStartPoint(
     generateStartPoint(baseMaze, setMaze, false),
   );
 
@@ -24,7 +24,7 @@ export const huntAndKill = async (
     Array(baseMaze.length).fill(false),
   );
 
-  let currentMaze: Maze = baseMaze;
+  const currentMaze: Maze = baseMaze;
 
   const directions: Point[] = [
     { x: 0, y: 2 },
@@ -91,14 +91,7 @@ export const huntAndKill = async (
     return possibleMoves;
   };
 
-  const shuffleDirections = (directions: Point[]) => {
-    for (let i = directions.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [directions[i], directions[j]] = [directions[j], directions[i]];
-    }
-  };
-
-  const carvePath = async (x: number, y: number): boolean => {
+  const carvePath = async (x: number, y: number): Promise<boolean> => {
     if (!generatingRef.current) {
       console.log("Stopped generating");
       return false;

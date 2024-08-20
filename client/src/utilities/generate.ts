@@ -24,7 +24,7 @@ export const generate = (
       resultRef,
       generatingRef,
       setMaze,
-      setGenerating,
+      setGenerating  || (() => {}),
       setHighlightedRow,
     );
   } else {

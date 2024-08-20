@@ -1,7 +1,7 @@
 import { Maze, Point, SetState } from "./types";
 
 //* finding/generating/validating a Point on maze
-export const findStartPoint = (maze: Maze): Point => {
+export const findStartPoint = (maze: Maze): Point | false => {
   if (maze.length > 0) {
     for (let i: number = 0; i < maze.length; i++) {
       if (maze[0][i] === 0) {
@@ -11,10 +11,10 @@ export const findStartPoint = (maze: Maze): Point => {
       }
     }
   }
-  return { x: 0, y: 0 };
+  return false;
 };
 
-export const findEndPoint = (maze: Maze): Point => {
+export const findEndPoint = (maze: Maze): Point | false => {
   if (maze.length > 0) {
     const last = maze.length - 1;
     for (let i: number = 0; i < maze.length; i++) {
@@ -25,7 +25,7 @@ export const findEndPoint = (maze: Maze): Point => {
       }
     }
   }
-  return { x: 0, y: 0 };
+  return false;
 };
 
 export const isValidStartPoint = (
@@ -163,7 +163,7 @@ export const generateStartPoint = (
 
 export const generateEndPoint = (maze: Maze, setMaze: SetState<Maze>) => {
   const updatedMaze: Maze = maze;
-  const { x, y } = findStartPoint(maze);
+  const { x, y } = findStartPoint(maze) as Point;
 
   if (x === 0) {
     for (let row = maze.length - 2; row > 0; row--) {
@@ -278,4 +278,60 @@ export const delayCalculation = (delay: number): number => {
 
 export const delayPercentage = (delay: number): number => {
   return Math.round(((delay - 6000 / 9) * 9) / -60);
+};
+
+//*calculate minimum walls to be added to maze (for walls to be 40% of the whole board)
+export const minWalls = (mazeSize: number): number => {
+  return Math.round(0.4 * mazeSize ** 2);
+};
+
+export const totalWalls = (maze: Maze): number => {
+  let totalWalls = 0;
+
+  for (let i = 0; i < maze.length; i++) {
+    for (let j = 0; j < maze[0].length; j++) {
+      if (maze[i][j] === 1) {
+        totalWalls += 1;
+      }
+    }
+  }
+
+  return totalWalls;
+};
+
+export const isEnoughWalls = (maze: Maze, mazeSize: number): boolean => {
+  return totalWalls(maze) >= minWalls(mazeSize);
+};
+
+export const remainingWallsNeeded = (
+  minWalls: number,
+  totalWalls: number,
+): number => {
+  return minWalls - totalWalls;
+};
+
+//*Debounce function for event handlers that trigger an HTTP request
+type DebouncedFunction = (param1: string, param2: number) => void;
+
+export const debounce = (
+  networkCall: DebouncedFunction,
+  delay: number,
+) => {
+  let timeoutId: ReturnType<typeof setTimeout>;
+
+  return (param1: string, param2: number) => {
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    timeoutId = setTimeout(() => {
+      networkCall(param1, param2);
+    }, delay);
+  };
+};
+
+//*Local Storage manipulation function
+export const fetchLocalClientLikedState = (mazeID: string): boolean => {
+  const savedLikeState: string | null = localStorage.getItem("likes");
+  const parsedLikeState = savedLikeState ? JSON.parse(savedLikeState) : {};
+  return parsedLikeState[mazeID] || false;
 };

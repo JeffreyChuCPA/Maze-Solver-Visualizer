@@ -5,7 +5,7 @@ import { directions } from "../objects";
 
 export const dijkstraAlgorithm = async (
   maze: Maze,
-  curr: Point,
+  _curr: Point,
   start: Point,
   end: Point,
   seen: boolean[][],
@@ -16,9 +16,9 @@ export const dijkstraAlgorithm = async (
   resultRef: React.MutableRefObject<string>,
   setMaze: SetState<Maze>,
   setSolving: SetState<boolean>,
-  setSolved: SetState<boolean>,
+  setSolved?: SetState<boolean>,
 ): Promise<boolean> => {
-  const isValid = (seen: boolean[][], cell: Point | null) => {
+  const isValid = (seen: boolean[][], cell: Point) => {
     if (
       cell.x < 0 ||
       cell.x >= maze[0].length ||
@@ -92,7 +92,7 @@ export const dijkstraAlgorithm = async (
 
       resultRef.current = "Solved";
       setSolving(false);
-      setSolved(true);
+      setSolved && setSolved(true);
       console.log("Solved!");
       return true;
     }
@@ -138,7 +138,7 @@ export const dijkstraAlgorithm = async (
   }
   console.log("Not solvable");
   resultRef.current = "Unsolvable";
-  setSolved(false);
+  setSolved && setSolved(false);
   setSolving(false);
   return false;
 };
