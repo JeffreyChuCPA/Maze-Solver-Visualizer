@@ -4,12 +4,15 @@ import { BoardPost, FetchedBoardsProps } from "../utilities/types";
 import UserCreatedBoard from "./UserCreatedBoard";
 
 const sortOptions = ["Latest", "Most Liked", "Most Solved", "Oldest"];
+const numberMazesOptions = [10, 15, 20];
 
 const FetchedBoards: React.FC<FetchedBoardsProps> = ({
   displayedBoards,
   isLoading,
   isError,
   error,
+  numberOfMazes,
+  setNumberOfMazes,
 }) => {
   const [sortOption, setSortOption] = useState<string>("Latest");
 
@@ -56,21 +59,40 @@ const FetchedBoards: React.FC<FetchedBoardsProps> = ({
   return (
     <div className="fetchboards__section">
       <div className="fetchboards__sortoptions">
-        Sort:{" "}
-        <select
-          name="sortingOptions"
-          id="sortingOptions"
-          value={sortOption}
-          onChange={(e): void => {
-            setSortOption(e.target.value);
-          }}
-        >
-          {sortOptions.map((selection) => (
-            <option key={selection} id={selection} value={selection}>
-              {selection}
-            </option>
-          ))}
-        </select>
+        <div>
+          Sort:{" "}
+          <select
+            name="sortingOptions"
+            id="sortingOptions"
+            value={sortOption}
+            onChange={(e): void => {
+              setSortOption(e.target.value);
+            }}
+          >
+            {sortOptions.map((selection) => (
+              <option key={selection} id={selection} value={selection}>
+                {selection}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          Mazes per page:{" "}
+          <select
+            name="itemsOptions"
+            id="itemsOptions"
+            value={numberOfMazes}
+            onChange={(e): void => {
+              setNumberOfMazes(Number(e.target.value))
+            }}
+          >
+            {numberMazesOptions.map((selection) => (
+              <option key={selection} id={selection.toString()} value={selection}>
+                {selection}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
       <div className="fetchboards__displayedboards">
         {sortedBoards.map((boardData) => (

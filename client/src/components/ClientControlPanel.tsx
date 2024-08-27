@@ -50,7 +50,7 @@ const ClientControlPanel = () => {
     setSolved(false);
     setVisualize(false);
     setGenerating(true);
-    setMazeID("");
+    setMazeID(null);
 
     generate(
       mazeSize,

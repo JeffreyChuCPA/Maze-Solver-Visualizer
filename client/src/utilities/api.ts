@@ -4,7 +4,7 @@ import { BoardPost } from "./types";
 export const postBoard = async (board: BoardPost) => {
   try {
     const response = await fetch(
-      `https://ee5df1c8-48e8-4f41-b0b9-57a66763a048.mock.pstmn.io/boards`,
+      `http://127.0.0.1:8000/mazes`,
       {
         method: "POST",
         headers: {
@@ -30,10 +30,10 @@ export const postBoard = async (board: BoardPost) => {
 };
 
 //*Get method to API
-export const getBoards = async () => {
+export const getBoards = async (amount: number) => {
   try {
     const response = await fetch(
-      `https://ee5df1c8-48e8-4f41-b0b9-57a66763a048.mock.pstmn.io/boards`,
+      `http://127.0.0.1:8000/mazes/${amount}`,
     );
     if (response.ok) {
       const boards = await response.json();
@@ -50,18 +50,17 @@ export const getBoards = async () => {
 
 //*Update like for user created maze
 export const updateBoardLikes = async (
-  id: string,
-  updatedNumberLikes: number,
+  id: number,
+  isLiked: boolean,
 ) => {
   try {
     const response = await fetch(
-      `https://ee5df1c8-48e8-4f41-b0b9-57a66763a048.mock.pstmn.io/boards/${id}`,
+      `http://127.0.0.1:8000/mazes/number-likes/${id}/${isLiked}`,
       {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ numberLikes: updatedNumberLikes }),
+        }
       },
     );
 
@@ -80,18 +79,16 @@ export const updateBoardLikes = async (
 
 //*Update number of times solved for user created maze
 export const updateNumberSolved = async (
-  id: string,
-  updatedNumberSolved: number,
+  id: number,
 ) => {
   try {
     const response = await fetch(
-      `https://ee5df1c8-48e8-4f41-b0b9-57a66763a048.mock.pstmn.io/boards/${id}`,
+      `http://127.0.0.1:8000/mazes/number-solved/${id}`,
       {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ numberSolved: updatedNumberSolved }),
       },
     );
 

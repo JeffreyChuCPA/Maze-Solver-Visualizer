@@ -20,6 +20,8 @@
 
 .fetchboards__sortoptions {
   padding: 10px;
+  display: flex;
+  gap: 10px;
 }
 
 .fetchboards__card {
