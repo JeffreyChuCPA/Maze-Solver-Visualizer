@@ -6,7 +6,7 @@ import "../styling/NavBar.css";
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const isMobile: boolean = useMediaQuery({ maxWidth: "1150px" });
+  const isMobile: boolean = useMediaQuery({ maxWidth: "589px" });
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);

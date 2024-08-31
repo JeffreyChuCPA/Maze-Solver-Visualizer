@@ -3,11 +3,17 @@
   flex-direction: column;
   width: 80%;
   aspect-ratio: 1;
-  border: 1px solid white;
+  border: 1px solid var(--gridline-color);
 }
 
 .maze__row {
   display: flex;
-  border: 1px solid white;
+  border: 1px solid var(--gridline-color);
   z-index: 5;
+}
+
+@media (max-width: 767px) {
+  .maze__row {
+    border: none;
+  }
 }

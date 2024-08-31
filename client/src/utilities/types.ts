@@ -46,7 +46,7 @@ export type FetchedBoardsProps = {
   isError: boolean;
   error: Error | null;
   numberOfMazes: number;
-  setNumberOfMazes: SetState<number>
+  setNumberOfMazes: SetState<number>;
 };
 
 export type UserCreatedBoardProps = {

@@ -1,22 +1,91 @@
 .clientcontrolpanel__card {
-  width: 80%;
-  height: 10rem;
+  width: 90%;
+  /* height: 10rem; */
   border: 2px solid var(--first-color);
   background-color: var(--first-color);
   border-radius: 20px;
   margin: 0 auto;
   margin-bottom: 2%;
   max-width: 900px;
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-areas: "maze colors stats";
+  gap: 20px;
+  /* justify-content: space-between; */
   padding: 10px;
   /* background: drop-shadow(0 0 2em #61dafbaa); */
 }
 
-.clientcontrolpanel__colorselection {
+.clientcontrolpanel__title {
+  text-align: center;
+  text-wrap: none;
+  font-size: larger;
+  /* font-size: clamp(medium, 1vw + 1rem, larger) */
+}
+
+.clientcontrolpanel__mazecontrols__section {
+  grid-area: maze;
+  outline: 1px solid red;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.clientcontrolpanel__mazecontrols__input {
+  display: flex;
+  justify-content: space-between;
+  /* outline: 1px solid red; */
+  font-weight: bold;
+}
+
+.clientcontrolpanel__mazecontrols__buttons {
+  display: flex;
+  justify-content: space-evenly;
+  /* outline: 1px solid red; */
+  padding: 5px;
+}
+
+.clientcontrolpanel__statscontrols__section {
+  grid-area: stats;
+  outline: 1px solid red;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  font-weight: bold;
+}
+
+.clientcontrolpanel__colorcontrols__section {
+  grid-area: colors;
+  outline: 1px solid red;
 }
 
 .clientcontrolpanel__colorselector {
+  /* outline: 1px solid red; */
   display: flex;
   justify-content: space-between;
+  align-items: center;
+  font-weight: bold;
+}
+
+@media (max-width: 767px) {
+  .clientcontrolpanel__card {
+    grid-template-columns: 1fr; /* Switch to a single column */
+    grid-template-areas:
+      "maze"
+      "colors"
+      "stats";
+  }
+
+  .clientcontrolpanel__mazecontrols__input,
+  .clientcontrolpanel__colorselector,
+  .clientcontrolpanel__statscontrols__stats {
+    padding-top: 2px;
+    padding-bottom: 2px;
+  }
+}
+
+@media (max-width: 430px) {
+  .clientcontrolpanel__mazecontrols__input {
+    display: block;
+  }
 }

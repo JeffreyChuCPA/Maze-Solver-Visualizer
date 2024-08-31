@@ -139,7 +139,7 @@ const SubmitBoard = () => {
 
       //post to API
       console.log(updatedBoardPost);
-      
+
       postBoard(updatedBoardPost);
       return updatedBoardPost;
     });
@@ -149,7 +149,6 @@ const SubmitBoard = () => {
     iterationRef.current = 0;
     resultRef.current = "";
     console.log(boardPost);
-    
   };
 
   return (
@@ -163,7 +162,7 @@ const SubmitBoard = () => {
               ref={nameRef}
               id="mazename"
               name="mazename"
-              minLength={5}
+              minLength={4}
               maxLength={25}
               required
             />

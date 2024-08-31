@@ -11,7 +11,7 @@ import { debounce } from "../utilities/utilities";
 
 const Home = () => {
   const { currentPage } = useContext(PageContext);
-  const [numberOfMazes, setNumberOfMazes] = useState<number>(10)
+  const [numberOfMazes, setNumberOfMazes] = useState<number>(10);
   const {
     setMaze,
     iterationRef,
@@ -27,14 +27,14 @@ const Home = () => {
     data = [],
     error,
     isLoading,
-  } = useQuery({ queryKey: ["boards", numberOfMazes], queryFn: () => getBoards(numberOfMazes), staleTime: 30000 });
+  } = useQuery({
+    queryKey: ["boards", numberOfMazes],
+    queryFn: () => getBoards(numberOfMazes),
+    staleTime: 30000,
+  });
 
   const mutationSolved = useMutation({
-    mutationFn: ({
-      id,
-    }: {
-      id: number;
-    }) => updateNumberSolved(id),
+    mutationFn: ({ id }: { id: number }) => updateNumberSolved(id),
   });
 
   const debounceMutate = useCallback(
@@ -45,7 +45,7 @@ const Home = () => {
         updatedNumberSolved,
       ); // Debugging
       mutationSolved.mutate({
-        id
+        id,
       });
     }, 1000),
     [],
@@ -74,7 +74,6 @@ const Home = () => {
       });
     }
   }, [debounceMutate, mazeID, setNumberSolved, solved]);
-  
 
   return (
     <>

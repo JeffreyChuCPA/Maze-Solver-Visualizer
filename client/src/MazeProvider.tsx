@@ -45,7 +45,9 @@ const defaultContextValue: MazeContextType = {
   solved: false,
   iterationRef: { current: 0 } as React.MutableRefObject<number>,
   resultRef: { current: "" } as React.MutableRefObject<string>,
-  imageRef: { current: null } as React.MutableRefObject<HTMLInputElement | null>,
+  imageRef: {
+    current: null,
+  } as React.MutableRefObject<HTMLInputElement | null>,
   algorithm: "Wall Follower - Left",
   generatingAlgorithm: "Recursive Backtracking",
   generatingRef: { current: false } as React.MutableRefObject<boolean>,

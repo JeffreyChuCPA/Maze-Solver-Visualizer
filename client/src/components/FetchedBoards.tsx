@@ -83,11 +83,15 @@ const FetchedBoards: React.FC<FetchedBoardsProps> = ({
             id="itemsOptions"
             value={numberOfMazes}
             onChange={(e): void => {
-              setNumberOfMazes(Number(e.target.value))
+              setNumberOfMazes(Number(e.target.value));
             }}
           >
             {numberMazesOptions.map((selection) => (
-              <option key={selection} id={selection.toString()} value={selection}>
+              <option
+                key={selection}
+                id={selection.toString()}
+                value={selection}
+              >
                 {selection}
               </option>
             ))}

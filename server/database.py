@@ -1,9 +1,12 @@
+import os
+from dotenv import load_dotenv
 from sqlalchemy import create_engine #* used to create a new database connection
 from sqlalchemy.orm import sessionmaker #* function is a factory for creating new Session objects, which are used to interact with the database. A Session manages the persistence operations for ORM-mapped objects.
 from sqlalchemy.ext.declarative import declarative_base #* function used to create a base class for the ORM models. When you create your models by subclassing this base class, SQLAlchemy uses them to map Python objects to database tables.
 
 #* connection string that SQLAlchemy will use to connect to the PostgreSQL database.
-URL_DATABASE = "postgresql://postgres:Zbxncm#123@localhost:5432/Mazes"
+load_dotenv()
+URL_DATABASE = os.getenv("DATABASE_URL")
 
 #* Creates the SQLAlchemy Engine object. The Engine is the starting point for any SQLAlchemy application that interacts with a database. It provides a source of database connections and manages the connection pool.
 #* The engine manages the database connection and is used by the SessionLocal to create new sessions

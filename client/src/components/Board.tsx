@@ -12,13 +12,8 @@ const Board = () => {
   const { mazeID, setLikes } = useContext(MazeContext);
   const [liked, setLiked] = useState<boolean>(false); //*state to be used for visual button indication
   const mutationLikes = useMutation({
-    mutationFn: ({
-      id,
-      isLiked,
-    }: {
-      id: number;
-      isLiked: boolean;
-    }) => updateBoardLikes(id, isLiked),
+    mutationFn: ({ id, isLiked }: { id: number; isLiked: boolean }) =>
+      updateBoardLikes(id, isLiked),
   });
 
   //!to test this and maybe bring up to Home component level with liked/setLiked
@@ -41,11 +36,7 @@ const Board = () => {
   //Debounce the data being sent to the network request
   const debounceMutate = useCallback(
     debounce<number, boolean>((id: number, isLiked: boolean) => {
-      console.log(
-        "Like debounced mutation called with:",
-        id,
-        isLiked,
-      ); // Debugging log
+      console.log("Like debounced mutation called with:", id, isLiked); // Debugging log
       mutationLikes.mutate({
         id,
         isLiked,
@@ -58,16 +49,15 @@ const Board = () => {
   const handleLikes = () => {
     if (mazeID) {
       setLiked((prevLiked) => !prevLiked);
-  
+
       setLikes((prevLikes) => {
         const updatedLikes = liked ? prevLikes - 1 : prevLikes + 1;
         console.log(updatedLikes);
-  
+
         debounceMutate(mazeID, !liked);
         return updatedLikes;
       });
-    }
-    else {
+    } else {
       console.log("Maze not valid for likes");
     }
   };
@@ -80,7 +70,7 @@ const Board = () => {
           <div className="board__buttons">
             <button onClick={handleLikes} className="board__like">
               Like
-              <span style={{color: liked? "red" : "black"}}> ❤</span>
+              <span style={{ color: liked ? "red" : "black" }}> ❤</span>
             </button>
             <button className="board__download">Download</button>
           </div>

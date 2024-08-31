@@ -1,5 +1,5 @@
 .board__card {
-  width: 80%;
+  width: 90%;
   aspect-ratio: 1;
   border: 2px solid var(--first-color);
   background-color: var(--first-color);

@@ -5,7 +5,9 @@
   width: 100%;
   top: 0;
   left: 0;
-  background-color: transparent;
+  /* background-color: transparent; */
+  background-color: hsla(0, 0%, 6%, 0.2);
+  backdrop-filter: blur(13px);
   z-index: var(--z-fixed);
 }
 
