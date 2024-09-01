@@ -111,12 +111,13 @@ async def post_maze(maze: MazeBase, db: Annotated[Session, Depends(get_db)]):
             shortPathColor=maze.shortPathColor
         )
         db.add(db_posted_maze)
-        db.commit()
-        db.refresh(db_posted_maze)
+        db.flush()
         
         db_maze_image = models.Image(image=decode_base64_image(maze.image), board_post_id=db_posted_maze.id)
         db.add(db_maze_image)
+        
         db.commit()
+        db.refresh(db_posted_maze)
         
         return MazeBase(
             name=db_posted_maze.name,
