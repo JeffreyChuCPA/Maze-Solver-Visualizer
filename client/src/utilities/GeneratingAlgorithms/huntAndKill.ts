@@ -15,6 +15,8 @@ export const huntAndKill = async (
   setMaze: SetState<Maze>,
   setGenerating: SetState<boolean>,
   setHighlightedRow: SetState<Point | null>,
+  currentGenerationID: number,
+  generatingIDRef: React.MutableRefObject<number>,
 ): Promise<boolean> => {
   const start: Point | boolean = findStartPoint(
     generateStartPoint(baseMaze, setMaze, false),
@@ -92,7 +94,10 @@ export const huntAndKill = async (
   };
 
   const carvePath = async (x: number, y: number): Promise<boolean> => {
-    if (!generatingRef.current) {
+    if (
+      !generatingRef.current ||
+      currentGenerationID !== generatingIDRef.current
+    ) {
       console.log("Stopped generating");
       return false;
     }
@@ -105,6 +110,14 @@ export const huntAndKill = async (
     visited[x][y] = true;
 
     while (stack.length) {
+      if (
+        !generatingRef.current ||
+        currentGenerationID !== generatingIDRef.current
+      ) {
+        console.log("Stopped generating");
+        return false;
+      }
+
       const current = stack.pop();
       if (!current) continue;
 
@@ -121,7 +134,10 @@ export const huntAndKill = async (
       // console.log(neighbors);
 
       if (neighbors.length) {
-        if (!generatingRef.current) {
+        if (
+          !generatingRef.current ||
+          currentGenerationID !== generatingIDRef.current
+        ) {
           console.log("Stopped generating");
           return false;
         }
@@ -133,7 +149,10 @@ export const huntAndKill = async (
         };
 
         if (!visited[next.x][next.y] && !visited[wall.x][wall.y]) {
-          if (!generatingRef.current) {
+          if (
+            !generatingRef.current ||
+            currentGenerationID !== generatingIDRef.current
+          ) {
             console.log("Stopped generating");
             return false;
           }
@@ -155,13 +174,24 @@ export const huntAndKill = async (
   };
 
   const hunt = async () => {
+    if (
+      !generatingRef.current ||
+      currentGenerationID !== generatingIDRef.current
+    ) {
+      console.log("Stopped generating");
+      return false;
+    }
+
     console.log("hunt called");
 
     let foundPath = false;
     for (let x = 1; x < currentMaze.length; x++) {
       for (let y = 1; y < currentMaze.length; y++) {
         if (!visited[x][y] && hasValidMoves(currentMaze, { x, y })) {
-          if (!generatingRef.current) {
+          if (
+            !generatingRef.current ||
+            currentGenerationID !== generatingIDRef.current
+          ) {
             console.log("Stopped generating");
             return false;
           }
@@ -200,6 +230,16 @@ export const huntAndKill = async (
   };
 
   // Start the algorithm
+  if (
+    !generatingRef.current ||
+    currentGenerationID !== generatingIDRef.current
+  ) {
+    console.log("Stopped generating");
+    return false;
+  }
+
+  console.log(generatingIDRef.current);
+
   const current = start;
   if (current) {
     currentMaze[current.x][current.y] = 0;
@@ -208,6 +248,14 @@ export const huntAndKill = async (
     await carvePath(current.x, current.y);
     let pathFound = true;
     while (pathFound) {
+      if (
+        !generatingRef.current ||
+        currentGenerationID !== generatingIDRef.current
+      ) {
+        console.log("Stopped generating");
+        return false;
+      }
+
       pathFound = await hunt();
     }
   }
@@ -216,6 +264,7 @@ export const huntAndKill = async (
     generateEndPoint(baseMaze, setMaze);
     resultRef.current = "Maze Generated";
     setGenerating(false);
+    generatingRef.current = false;
     setMaze(currentMaze);
     console.log("Maze Generation Completed!");
   }

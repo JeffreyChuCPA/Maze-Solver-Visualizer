@@ -14,6 +14,9 @@ export const recursiveBacktracking = async (
   generatingRef: React.MutableRefObject<boolean>,
   setMaze: SetState<Maze>,
   setGenerating: SetState<boolean>,
+  _setHighlightedRow: SetState<Point | null>,
+  currentGenerationID: number,
+  generatingIDRef: React.MutableRefObject<number>,
 ): Promise<boolean> => {
   const start: Point | boolean = findStartPoint(
     generateStartPoint(baseMaze, setMaze, false),
@@ -43,6 +46,14 @@ export const recursiveBacktracking = async (
   };
 
   const carvePath = async (maze: Maze, cell: Point | boolean) => {
+    if (
+      !generatingRef.current ||
+      currentGenerationID !== generatingIDRef.current
+    ) {
+      console.log("Stopped generating");
+      return false;
+    }
+
     if (typeof cell === "boolean") {
       return false;
     }
@@ -55,7 +66,10 @@ export const recursiveBacktracking = async (
       const my = cell.y + dy / 2;
 
       if (isValid(maze, { x: nx, y: ny }) && maze[nx][ny] === 1) {
-        if (!generatingRef.current) {
+        if (
+          !generatingRef.current ||
+          currentGenerationID !== generatingIDRef.current
+        ) {
           console.log("Stopped generating");
           return false;
         }
@@ -72,15 +86,18 @@ export const recursiveBacktracking = async (
   };
 
   await carvePath(baseMaze, start);
-  if (generatingRef.current) {
-    generateEndPoint(baseMaze, setMaze);
-    resultRef.current = "Generation Successful";
-    setGenerating(false);
-    console.log("Done Generating");
-    return true;
+  if (
+    !generatingRef.current ||
+    currentGenerationID !== generatingIDRef.current
+  ) {
+    console.log("Stopped");
+    return false;
   }
 
+  generateEndPoint(baseMaze, setMaze);
+  resultRef.current = "Generation Successful";
   setGenerating(false);
+  generatingRef.current = false;
   console.log("Done Generating");
-  return false;
+  return true;
 };

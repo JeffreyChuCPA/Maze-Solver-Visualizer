@@ -12,6 +12,8 @@ export const generate = (
   setMaze: SetState<Maze>,
   setGenerating: SetState<boolean>,
   setHighlightedRow: SetState<Point | null>,
+  currentGenerationID: number,
+  generatingIDRef: React.MutableRefObject<number>,
 ): Maze => {
   const baseMaze = generateBaseMaze(mazeSize, setMaze);
 
@@ -26,6 +28,8 @@ export const generate = (
       setMaze,
       setGenerating || (() => {}),
       setHighlightedRow,
+      currentGenerationID,
+      generatingIDRef,
     );
   } else {
     console.error(`Algorithm ${generatingAlgorithm} not found.`);

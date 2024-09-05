@@ -1,6 +1,6 @@
 .about__card {
   width: 80%;
-  height: 10rem;
+  height: 100vw;
   border: 2px solid var(--first-color);
   background-color: var(--first-color);
   border-radius: 20px;
@@ -12,3 +12,12 @@
   padding: 10px;
   /* background: drop-shadow(0 0 2em #61dafbaa); */
 }
+
+/* .about__page {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+} */
+

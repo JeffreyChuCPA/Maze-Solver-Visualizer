@@ -1,8 +1,7 @@
 import { useContext, useState } from "react";
 import "../styling/ClientControlPanel.css";
-import { algorithms, generateMazeAlgorithms } from "../utilities/objects";
+import { algorithms, delayValues, generateMazeAlgorithms } from "../utilities/objects";
 import {
-  delayCalculation,
   delayPercentage,
   generateBaseBuildMaze,
   generateBaseMaze,
@@ -26,6 +25,7 @@ const ClientControlPanel = () => {
     algorithm,
     generatingAlgorithm,
     generatingRef,
+    generatingIDRef,
     generating,
     visualize,
     setVisualize,
@@ -37,6 +37,7 @@ const ClientControlPanel = () => {
     setSolved,
     setGenerating,
     setMazeID,
+    setMazeName,
   } = useContext(MazeContext);
   const colorStates: ColorContextType = useContext(ColorContext);
 
@@ -53,6 +54,10 @@ const ClientControlPanel = () => {
     setVisualize(false);
     setGenerating(true);
     setMazeID(null);
+    setMazeName(null);
+
+    generatingIDRef.current += 1;
+    const currentGenerationID = generatingIDRef.current;
 
     generate(
       mazeSize,
@@ -64,6 +69,8 @@ const ClientControlPanel = () => {
       setMaze,
       setGenerating,
       colorStates.setHighlightedRow,
+      currentGenerationID,
+      generatingIDRef,
     );
   };
 
@@ -89,12 +96,13 @@ const ClientControlPanel = () => {
   };
 
   const clearMaze = () => {
-    setSolving(false);
-    setSolved(false);
+    generatingRef.current = false;
+    generatingIDRef.current += 1;
     solvingRef.current = false;
-    if (generatingRef) generatingRef.current = false;
     iterationRef.current = 0;
     resultRef.current = "";
+    setSolving(false);
+    setSolved(false);
     setVisualize(false);
     if (setGenerating) setGenerating(false);
     resetMaze(maze, setMaze, 0);
@@ -121,263 +129,401 @@ const ClientControlPanel = () => {
     <>
       {currentPage === "Home" && (
         <div className="clientcontrolpanel__card">
-          <div className="clientcontrolpanel__mazecontrols__section">
+          <div className="clientcontrolpanel__mazecontrols__gridsection">
             <h1 className="clientcontrolpanel__title">Maze Controls</h1>
-            <div className="clientcontrolpanel__mazecontrols__input">
-              Grid size:{" "}
-              <input
-                id="mazeSize"
-                name="mazeSize"
-                type="number"
-                min="10"
-                max="50"
-                value={mazeSize}
-                onChange={(e): void => setMazeSize(Number(e.target.value))}
-              />
-            </div>
-            <div className="clientcontrolpanel__mazecontrols__input">
-              Solving Algorithm:{" "}
-              <select
-                name="algorithm"
-                id="algorithm"
-                value={algorithm}
-                onChange={(e): void => {
-                  setAlgorithm(e.target.value as keyof typeof algorithms);
-                  clearMaze();
-                }}
-              >
-                {Object.keys(algorithms).map((key) => (
-                  <option id={key} key={key} value={key}>
-                    {key}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <div className="clientcontrolpanel__mazecontrols__input">
-              Generating Algorithm:{" "}
-              <select
-                name="generatingAlgorithm"
-                id="generatingAlgorithm"
-                value={generatingAlgorithm}
-                onChange={(e): void => {
-                  if (setGeneratingAlgorithm)
-                    setGeneratingAlgorithm(
-                      e.target.value as keyof typeof generateMazeAlgorithms,
-                    );
-                  clearMaze();
-                }}
-              >
-                {Object.keys(generateMazeAlgorithms).map((key) => (
-                  <option id={key} key={key} value={key}>
-                    {key}
-                  </option>
-                ))}
-              </select>
-            </div>
-            {!isMobile && (
-              <div className="clientcontrolpanel__mazecontrols__buttons">
-                {!generating ? (
-                  <button onClick={generateMaze}>Generate Maze</button>
-                ) : (
-                  <>
-                    <button onClick={clearMaze}>Stop</button>
-                  </>
-                )}
-                {!visualize ? (
-                  <button onClick={startSolving}>Visualize Solver</button>
-                ) : (
-                  <>
-                    <button onClick={clearMaze}>Reset</button>
-                  </>
-                )}
+            <div className="clientcontrolpanel__mazecontrols__section">
+              <div className="clientcontrolpanel__mazecontrols__input">
+                Grid size:{" "}
+                <input
+                  id="mazeSize"
+                  name="mazeSize"
+                  type="number"
+                  min="10"
+                  max="50"
+                  value={mazeSize}
+                  disabled={generatingRef.current || solvingRef.current}
+                  onChange={(e): void => setMazeSize(Number(e.target.value))}
+                />
               </div>
-            )}
+              <div className="clientcontrolpanel__mazecontrols__input">
+                Solving Algorithm:{" "}
+                <select
+                  name="algorithm"
+                  id="algorithm"
+                  value={algorithm}
+                  disabled={generatingRef.current || solvingRef.current}
+                  onChange={(e): void => {
+                    setAlgorithm(e.target.value as keyof typeof algorithms);
+                    clearMaze();
+                  }}
+                >
+                  {Object.keys(algorithms).map((key) => (
+                    <option id={key} key={key} value={key}>
+                      {key}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="clientcontrolpanel__mazecontrols__input">
+                Generating Algorithm:{" "}
+                <select
+                  name="generatingAlgorithm"
+                  id="generatingAlgorithm"
+                  value={generatingAlgorithm}
+                  disabled={generatingRef.current || solvingRef.current}
+                  onChange={(e): void => {
+                    if (setGeneratingAlgorithm)
+                      setGeneratingAlgorithm(
+                        e.target.value as keyof typeof generateMazeAlgorithms,
+                      );
+                    clearMaze();
+                  }}
+                >
+                  {Object.keys(generateMazeAlgorithms).map((key) => (
+                    <option id={key} key={key} value={key}>
+                      {key}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {!isMobile && (
+                <div className="clientcontrolpanel__mazecontrols__buttons">
+                  {!generating ? (
+                    <button
+                      onClick={generateMaze}
+                      disabled={solvingRef.current}
+                      className="interactive__button"
+                    >
+                      Generate Maze
+                    </button>
+                  ) : (
+                    <>
+                      <button
+                        onClick={clearMaze}
+                        className="interactive__button"
+                      >
+                        Stop
+                      </button>
+                    </>
+                  )}
+                  {!visualize ? (
+                    <button
+                      onClick={startSolving}
+                      disabled={generatingRef.current}
+                      className="interactive__button"
+                    >
+                      Visualize Solver
+                    </button>
+                  ) : (
+                    <>
+                      <button
+                        onClick={clearMaze}
+                        className="interactive__button"
+                      >
+                        Reset
+                      </button>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
 
-          <div className="clientcontrolpanel__colorcontrols__section">
+          <div className="clientcontrolpanel__colorcontrols__gridsection">
             <h1 className="clientcontrolpanel__title">Color Controls</h1>
-            <div className="clientcontrolpanel__colorselector">
-              <span>Path Color: </span>
-              <input
-                type="color"
-                value={colorStates.pathColor}
-                onChange={(e) => colorStates.setPathColor(e.target.value)}
-              />
-            </div>
-            <div className="clientcontrolpanel__colorselector">
-              <span>Wall Color: </span>
-              <input
-                type="color"
-                value={colorStates.wallColor}
-                onChange={(e) => colorStates.setWallColor(e.target.value)}
-              />
-            </div>
-            <div className="clientcontrolpanel__colorselector">
-              <span> Walked Color: </span>
-              <input
-                type="color"
-                value={colorStates.walkedColor}
-                onChange={(e) => colorStates.setWalkedColor(e.target.value)}
-              />
-            </div>
-            <div className="clientcontrolpanel__colorselector">
-              <span>Queued Color: </span>
-              <input
-                type="color"
-                value={colorStates.queuedColor}
-                onChange={(e) => colorStates.setQueuedColor(e.target.value)}
-              />
-            </div>
-            <div className="clientcontrolpanel__colorselector">
-              <span> Current Color: </span>
-              <input
-                type="color"
-                value={colorStates.shortPathColor}
-                onChange={(e) => colorStates.setShortPathColor(e.target.value)}
-              />
+            <div className="clientcontrolpanel__colorcontrols__section">
+              <div className="clientcontrolpanel__colorselector">
+                <span>Path Color: </span>
+                <input
+                  type="color"
+                  value={colorStates.pathColor}
+                  onChange={(e) => colorStates.setPathColor(e.target.value)}
+                  className="clientcontrolpanel__colorselector__input"
+                />
+              </div>
+              <div className="clientcontrolpanel__colorselector">
+                <span>Wall Color: </span>
+                <input
+                  type="color"
+                  value={colorStates.wallColor}
+                  onChange={(e) => colorStates.setWallColor(e.target.value)}
+                  className="clientcontrolpanel__colorselector__input"
+                />
+              </div>
+              <div className="clientcontrolpanel__colorselector">
+                <span> Walked Color: </span>
+                <input
+                  type="color"
+                  value={colorStates.walkedColor}
+                  onChange={(e) => colorStates.setWalkedColor(e.target.value)}
+                  className="clientcontrolpanel__colorselector__input"
+                />
+              </div>
+              <div className="clientcontrolpanel__colorselector">
+                <span>Queued Color: </span>
+                <input
+                  type="color"
+                  value={colorStates.queuedColor}
+                  onChange={(e) => colorStates.setQueuedColor(e.target.value)}
+                  className="clientcontrolpanel__colorselector__input"
+                />
+              </div>
+              <div className="clientcontrolpanel__colorselector">
+                <span> Current Color: </span>
+                <input
+                  type="color"
+                  value={colorStates.shortPathColor}
+                  onChange={(e) =>
+                    colorStates.setShortPathColor(e.target.value)
+                  }
+                  className="clientcontrolpanel__colorselector__input"
+                />
+              </div>
             </div>
           </div>
 
-          <div className="clientcontrolpanel__statscontrols__section">
+          <div className="clientcontrolpanel__statscontrols__gridsection">
             <h1 className="clientcontrolpanel__title">Stats</h1>
-            <div className="clientcontrolpanel__statscontrols__stats">
-              Speed: {delayPercentage(delay)}%
-            </div>
-            <input
-              type="range"
-              min={10}
-              max={100}
-              step={10}
-              onChange={(e) =>
-                setDelay(delayCalculation(parseFloat(e.target.value)))
-              }
-              value={delayPercentage(delay)}
-            />
-            <div className="clientcontrolpanel__statscontrols__stats">
-              Number of Iterations: {iterationRef.current}
-            </div>
-            <div className="clientcontrolpanel__statscontrols__stats">
-              Result: {resultRef.current}
-            </div>
-            {isMobile && (
-              <div className="clientcontrolpanel__mazecontrols__buttons">
-                {!generating ? (
-                  <button onClick={generateMaze}>Generate Maze</button>
-                ) : (
-                  <>
-                    <button onClick={clearMaze}>Stop</button>
-                  </>
-                )}
-                {!visualize ? (
-                  <button onClick={startSolving}>Visualize Solver</button>
-                ) : (
-                  <>
-                    <button onClick={clearMaze}>Reset</button>
-                  </>
-                )}
+            <div className="clientcontrolpanel__statscontrols__section">
+              <div className="clientcontrolpanel__statscontrols__stats">
+                Speed: {delayPercentage(delay)}%
               </div>
-            )}
+              <input
+                type="range"
+                min={10}
+                max={100}
+                step={10}
+                onChange={(e) =>
+                  setDelay(delayValues[e.target.value as keyof typeof delayValues])
+                }
+                value={delayPercentage(delay)}
+              />
+              <div className="clientcontrolpanel__statscontrols__stats">
+                Number of Iterations: {iterationRef.current}
+              </div>
+              <div className="clientcontrolpanel__statscontrols__stats">
+                Result: {resultRef.current}
+              </div>
+              {isMobile && (
+                <div className="clientcontrolpanel__mazecontrols__buttons">
+                  {!generating ? (
+                    <button
+                      onClick={generateMaze}
+                      disabled={solvingRef.current}
+                      className="interactive__button"
+                    >
+                      Generate Maze
+                    </button>
+                  ) : (
+                    <>
+                      <button
+                        onClick={clearMaze}
+                        className="interactive__button"
+                      >
+                        Stop
+                      </button>
+                    </>
+                  )}
+                  {!visualize ? (
+                    <button
+                      onClick={startSolving}
+                      disabled={generatingRef.current}
+                      className="interactive__button"
+                    >
+                      Visualize Solver
+                    </button>
+                  ) : (
+                    <>
+                      <button
+                        onClick={clearMaze}
+                        className="interactive__button"
+                      >
+                        Reset
+                      </button>
+                    </>
+                  )}
+                </div>
+              )}
+            </div>
           </div>
         </div>
       )}{" "}
       {currentPage === "build-board" && (
-        <div className="clientcontrolpanel__card">
-          <div>
-            <div>
-              Grid size:{" "}
-              <input
-                id="mazeSize"
-                name="mazeSize"
-                type="number"
-                min="10"
-                max="50"
-                value={mazeSize}
-                onChange={(e): void => {
-                  setMazeSize(Number(e.target.value));
-                }}
-              />
+        <div className="clientcontrolpanel__card build">
+          <div className="clientcontrolpanel__mazecontrols__gridsection">
+            <h1 className="clientcontrolpanel__title">Maze Controls</h1>
+            <div className="clientcontrolpanel__mazecontrols__section">
+              <div className="clientcontrolpanel__mazecontrols__input">
+                Grid size:{" "}
+                <input
+                  id="mazeSize"
+                  name="mazeSize"
+                  type="number"
+                  min="10"
+                  max="50"
+                  value={mazeSize}
+                  onChange={(e): void => {
+                    setMazeSize(Number(e.target.value));
+                  }}
+                />
+              </div>
+              <div className="clientcontrolpanel__mazecontrols__input">
+                Solving Algorithm:{" "}
+                <select
+                  name="algorithm"
+                  id="algorithm"
+                  value={algorithm}
+                  onChange={(e): void => {
+                    setAlgorithm(e.target.value as keyof typeof algorithms);
+                    clearMaze();
+                  }}
+                >
+                  {Object.keys(algorithms).map((key) => (
+                    <option id={key} key={key} value={key}>
+                      {key}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              {!isMobile && (
+                <div className="clientcontrolpanel__mazecontrols__buttons">
+                  <button
+                    onClick={clearBuildBoard}
+                    className="interactive__button"
+                  >
+                    Clear Board
+                  </button>
+                  <button
+                    onClick={fillBuildBoard}
+                    className="interactive__button"
+                  >
+                    Fill Board
+                  </button>
+                  {!visualize ? (
+                    <button
+                      onClick={startSolving}
+                      className="interactive__button"
+                    >
+                      Visualize Solver
+                    </button>
+                  ) : (
+                    <>
+                      <button
+                        onClick={clearMaze}
+                        className="interactive__button"
+                      >
+                        Reset
+                      </button>
+                    </>
+                  )}
+                </div>
+              )}
             </div>
-            <div>
-              Solving Algorithm:{" "}
-              <select
-                name="algorithm"
-                id="algorithm"
-                value={algorithm}
-                onChange={(e): void => {
-                  setAlgorithm(e.target.value as keyof typeof algorithms);
-                  clearMaze();
-                }}
-              >
-                {Object.keys(algorithms).map((key) => (
-                  <option id={key} key={key} value={key}>
-                    {key}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <button onClick={clearBuildBoard}>Clear Board</button>
-            <button onClick={fillBuildBoard}>Fill Board</button>
-            {!visualize ? (
-              <button onClick={startSolving}>Visualize Solver</button>
-            ) : (
-              <>
-                <button onClick={clearMaze}>Reset</button>
-              </>
-            )}
-            <input
-              type="range"
-              min={10}
-              max={100}
-              step={10}
-              onChange={(e) =>
-                setDelay(delayCalculation(parseFloat(e.target.value)))
-              }
-              value={delayPercentage(delay)}
-            />
-            <div>Speed: {delayPercentage(delay)}%</div>
-            <div>Number of Iterations: {iterationRef.current}</div>
-            <div>Result: {resultRef.current}</div>
           </div>
-          <div className="clientcontrolpanel__colorselection">
-            <div className="clientcontrolpanel__colorselector">
-              <span>Path Color: </span>
-              <input
-                type="color"
-                value={colorStates.pathColor}
-                onChange={(e) => colorStates.setPathColor(e.target.value)}
-              />
+
+          <div className="clientcontrolpanel__colorcontrols__gridsection">
+            <h1 className="clientcontrolpanel__title">Color Controls</h1>
+            <div className="clientcontrolpanel__colorcontrols__section">
+              <div className="clientcontrolpanel__colorselector">
+                <span>Path Color: </span>
+                <input
+                  type="color"
+                  value={colorStates.pathColor}
+                  onChange={(e) => colorStates.setPathColor(e.target.value)}
+                />
+              </div>
+              <div className="clientcontrolpanel__colorselector">
+                <span>Wall Color: </span>
+                <input
+                  type="color"
+                  value={colorStates.wallColor}
+                  onChange={(e) => colorStates.setWallColor(e.target.value)}
+                />
+              </div>
+              <div className="clientcontrolpanel__colorselector">
+                <span> Walked Color: </span>
+                <input
+                  type="color"
+                  value={colorStates.walkedColor}
+                  onChange={(e) => colorStates.setWalkedColor(e.target.value)}
+                />
+              </div>
+              <div className="clientcontrolpanel__colorselector">
+                <span>Queued Color: </span>
+                <input
+                  type="color"
+                  value={colorStates.queuedColor}
+                  onChange={(e) => colorStates.setQueuedColor(e.target.value)}
+                />
+              </div>
+              <div className="clientcontrolpanel__colorselector">
+                <span> Current Color: </span>
+                <input
+                  type="color"
+                  value={colorStates.shortPathColor}
+                  onChange={(e) =>
+                    colorStates.setShortPathColor(e.target.value)
+                  }
+                />
+              </div>
             </div>
-            <div className="clientcontrolpanel__colorselector">
-              <span>Wall Color: </span>
+          </div>
+
+          <div className="clientcontrolpanel__statscontrols__gridsection">
+            <h1 className="clientcontrolpanel__title">Stats</h1>
+            <div className="clientcontrolpanel__statscontrols__section">
+              <div className="clientcontrolpanel__statscontrols__stats">
+                Speed: {delayPercentage(delay)}%
+              </div>
               <input
-                type="color"
-                value={colorStates.wallColor}
-                onChange={(e) => colorStates.setWallColor(e.target.value)}
+                type="range"
+                min={10}
+                max={100}
+                step={10}
+                onChange={(e) =>
+                  setDelay(delayValues[e.target.value as keyof typeof delayValues])
+                }
+                value={delayPercentage(delay)}
               />
-            </div>
-            <div className="clientcontrolpanel__colorselector">
-              <span> Walked Color: </span>
-              <input
-                type="color"
-                value={colorStates.walkedColor}
-                onChange={(e) => colorStates.setWalkedColor(e.target.value)}
-              />
-            </div>
-            <div className="clientcontrolpanel__colorselector">
-              <span>Queued Color: </span>
-              <input
-                type="color"
-                value={colorStates.queuedColor}
-                onChange={(e) => colorStates.setQueuedColor(e.target.value)}
-              />
-            </div>
-            <div className="clientcontrolpanel__colorselector">
-              <span> Current Color: </span>
-              <input
-                type="color"
-                value={colorStates.shortPathColor}
-                onChange={(e) => colorStates.setShortPathColor(e.target.value)}
-              />
+              <div className="clientcontrolpanel__statscontrols__stats">
+                Number of Iterations: {iterationRef.current}
+              </div>
+              <div className="clientcontrolpanel__statscontrols__stats">
+                Result: {resultRef.current}
+              </div>
+              {isMobile && (
+                <div className="clientcontrolpanel__mazecontrols__buttons">
+                  <button
+                    onClick={clearBuildBoard}
+                    className="interactive__button"
+                  >
+                    Clear Board
+                  </button>
+                  <button
+                    onClick={fillBuildBoard}
+                    className="interactive__button"
+                  >
+                    Fill Board
+                  </button>
+                  {!visualize ? (
+                    <button
+                      onClick={startSolving}
+                      className="interactive__button"
+                    >
+                      Visualize Solver
+                    </button>
+                  ) : (
+                    <>
+                      <button
+                        onClick={clearMaze}
+                        className="interactive__button"
+                      >
+                        Reset
+                      </button>
+                    </>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>

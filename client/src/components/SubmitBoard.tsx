@@ -153,8 +153,8 @@ const SubmitBoard = () => {
 
   return (
     <>
-      <div className="submitboard__card">
-        <form onSubmit={handleBoardSubmit}>
+      <div className="submitboard__card build">
+        <form onSubmit={handleBoardSubmit} className="submitboard__form">
           <div className="submitboard__name">
             Maze Name:{" "}
             <input
@@ -168,11 +168,17 @@ const SubmitBoard = () => {
             />
           </div>
           {isValidating ? (
-            <button className="submitboard__button" disabled>
+            <button
+              className="submitboard__button interactive__button"
+              disabled
+            >
               Checking...
             </button>
           ) : (
-            <button className="submitboard__button" type="submit">
+            <button
+              className="submitboard__button interactive__button"
+              type="submit"
+            >
               Submit
             </button>
           )}

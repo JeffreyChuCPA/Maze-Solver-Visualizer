@@ -11,6 +11,7 @@ const UserCreatedBoard: React.FC<UserCreatedBoardProps> = ({ boardData }) => {
     setVisualize,
     setLikes,
     setMazeID,
+    setMazeName,
     setNumberSolved,
     setSolved,
   } = useContext(MazeContext);
@@ -24,6 +25,7 @@ const UserCreatedBoard: React.FC<UserCreatedBoardProps> = ({ boardData }) => {
     setSolved(false);
     setLikes(boardData.numberLikes);
     setMazeID(boardData.mazeID);
+    setMazeName(boardData.name);
     setNumberSolved(boardData.numberSolved);
     colorStates.setPathColor(boardData.pathColor);
     colorStates.setWallColor(boardData.wallColor);
@@ -33,6 +35,7 @@ const UserCreatedBoard: React.FC<UserCreatedBoardProps> = ({ boardData }) => {
   }, [
     boardData.maze,
     boardData.mazeID,
+    boardData.name,
     boardData.mazeSize,
     boardData.numberLikes,
     boardData.numberSolved,
@@ -45,6 +48,7 @@ const UserCreatedBoard: React.FC<UserCreatedBoardProps> = ({ boardData }) => {
     setLikes,
     setMaze,
     setMazeID,
+    setMazeName,
     setMazeSize,
     setNumberSolved,
     setSolved,
@@ -63,7 +67,7 @@ const UserCreatedBoard: React.FC<UserCreatedBoardProps> = ({ boardData }) => {
       <div className="fetchboards__text">
         <div className="fetchboards__text__name">{boardData.name}</div>
         <div>Likes: {boardData.numberLikes}</div>
-        <div>Solved Amount: {boardData.numberSolved}</div>
+        <div>Solved Count: {boardData.numberSolved}</div>
       </div>
     </div>
   );

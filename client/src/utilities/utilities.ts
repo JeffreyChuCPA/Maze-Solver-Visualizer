@@ -1,3 +1,4 @@
+import { delayValues } from "./objects";
 import { Maze, Point, SetState } from "./types";
 
 //* finding/generating/validating a Point on maze
@@ -271,14 +272,12 @@ export const generateBaseBuildMaze = (mazeSize: number): number[][] => {
   return baseMaze;
 };
 
-//*calculate delay value
-//!FIX 100% is fine but at 90% its too slow. Change the range speed for the delay
-export const delayCalculation = (delay: number): number => {
-  return (-60 / 9) * delay + 6000 / 9;
-};
-
+//*locate percentage for delay value
 export const delayPercentage = (delay: number): number => {
-  return Math.round(((delay - 6000 / 9) * 9) / -60);
+  const key = Object.keys(delayValues).find(
+    (k) => delayValues[k as keyof typeof delayValues] === delay
+  )
+  return key ? parseInt(key) : 0
 };
 
 //*calculate minimum walls to be added to maze (for walls to be 40% of the whole board)

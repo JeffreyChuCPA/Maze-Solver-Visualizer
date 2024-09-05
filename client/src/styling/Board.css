@@ -11,14 +11,24 @@
   align-items: center;
   max-width: 900px;
   flex-direction: column;
-  /* background: drop-shadow(0 0 2em #61dafbaa); */
+  box-shadow:
+    0 0.2rem 3.2rem -0.125rem var(--second-color),
+    0 0px 0.5rem 0.5rem var(--forth-color);
+  margin-bottom: clamp(30px, 2vw, 50px);
 }
 
 .board__buttons {
   display: flex;
   justify-content: space-evenly;
   align-items: center;
-  gap: 20px;
+  gap: 10px;
+  padding: clamp(10px, 3vw, 15px);
+}
+
+.board__name {
+  font-size: clamp(1.25rem, 3vw, 2rem);
+  padding: clamp(10px, 3vw, 15px);
+  color: var(--text-color);
 }
 
 .board__like {

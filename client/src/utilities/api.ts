@@ -3,13 +3,16 @@ import { BoardPost } from "./types";
 //*Post method to API
 export const postBoard = async (board: BoardPost) => {
   try {
-    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/create-maze`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
+    const response = await fetch(
+      `${import.meta.env.VITE_API_BASE_URL}/create-maze`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(board),
       },
-      body: JSON.stringify(board),
-    });
+    );
     if (response.ok) {
       console.log("successfully submitted");
 
@@ -22,24 +25,23 @@ export const postBoard = async (board: BoardPost) => {
       alert("Failed to submit board post.");
     }
   } catch (error) {
-    alert(`Error occurred: ${error}`);
+    alert(`Post Error occurred: ${error}`);
   }
 };
 
 //*Get method to API
-export const getBoards = async (amount: number) => {
+export const getBoards = async () => {
   try {
-    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/mazes?amount=${amount}`);
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/mazes`);
     if (response.ok) {
       const boards = await response.json();
-      console.log(boards);
       return boards;
     } else {
-      const message = `An error has occurred: ${response.status}`;
+      const message = `Unable to retrieve mazes`;
       throw new Error(message);
     }
   } catch (error) {
-    alert(`Error occurred: ${error}`);
+    console.error(`${error}`);
   }
 };
 
@@ -53,7 +55,7 @@ export const updateBoardLikes = async (id: number, isLiked: boolean) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({id, isLiked})
+        body: JSON.stringify({ id, isLiked }),
       },
     );
 
@@ -65,7 +67,7 @@ export const updateBoardLikes = async (id: number, isLiked: boolean) => {
     console.log("Maze was liked: ", data);
     return data;
   } catch (error) {
-    console.error("Error occurred:", error);
+    console.error("Update Error occurred:", error);
     throw error;
   }
 };
@@ -80,7 +82,7 @@ export const updateNumberSolved = async (id: number) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({id})
+        body: JSON.stringify({ id }),
       },
     );
 
@@ -92,7 +94,7 @@ export const updateNumberSolved = async (id: number) => {
     console.log("Maze solve count is updated: ", data);
     return data;
   } catch (error) {
-    console.error("Error occurred:", error);
+    console.error("Update Error occurred:", error);
     throw error;
   }
 };

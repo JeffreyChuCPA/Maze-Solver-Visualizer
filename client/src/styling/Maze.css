@@ -4,6 +4,7 @@
   width: 80%;
   aspect-ratio: 1;
   border: 1px solid var(--gridline-color);
+  box-shadow: 0 0 10px 10px rgba(0, 0, 0, 0.7);
 }
 
 .maze__row {

@@ -19,10 +19,12 @@ interface MazeContextType {
   algorithm: AlgorithmName;
   generatingAlgorithm: GeneratingAlgorithmName;
   generatingRef: React.MutableRefObject<boolean>;
+  generatingIDRef: React.MutableRefObject<number>;
   generating: boolean;
   visualize: boolean;
   likes: number;
   mazeID: number | null;
+  mazeName: string | null;
   numberSolved: number;
   setMazeSize: SetState<number>;
   setAlgorithm: SetState<AlgorithmName>;
@@ -34,6 +36,7 @@ interface MazeContextType {
   setVisualize: SetState<boolean>;
   setLikes: SetState<number>;
   setMazeID: SetState<number | null>;
+  setMazeName: SetState<string | null>;
   setNumberSolved: SetState<number>;
 }
 
@@ -51,10 +54,12 @@ const defaultContextValue: MazeContextType = {
   algorithm: "Wall Follower - Left",
   generatingAlgorithm: "Recursive Backtracking",
   generatingRef: { current: false } as React.MutableRefObject<boolean>,
+  generatingIDRef: { current: 0 } as React.MutableRefObject<number>,
   generating: false,
   visualize: false,
   likes: 0,
   mazeID: null,
+  mazeName: null,
   numberSolved: 0,
   setMazeSize: () => {},
   setAlgorithm: () => {},
@@ -66,6 +71,7 @@ const defaultContextValue: MazeContextType = {
   setVisualize: () => {},
   setLikes: () => {},
   setMazeID: () => {},
+  setMazeName: () => {},
   setNumberSolved: () => {},
 };
 
@@ -90,8 +96,10 @@ const MazeProvider: React.FC<MazeProviderProps> = ({ children }) => {
   const [likes, setLikes] = useState<number>(0);
   const [numberSolved, setNumberSolved] = useState<number>(0);
   const [mazeID, setMazeID] = useState<number | null>(null);
+  const [mazeName, setMazeName] = useState<string | null>(null);
   const solvingRef = useRef<boolean>(false);
   const generatingRef = useRef<boolean>(false);
+  const generatingIDRef = useRef<number>(0);
   const iterationRef = useRef<number>(0);
   const resultRef = useRef<string>("");
   const imageRef = useRef<HTMLInputElement>(null);
@@ -109,9 +117,11 @@ const MazeProvider: React.FC<MazeProviderProps> = ({ children }) => {
         visualize,
         likes,
         mazeID,
+        mazeName,
         numberSolved,
         solvingRef,
         generatingRef,
+        generatingIDRef,
         iterationRef,
         resultRef,
         imageRef,
@@ -125,6 +135,7 @@ const MazeProvider: React.FC<MazeProviderProps> = ({ children }) => {
         setVisualize,
         setLikes,
         setMazeID,
+        setMazeName,
         setNumberSolved,
       }}
     >

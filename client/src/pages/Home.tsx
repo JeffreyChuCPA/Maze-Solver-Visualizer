@@ -21,15 +21,15 @@ const Home = () => {
     solved,
     setNumberSolved,
     mazeID,
+    setMazeName,
   } = useContext(MazeContext);
   const {
     isError,
     data = [],
-    error,
     isLoading,
   } = useQuery({
-    queryKey: ["boards", numberOfMazes],
-    queryFn: () => getBoards(numberOfMazes),
+    queryKey: ["boards"],
+    queryFn: () => getBoards(),
     staleTime: 30000,
   });
 
@@ -54,13 +54,22 @@ const Home = () => {
   useEffect(() => {
     if (currentPage === "Home") {
       setMaze(sampleMazes.welcome);
+      setMazeName(null);
       iterationRef.current = 0;
       resultRef.current = "";
       solvingRef.current = false;
       setVisualize(false);
       console.log("this ran");
     }
-  }, [setMaze, currentPage, iterationRef, resultRef, setVisualize, solvingRef]);
+  }, [
+    setMaze,
+    currentPage,
+    iterationRef,
+    resultRef,
+    setVisualize,
+    solvingRef,
+    setMazeName,
+  ]);
 
   //! do i need to update the setNumberSolved?
   useEffect(() => {
@@ -83,7 +92,6 @@ const Home = () => {
         displayedBoards={data}
         isLoading={isLoading}
         isError={isError}
-        error={error}
         numberOfMazes={numberOfMazes}
         setNumberOfMazes={setNumberOfMazes}
       />

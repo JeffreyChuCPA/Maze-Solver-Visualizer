@@ -8,12 +8,13 @@
 
 :root {
   --header-height: 3.5rem;
-  --first-color: #16dbe9;
-  --second-color: #1f666b;
-  --third-color: #fdf90d;
+  --first-color: #66fcf1;
+  --second-color: #45a29e;
+  --third-color: #c5c6c7;
+  --forth-color: #1f2833;
   --title-color: hsl(184, 83%, 50%);
-  --text-color: black;
-  --body-color: #242424;
+  --text-color: #0b0c10;
+  --body-color: #0b0c10;
   --gridline-color: white;
   --body-font: "Inter";
   --h2-font-size: 1.25rem;
@@ -24,7 +25,11 @@
 }
 
 body {
-  background-color: var(--body-color);
+  background-image: linear-gradient(
+    to top,
+    var(--body-color),
+    var(--forth-color)
+  );
   color: var(--text-color);
   font-family: var(--body-font);
 }
@@ -35,4 +40,38 @@ ul {
 
 a {
   text-decoration: none;
+}
+
+.build {
+  box-shadow:
+    0 0.2rem 3.2rem -0.125rem var(--third-color),
+    0 0px 0.5rem 0.5rem var(--forth-color);
+  margin-bottom: clamp(30px, 2vw, 50px);
+}
+
+.interactive__button {
+  padding: 0.6em;
+  border: none;
+  outline: none;
+  color: var(--third-color);
+  background: #111;
+  cursor: pointer;
+  position: relative;
+  z-index: 0;
+  border-radius: 10px;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.interactive__button:hover {
+  color: var(--text-color);
+  background-color: var(--third-color);
+  box-shadow: rgba(0, 0, 0, 0.7) 0 8px 15px;
+  transform: translateY(-3px);
+}
+
+.interactive__button:active {
+  box-shadow: none;
+  transform: translateY(0);
 }

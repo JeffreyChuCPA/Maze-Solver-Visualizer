@@ -40,8 +40,8 @@ interface ColorProviderProps {
 const ColorProvider: React.FC<ColorProviderProps> = ({ children }) => {
   const [pathColor, setPathColor] = useState<string>("#FFFFFF");
   const [wallColor, setWallColor] = useState<string>("#000000");
-  const [walkedColor, setWalkedColor] = useState<string>("#16dbe9");
-  const [queuedColor, setQueuedColor] = useState<string>("#1f666b");
+  const [walkedColor, setWalkedColor] = useState<string>("#66FCF1");
+  const [queuedColor, setQueuedColor] = useState<string>("#45A29E");
   const [shortPathColor, setShortPathColor] = useState<string>("#fdf90d");
   const [highlightedRow, setHighlightedRow] = useState<Point | null>(null);
 
