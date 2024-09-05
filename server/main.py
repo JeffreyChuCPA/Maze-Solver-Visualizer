@@ -1,4 +1,5 @@
-import codecs
+from dotenv import load_dotenv
+import os
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -10,10 +11,13 @@ import base64
 
 app = FastAPI()
 models.Base.metadata.create_all(bind=engine)
+load_dotenv()
 
 # CORS settings
 origins = [
-    "http://localhost:5173",  # Add your frontend's URL
+    "http://localhost:5173",
+    os.getenv("FE_URL")
+    # Add your frontend's URL
     # You can add more origins if needed, e.g., for deployment
 ]
 
