@@ -12,56 +12,54 @@ const Board = () => {
   const { mazeID, setLikes } = useContext(MazeContext);
   const [liked, setLiked] = useState<boolean>(false); //*state to be used for visual button indication
   const mutationLikes = useMutation({
-    mutationFn: ({
-      id,
-      updatedNumberLikes,
-    }: {
-      id: string;
-      updatedNumberLikes: number;
-    }) => updateBoardLikes(id, updatedNumberLikes),
+    mutationFn: ({ id, isLiked }: { id: number; isLiked: boolean }) =>
+      updateBoardLikes(id, isLiked),
   });
 
   //!to test this and maybe bring up to Home component level with liked/setLiked
   useEffect(() => {
-    if (currentPage === "Home") {
+    if (currentPage === "Home" && mazeID) {
       setLiked(fetchLocalClientLikedState(mazeID));
     }
   }, [mazeID, currentPage]);
 
   //!to test this and maybe bring up to Home component level with liked/setLiked
   useEffect(() => {
-    const savedLikeState = localStorage.getItem("likes");
-    const parsedLikeState = savedLikeState ? JSON.parse(savedLikeState) : {};
-    parsedLikeState[mazeID] = liked;
-    localStorage.setItem("likes", JSON.stringify(parsedLikeState));
+    if (mazeID) {
+      const savedLikeState = localStorage.getItem("likes");
+      const parsedLikeState = savedLikeState ? JSON.parse(savedLikeState) : {};
+      parsedLikeState[mazeID] = liked;
+      localStorage.setItem("likes", JSON.stringify(parsedLikeState));
+    }
   }, [liked, mazeID]);
 
   //Debounce the data being sent to the network request
   const debounceMutate = useCallback(
-    debounce((id: string, updatedNumberLikes: number) => {
-      console.log(
-        "Like debounced mutation called with:",
-        id,
-        updatedNumberLikes,
-      ); // Debugging log
+    debounce<number, boolean>((id: number, isLiked: boolean) => {
+      console.log("Like debounced mutation called with:", id, isLiked); // Debugging log
       mutationLikes.mutate({
         id,
-        updatedNumberLikes,
+        isLiked,
       });
     }, 2000),
     [],
   );
 
+  //! do i need to update the setLikes?
   const handleLikes = () => {
-    setLiked((prevLiked) => !prevLiked);
+    if (mazeID) {
+      setLiked((prevLiked) => !prevLiked);
 
-    setLikes((prevLikes) => {
-      const updatedLikes = liked ? prevLikes - 1 : prevLikes + 1;
-      console.log(updatedLikes);
+      setLikes((prevLikes) => {
+        const updatedLikes = liked ? prevLikes - 1 : prevLikes + 1;
+        console.log(updatedLikes);
 
-      debounceMutate(mazeID, updatedLikes);
-      return updatedLikes;
-    });
+        debounceMutate(mazeID, !liked);
+        return updatedLikes;
+      });
+    } else {
+      console.log("Maze not valid for likes");
+    }
   };
 
   return (
@@ -71,7 +69,8 @@ const Board = () => {
           <Maze />
           <div className="board__buttons">
             <button onClick={handleLikes} className="board__like">
-              Like ❤
+              Like
+              <span style={{ color: liked ? "red" : "black" }}> ❤</span>
             </button>
             <button className="board__download">Download</button>
           </div>

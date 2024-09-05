@@ -45,6 +45,8 @@ export type FetchedBoardsProps = {
   isLoading: boolean;
   isError: boolean;
   error: Error | null;
+  numberOfMazes: number;
+  setNumberOfMazes: SetState<number>;
 };
 
 export type UserCreatedBoardProps = {
@@ -64,7 +66,7 @@ export type QueuePoint = {
 
 export type BoardPost = {
   name: string;
-  mazeID: string;
+  mazeID: number | null;
   maze: Maze;
   mazeSize: number;
   date: string;

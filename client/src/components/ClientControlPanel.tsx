@@ -13,6 +13,7 @@ import { generate } from "../utilities/generate";
 import { PageContext } from "../PageProvider";
 import { MazeContext } from "../MazeProvider";
 import { ColorContext, ColorContextType } from "../ColorProvider";
+import { useMediaQuery } from "react-responsive";
 
 const ClientControlPanel = () => {
   const { currentPage } = useContext(PageContext);
@@ -40,6 +41,7 @@ const ClientControlPanel = () => {
   const colorStates: ColorContextType = useContext(ColorContext);
 
   const [delay, setDelay] = useState<number>(0);
+  const isMobile: boolean = useMediaQuery({ maxWidth: "767px" });
 
   const generateMaze = () => {
     solvingRef.current = false;
@@ -50,7 +52,7 @@ const ClientControlPanel = () => {
     setSolved(false);
     setVisualize(false);
     setGenerating(true);
-    setMazeID("");
+    setMazeID(null);
 
     generate(
       mazeSize,
@@ -119,8 +121,9 @@ const ClientControlPanel = () => {
     <>
       {currentPage === "Home" && (
         <div className="clientcontrolpanel__card">
-          <div>
-            <div>
+          <div className="clientcontrolpanel__mazecontrols__section">
+            <h1 className="clientcontrolpanel__title">Maze Controls</h1>
+            <div className="clientcontrolpanel__mazecontrols__input">
               Grid size:{" "}
               <input
                 id="mazeSize"
@@ -132,7 +135,7 @@ const ClientControlPanel = () => {
                 onChange={(e): void => setMazeSize(Number(e.target.value))}
               />
             </div>
-            <div>
+            <div className="clientcontrolpanel__mazecontrols__input">
               Solving Algorithm:{" "}
               <select
                 name="algorithm"
@@ -150,7 +153,7 @@ const ClientControlPanel = () => {
                 ))}
               </select>
             </div>
-            <div>
+            <div className="clientcontrolpanel__mazecontrols__input">
               Generating Algorithm:{" "}
               <select
                 name="generatingAlgorithm"
@@ -171,35 +174,28 @@ const ClientControlPanel = () => {
                 ))}
               </select>
             </div>
-            {!generating ? (
-              <button onClick={generateMaze}>Generate Maze</button>
-            ) : (
-              <>
-                <button onClick={clearMaze}>Stop</button>
-              </>
+            {!isMobile && (
+              <div className="clientcontrolpanel__mazecontrols__buttons">
+                {!generating ? (
+                  <button onClick={generateMaze}>Generate Maze</button>
+                ) : (
+                  <>
+                    <button onClick={clearMaze}>Stop</button>
+                  </>
+                )}
+                {!visualize ? (
+                  <button onClick={startSolving}>Visualize Solver</button>
+                ) : (
+                  <>
+                    <button onClick={clearMaze}>Reset</button>
+                  </>
+                )}
+              </div>
             )}
-            {!visualize ? (
-              <button onClick={startSolving}>Visualize Solver</button>
-            ) : (
-              <>
-                <button onClick={clearMaze}>Reset</button>
-              </>
-            )}
-            <input
-              type="range"
-              min={10}
-              max={100}
-              step={10}
-              onChange={(e) =>
-                setDelay(delayCalculation(parseFloat(e.target.value)))
-              }
-              value={delayPercentage(delay)}
-            />
-            <div>Speed: {delayPercentage(delay)}%</div>
-            <div>Number of Iterations: {iterationRef.current}</div>
-            <div>Result: {resultRef.current}</div>
           </div>
-          <div className="clientcontrolpanel__colorselection">
+
+          <div className="clientcontrolpanel__colorcontrols__section">
+            <h1 className="clientcontrolpanel__title">Color Controls</h1>
             <div className="clientcontrolpanel__colorselector">
               <span>Path Color: </span>
               <input
@@ -240,6 +236,47 @@ const ClientControlPanel = () => {
                 onChange={(e) => colorStates.setShortPathColor(e.target.value)}
               />
             </div>
+          </div>
+
+          <div className="clientcontrolpanel__statscontrols__section">
+            <h1 className="clientcontrolpanel__title">Stats</h1>
+            <div className="clientcontrolpanel__statscontrols__stats">
+              Speed: {delayPercentage(delay)}%
+            </div>
+            <input
+              type="range"
+              min={10}
+              max={100}
+              step={10}
+              onChange={(e) =>
+                setDelay(delayCalculation(parseFloat(e.target.value)))
+              }
+              value={delayPercentage(delay)}
+            />
+            <div className="clientcontrolpanel__statscontrols__stats">
+              Number of Iterations: {iterationRef.current}
+            </div>
+            <div className="clientcontrolpanel__statscontrols__stats">
+              Result: {resultRef.current}
+            </div>
+            {isMobile && (
+              <div className="clientcontrolpanel__mazecontrols__buttons">
+                {!generating ? (
+                  <button onClick={generateMaze}>Generate Maze</button>
+                ) : (
+                  <>
+                    <button onClick={clearMaze}>Stop</button>
+                  </>
+                )}
+                {!visualize ? (
+                  <button onClick={startSolving}>Visualize Solver</button>
+                ) : (
+                  <>
+                    <button onClick={clearMaze}>Reset</button>
+                  </>
+                )}
+              </div>
+            )}
           </div>
         </div>
       )}{" "}

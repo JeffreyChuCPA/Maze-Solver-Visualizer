@@ -22,7 +22,7 @@ interface MazeContextType {
   generating: boolean;
   visualize: boolean;
   likes: number;
-  mazeID: string;
+  mazeID: number | null;
   numberSolved: number;
   setMazeSize: SetState<number>;
   setAlgorithm: SetState<AlgorithmName>;
@@ -33,7 +33,7 @@ interface MazeContextType {
   setGenerating: SetState<boolean>;
   setVisualize: SetState<boolean>;
   setLikes: SetState<number>;
-  setMazeID: SetState<string>;
+  setMazeID: SetState<number | null>;
   setNumberSolved: SetState<number>;
 }
 
@@ -45,14 +45,16 @@ const defaultContextValue: MazeContextType = {
   solved: false,
   iterationRef: { current: 0 } as React.MutableRefObject<number>,
   resultRef: { current: "" } as React.MutableRefObject<string>,
-  imageRef: { current: null } as React.MutableRefObject<HTMLInputElement | null>,
+  imageRef: {
+    current: null,
+  } as React.MutableRefObject<HTMLInputElement | null>,
   algorithm: "Wall Follower - Left",
   generatingAlgorithm: "Recursive Backtracking",
   generatingRef: { current: false } as React.MutableRefObject<boolean>,
   generating: false,
   visualize: false,
   likes: 0,
-  mazeID: "",
+  mazeID: null,
   numberSolved: 0,
   setMazeSize: () => {},
   setAlgorithm: () => {},
@@ -87,7 +89,7 @@ const MazeProvider: React.FC<MazeProviderProps> = ({ children }) => {
   const [visualize, setVisualize] = useState<boolean>(false);
   const [likes, setLikes] = useState<number>(0);
   const [numberSolved, setNumberSolved] = useState<number>(0);
-  const [mazeID, setMazeID] = useState<string>("");
+  const [mazeID, setMazeID] = useState<number | null>(null);
   const solvingRef = useRef<boolean>(false);
   const generatingRef = useRef<boolean>(false);
   const iterationRef = useRef<number>(0);

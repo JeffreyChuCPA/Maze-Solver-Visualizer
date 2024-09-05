@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect } from "react";
+import { useCallback, useContext, useEffect, useState } from "react";
 import Board from "../components/Board";
 import ClientControlPanel from "../components/ClientControlPanel";
 import { PageContext } from "../PageProvider";
@@ -11,6 +11,7 @@ import { debounce } from "../utilities/utilities";
 
 const Home = () => {
   const { currentPage } = useContext(PageContext);
+  const [numberOfMazes, setNumberOfMazes] = useState<number>(10);
   const {
     setMaze,
     iterationRef,
@@ -26,19 +27,18 @@ const Home = () => {
     data = [],
     error,
     isLoading,
-  } = useQuery({ queryKey: ["boards"], queryFn: getBoards, staleTime: 30000 });
+  } = useQuery({
+    queryKey: ["boards", numberOfMazes],
+    queryFn: () => getBoards(numberOfMazes),
+    staleTime: 30000,
+  });
+
   const mutationSolved = useMutation({
-    mutationFn: ({
-      id,
-      updatedNumberSolved,
-    }: {
-      id: string;
-      updatedNumberSolved: number;
-    }) => updateNumberSolved(id, updatedNumberSolved),
+    mutationFn: ({ id }: { id: number }) => updateNumberSolved(id),
   });
 
   const debounceMutate = useCallback(
-    debounce((id: string, updatedNumberSolved: number) => {
+    debounce<number, number>((id: number, updatedNumberSolved: number) => {
       console.log(
         "Solving debounced mutation called with:",
         id,
@@ -46,7 +46,6 @@ const Home = () => {
       ); // Debugging
       mutationSolved.mutate({
         id,
-        updatedNumberSolved,
       });
     }, 1000),
     [],
@@ -63,7 +62,7 @@ const Home = () => {
     }
   }, [setMaze, currentPage, iterationRef, resultRef, setVisualize, solvingRef]);
 
-  //! should I PUT +1 for each request or the +x for the new number of solved for the board? clicking between different user boards changes the # of solved back to the original fetched value
+  //! do i need to update the setNumberSolved?
   useEffect(() => {
     if (solved && mazeID) {
       setNumberSolved((prevNum) => {
@@ -75,7 +74,6 @@ const Home = () => {
       });
     }
   }, [debounceMutate, mazeID, setNumberSolved, solved]);
-  
 
   return (
     <>
@@ -86,6 +84,8 @@ const Home = () => {
         isLoading={isLoading}
         isError={isError}
         error={error}
+        numberOfMazes={numberOfMazes}
+        setNumberOfMazes={setNumberOfMazes}
       />
     </>
   );

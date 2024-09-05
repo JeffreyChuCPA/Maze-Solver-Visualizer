@@ -272,6 +272,7 @@ export const generateBaseBuildMaze = (mazeSize: number): number[][] => {
 };
 
 //*calculate delay value
+//!FIX 100% is fine but at 90% its too slow. Change the range speed for the delay
 export const delayCalculation = (delay: number): number => {
   return (-60 / 9) * delay + 6000 / 9;
 };
@@ -311,15 +312,15 @@ export const remainingWallsNeeded = (
 };
 
 //*Debounce function for event handlers that trigger an HTTP request
-type DebouncedFunction = (param1: string, param2: number) => void;
+type DebouncedFunction<T1, T2> = (param1: T1, param2: T2) => void;
 
-export const debounce = (
-  networkCall: DebouncedFunction,
+export const debounce = <T1, T2>(
+  networkCall: DebouncedFunction<T1, T2>,
   delay: number,
 ) => {
   let timeoutId: ReturnType<typeof setTimeout>;
 
-  return (param1: string, param2: number) => {
+  return (param1: T1, param2: T2) => {
     if (timeoutId) {
       clearTimeout(timeoutId);
     }
@@ -330,7 +331,7 @@ export const debounce = (
 };
 
 //*Local Storage manipulation function
-export const fetchLocalClientLikedState = (mazeID: string): boolean => {
+export const fetchLocalClientLikedState = (mazeID: number): boolean => {
   const savedLikeState: string | null = localStorage.getItem("likes");
   const parsedLikeState = savedLikeState ? JSON.parse(savedLikeState) : {};
   return parsedLikeState[mazeID] || false;

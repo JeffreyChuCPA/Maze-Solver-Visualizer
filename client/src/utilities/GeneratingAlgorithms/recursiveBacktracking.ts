@@ -44,7 +44,7 @@ export const recursiveBacktracking = async (
 
   const carvePath = async (maze: Maze, cell: Point | boolean) => {
     if (typeof cell === "boolean") {
-      return false
+      return false;
     }
 
     shuffleDirections(directions);

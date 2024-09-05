@@ -3,16 +3,13 @@ import { BoardPost } from "./types";
 //*Post method to API
 export const postBoard = async (board: BoardPost) => {
   try {
-    const response = await fetch(
-      `https://ee5df1c8-48e8-4f41-b0b9-57a66763a048.mock.pstmn.io/boards`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(board),
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/create-maze`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
       },
-    );
+      body: JSON.stringify(board),
+    });
     if (response.ok) {
       console.log("successfully submitted");
 
@@ -30,17 +27,15 @@ export const postBoard = async (board: BoardPost) => {
 };
 
 //*Get method to API
-export const getBoards = async () => {
+export const getBoards = async (amount: number) => {
   try {
-    const response = await fetch(
-      `https://ee5df1c8-48e8-4f41-b0b9-57a66763a048.mock.pstmn.io/boards`,
-    );
+    const response = await fetch(`${import.meta.env.VITE_API_BASE_URL}/mazes?amount=${amount}`);
     if (response.ok) {
       const boards = await response.json();
       console.log(boards);
       return boards;
     } else {
-      const message = `An error has occured: ${response.status}`;
+      const message = `An error has occurred: ${response.status}`;
       throw new Error(message);
     }
   } catch (error) {
@@ -49,19 +44,16 @@ export const getBoards = async () => {
 };
 
 //*Update like for user created maze
-export const updateBoardLikes = async (
-  id: string,
-  updatedNumberLikes: number,
-) => {
+export const updateBoardLikes = async (id: number, isLiked: boolean) => {
   try {
     const response = await fetch(
-      `https://ee5df1c8-48e8-4f41-b0b9-57a66763a048.mock.pstmn.io/boards/${id}`,
+      `${import.meta.env.VITE_API_BASE_URL}/update-likes`,
       {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ numberLikes: updatedNumberLikes }),
+        body: JSON.stringify({id, isLiked})
       },
     );
 
@@ -79,19 +71,16 @@ export const updateBoardLikes = async (
 };
 
 //*Update number of times solved for user created maze
-export const updateNumberSolved = async (
-  id: string,
-  updatedNumberSolved: number,
-) => {
+export const updateNumberSolved = async (id: number) => {
   try {
     const response = await fetch(
-      `https://ee5df1c8-48e8-4f41-b0b9-57a66763a048.mock.pstmn.io/boards/${id}`,
+      `${import.meta.env.VITE_API_BASE_URL}/update-solved`,
       {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ numberSolved: updatedNumberSolved }),
+        body: JSON.stringify({id})
       },
     );
 

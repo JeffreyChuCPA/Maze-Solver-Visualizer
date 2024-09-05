@@ -30,7 +30,7 @@ const SubmitBoard = () => {
   const colorStates = useContext(ColorContext);
   const [boardPost, setBoardPost] = useState<BoardPost>({
     name: "",
-    mazeID: "",
+    mazeID: null,
     maze,
     mazeSize,
     date: "",
@@ -49,6 +49,19 @@ const SubmitBoard = () => {
   const handleBoardSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsValidating(true);
+
+    // const clearMazeForValidation = async () => {
+    //   setSolving(false);
+    //   solvingRef.current = false;
+    //   iterationRef.current = 0;
+    //   resultRef.current = "";
+    //   new Promise((resolved) => {
+    //     resolved(resetMaze(maze, setMaze, 0))
+    //   })
+    //   console.log("Reset");
+    // }
+
+    // await clearMazeForValidation()
 
     //is there a start and end point
     const start = findStartPoint(maze);
@@ -112,7 +125,7 @@ const SubmitBoard = () => {
       const updatedBoardPost: BoardPost = {
         ...prevBoardPost,
         name: nameRef.current!.value,
-        mazeID: crypto.randomUUID(),
+        // mazeID: crypto.randomUUID(),
         maze,
         mazeSize,
         date: Date.now().toString(),
@@ -125,6 +138,8 @@ const SubmitBoard = () => {
       };
 
       //post to API
+      console.log(updatedBoardPost);
+
       postBoard(updatedBoardPost);
       return updatedBoardPost;
     });
@@ -134,7 +149,6 @@ const SubmitBoard = () => {
     iterationRef.current = 0;
     resultRef.current = "";
     console.log(boardPost);
-    
   };
 
   return (
@@ -148,7 +162,7 @@ const SubmitBoard = () => {
               ref={nameRef}
               id="mazename"
               name="mazename"
-              minLength={5}
+              minLength={4}
               maxLength={25}
               required
             />

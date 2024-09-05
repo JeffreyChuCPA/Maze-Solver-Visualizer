@@ -40,7 +40,7 @@ export const aStarSearch = async (
   }
 
   //calc distance between 2 points via Manhattan Distance
-  const heuristic = (a: Point , b: Point ): number => {
+  const heuristic = (a: Point, b: Point): number => {
     return Math.abs(a.x - b.x) + Math.abs(a.y - b.y);
   };
 

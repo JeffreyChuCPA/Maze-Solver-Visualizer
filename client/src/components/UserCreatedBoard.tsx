@@ -61,8 +61,9 @@ const UserCreatedBoard: React.FC<UserCreatedBoardProps> = ({ boardData }) => {
         onClick={handleMazeSelection}
       />
       <div className="fetchboards__text">
-        <div>{boardData.name}</div>
+        <div className="fetchboards__text__name">{boardData.name}</div>
         <div>Likes: {boardData.numberLikes}</div>
+        <div>Solved Amount: {boardData.numberSolved}</div>
       </div>
     </div>
   );

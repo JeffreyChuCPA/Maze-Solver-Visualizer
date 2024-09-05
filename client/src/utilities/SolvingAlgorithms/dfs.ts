@@ -129,7 +129,7 @@ export const dfs = async (
     const deleteCurr = path.pop();
 
     if (!deleteCurr) {
-      return false
+      return false;
     }
 
     if (deleteCurr) {
