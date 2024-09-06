@@ -1,4 +1,4 @@
-import { Maze, SetState } from "../types";
+import { Maze, SetState, Point } from "../types";
 import { generateEndPoint, generateStartPoint, updateMaze } from "../utilities";
 
 export const kruskals = async (
@@ -9,10 +9,12 @@ export const kruskals = async (
   generatingRef: React.MutableRefObject<boolean>,
   setMaze: SetState<Maze>,
   setGenerating: SetState<boolean>,
+  _setHighlightedRow: SetState<Point | null>,
+  currentGenerationID: number,
+  generatingIDRef: React.MutableRefObject<number>,
 ): Promise<boolean> => {
   type Cell = [number, number];
   type Wall = [Cell, Cell];
-
   class DisjointSet {
     parent: Map<string, string>;
     rank: Map<string, number>;
@@ -86,7 +88,10 @@ export const kruskals = async (
   }
 
   for (const wall of walls) {
-    if (!generatingRef.current) {
+    if (
+      !generatingRef.current ||
+      generatingIDRef.current !== currentGenerationID
+    ) {
       console.log("Stopped generating");
       return false;
     }
@@ -129,10 +134,13 @@ export const kruskals = async (
     generateEndPoint(currentMaze, setMaze);
     resultRef.current = "Generation Successful";
     setGenerating(false);
+    generatingRef.current = false;
     console.log("Done Generating");
     return true;
   }
+
   resultRef.current = "Generation Unsuccessful";
+  generatingRef.current = false;
   setGenerating(false);
   console.log("Done Generating");
   return false;

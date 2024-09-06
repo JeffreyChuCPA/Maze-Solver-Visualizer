@@ -44,13 +44,19 @@ export type FetchedBoardsProps = {
   displayedBoards: BoardPost[];
   isLoading: boolean;
   isError: boolean;
-  error: Error | null;
   numberOfMazes: number;
   setNumberOfMazes: SetState<number>;
 };
 
 export type UserCreatedBoardProps = {
   boardData: BoardPost;
+};
+
+export type MazePaginationProps = {
+  mazePerPage: number;
+  resultsLength: number;
+  currentPage: number;
+  handlePagination: (pageNumber: number) => void;
 };
 
 export type Point = {

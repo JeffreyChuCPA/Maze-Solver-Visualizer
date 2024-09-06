@@ -1,4 +1,6 @@
-from fastapi import FastAPI, HTTPException, Depends, Query
+from dotenv import load_dotenv
+import os
+from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List, Annotated
@@ -9,10 +11,13 @@ import base64
 
 app = FastAPI()
 models.Base.metadata.create_all(bind=engine)
+load_dotenv()
 
 # CORS settings
 origins = [
-    "http://localhost:5173",  # Add your frontend's URL
+    "http://localhost:5173",
+    os.getenv("FE_URL")
+    # Add your frontend's URL
     # You can add more origins if needed, e.g., for deployment
 ]
 
@@ -20,8 +25,8 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
     allow_credentials=True,
-    allow_methods=["*"],  # Allow all HTTP methods
-    allow_headers=["*"],  # Allow all headers
+    allow_methods=["*"], 
+    allow_headers=["*"], 
 )
 
 def decode_base64_image(data_url):
@@ -57,11 +62,11 @@ def get_db():
     finally:
         db.close()    
 
-#* Get x amount of  user created mazes
+#* Get all user created mazes
 @app.get("/mazes", response_model=List[MazeBase])
-async def get_all_mazes(db: Annotated[Session, Depends(get_db)], amount: int = Query(default=10)):
+async def get_all_mazes(db: Annotated[Session, Depends(get_db)]):
     result_maze_posts = []
-    results = db.query(models.MazePost, models.Image).outerjoin(models.Image, models.MazePost.id == models.Image.board_post_id).limit(amount).all()
+    results = db.query(models.MazePost, models.Image).outerjoin(models.Image, models.MazePost.id == models.Image.board_post_id).all()
     
     if not results:
         raise HTTPException(status_code=404, detail="Maze post not found")

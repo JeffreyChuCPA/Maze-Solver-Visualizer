@@ -6,7 +6,14 @@ const About = () => {
   const { currentPage } = useContext(PageContext);
   console.log(currentPage);
 
-  return <div className="about__card">Work in Progress!</div>;
+  return (
+    <>
+      <div className="about__page">
+        <div className="about__card">Work in Progress!</div>;
+      
+      </div>
+    </>
+  );
 };
 
 export default About;

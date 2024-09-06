@@ -10,6 +10,7 @@ const BuildBoard = () => {
   const { currentPage } = useContext(PageContext);
   const {
     mazeSize,
+    setMazeName,
     setMaze,
     iterationRef,
     resultRef,
@@ -21,6 +22,7 @@ const BuildBoard = () => {
   useEffect(() => {
     if (currentPage === "build-board") {
       setMaze(generateBaseBuildMaze(mazeSize));
+      setMazeName(null);
       iterationRef.current = 0;
       resultRef.current = "";
       solvingRef.current = false;
@@ -29,6 +31,7 @@ const BuildBoard = () => {
     }
   }, [
     mazeSize,
+    setMazeName,
     setMaze,
     currentPage,
     iterationRef,

@@ -2,6 +2,8 @@ import React, { useMemo, useState } from "react";
 import "../styling/FetchedBoards.css";
 import { BoardPost, FetchedBoardsProps } from "../utilities/types";
 import UserCreatedBoard from "./UserCreatedBoard";
+import MazePagination from "./MazePagination";
+import { errorMaze } from "../utilities/sampleMazes";
 
 const sortOptions = ["Latest", "Most Liked", "Most Solved", "Oldest"];
 const numberMazesOptions = [10, 15, 20];
@@ -10,11 +12,11 @@ const FetchedBoards: React.FC<FetchedBoardsProps> = ({
   displayedBoards,
   isLoading,
   isError,
-  error,
   numberOfMazes,
   setNumberOfMazes,
 }) => {
   const [sortOption, setSortOption] = useState<string>("Latest");
+  const [currentPage, setCurrentPage] = useState<number>(1);
 
   const sortedBoards = useMemo(() => {
     const boards = [...displayedBoards];
@@ -44,29 +46,47 @@ const FetchedBoards: React.FC<FetchedBoardsProps> = ({
     }
   }, [displayedBoards, sortOption]);
 
+  const handlePagination = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const startIndex: number = (currentPage - 1) * numberOfMazes;
+  const endIndex: number = startIndex + numberOfMazes;
+  const paginatedBoards = sortedBoards.slice(startIndex, endIndex);
+
   if (isLoading) {
-    return <div className="fetchboards__loading">Loading...</div>;
+    return (
+      <div className="fetchboards__loading">
+        <div className="fetchboards__loading__animation"></div>
+      </div>
+    );
   }
 
   if (isError) {
     return (
-      <div className="fetchboards__loading">
-        Unable to load mazes: {error?.message}
+      <div className="fetchboards__error">
+        Unable to load mazes
+        <img className="fetchboards__error__img" src={errorMaze} alt="Error Image" />
       </div>
     );
+  }
+
+  if (displayedBoards.length === 0) {
+    return <div className="fetchboards__loading">No mazes to show</div>;
   }
 
   return (
     <div className="fetchboards__section">
       <div className="fetchboards__sortoptions">
         <div>
-          Sort:{" "}
+          <span className="fetchboards__sortoptions__title">Sort: </span>
           <select
             name="sortingOptions"
             id="sortingOptions"
             value={sortOption}
             onChange={(e): void => {
               setSortOption(e.target.value);
+              setCurrentPage(1);
             }}
           >
             {sortOptions.map((selection) => (
@@ -77,13 +97,16 @@ const FetchedBoards: React.FC<FetchedBoardsProps> = ({
           </select>
         </div>
         <div>
-          Mazes per page:{" "}
+          <span className="fetchboards__sortoptions__title">
+            Mazes per page:{" "}
+          </span>
           <select
             name="itemsOptions"
             id="itemsOptions"
             value={numberOfMazes}
             onChange={(e): void => {
               setNumberOfMazes(Number(e.target.value));
+              setCurrentPage(1);
             }}
           >
             {numberMazesOptions.map((selection) => (
@@ -99,10 +122,16 @@ const FetchedBoards: React.FC<FetchedBoardsProps> = ({
         </div>
       </div>
       <div className="fetchboards__displayedboards">
-        {sortedBoards.map((boardData) => (
+        {paginatedBoards.map((boardData) => (
           <UserCreatedBoard boardData={boardData} key={boardData.mazeID} />
         ))}
       </div>
+      <MazePagination
+        mazePerPage={numberOfMazes}
+        resultsLength={displayedBoards.length}
+        currentPage={currentPage}
+        handlePagination={handlePagination}
+      />
     </div>
   );
 };

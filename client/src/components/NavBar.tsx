@@ -6,7 +6,7 @@ import "../styling/NavBar.css";
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const isMobile: boolean = useMediaQuery({ maxWidth: "589px" });
+  const isMobile: boolean = useMediaQuery({ maxWidth: "666px" });
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -21,7 +21,6 @@ const NavBar = () => {
   const renderNavLinks = () => {
     const listClassName = isMobile ? "nav__list" : "nav__list__web";
     const linkClassName = "nav__link";
-    // const buttonClassName = "nav__cta";
 
     return (
       <ul className={listClassName}>
@@ -65,7 +64,7 @@ const NavBar = () => {
     <header className="header">
       <nav className="nav container">
         <NavLink to="/" className="nav__logo">
-          <h1>Maze It Yourself</h1>
+          <h1 className="nav__title">Maze It Yourself</h1>
         </NavLink>
 
         {isMobile && (

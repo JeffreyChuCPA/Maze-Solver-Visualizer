@@ -1,4 +1,4 @@
-from sqlalchemy import Column, ForeignKey, Integer, String, ARRAY
+from sqlalchemy import Column, ForeignKey, Integer, String, ARRAY, LargeBinary
 from sqlalchemy.orm import relationship
 from database import Base 
 
@@ -26,7 +26,7 @@ class Image(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     board_post_id = Column(Integer, ForeignKey("maze_posts.id"), nullable=False)
-    image = Column(String, nullable=False)
+    image = Column(LargeBinary, nullable=False)
     
     #Relationship to MazePost
     maze_post = relationship("MazePost", back_populates="image")

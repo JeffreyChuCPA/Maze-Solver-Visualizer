@@ -9,6 +9,9 @@ export const prims = async (
   generatingRef: React.MutableRefObject<boolean>,
   setMaze: SetState<Maze>,
   setGenerating: SetState<boolean>,
+  _setHighlightedRow: SetState<Point | null>,
+  currentGenerationID: number,
+  generatingIDRef: React.MutableRefObject<number>,
 ): Promise<boolean> => {
   const directions: Point[] = [
     { x: 0, y: 2 },
@@ -67,7 +70,10 @@ export const prims = async (
   }
 
   while (frontierCells.length > 0) {
-    if (!generatingRef.current) {
+    if (
+      !generatingRef.current ||
+      currentGenerationID !== generatingIDRef.current
+    ) {
       console.log("Stopped generating");
       return false;
     }
@@ -128,12 +134,14 @@ export const prims = async (
     generateEndPoint(currentMaze, setMaze);
     resultRef.current = "Generation Successful";
     setGenerating(false);
+    generatingRef.current = false;
     console.log("Done Generating");
     return true;
   }
 
   resultRef.current = "Generation Unsuccessful";
   setGenerating(false);
+  generatingRef.current = false;
   console.log("Done Generating");
   return false;
 };
