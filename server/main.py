@@ -21,7 +21,7 @@ origins = [
     # You can add more origins if needed, e.g., for deployment
 ]
 
-print("CORS Origins:", origins)  # Log this for debugging
+print("CORS Origins:", origins)
 
 app.add_middleware(
     CORSMiddleware,
