@@ -21,6 +21,8 @@ origins = [
     # You can add more origins if needed, e.g., for deployment
 ]
 
+print("CORS Origins:", origins)  # Log this for debugging
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
