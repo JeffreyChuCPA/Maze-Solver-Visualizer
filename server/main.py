@@ -62,6 +62,10 @@ def get_db():
     finally:
         db.close()    
 
+@app.get("/")
+async def root():
+    return {"message": "Server is running"}
+
 #* Get all user created mazes
 @app.get("/mazes", response_model=List[MazeBase])
 async def get_all_mazes(db: Annotated[Session, Depends(get_db)]):
