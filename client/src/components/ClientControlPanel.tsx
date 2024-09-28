@@ -1,6 +1,10 @@
 import { useContext, useState } from "react";
 import "../styling/ClientControlPanel.css";
-import { algorithms, delayValues, generateMazeAlgorithms } from "../utilities/objects";
+import {
+  algorithms,
+  delayValues,
+  generateMazeAlgorithms,
+} from "../utilities/objects";
 import {
   delayPercentage,
   generateBaseBuildMaze,
@@ -133,18 +137,22 @@ const ClientControlPanel = () => {
             <h1 className="clientcontrolpanel__title">Maze Controls</h1>
             <div className="clientcontrolpanel__mazecontrols__section">
               <div className="clientcontrolpanel__mazecontrols__input">
-                Grid size:{" "}
-                <input
-                  id="mazeSize"
-                  name="mazeSize"
-                  type="number"
-                  min="10"
-                  max="50"
-                  value={mazeSize}
-                  disabled={generatingRef.current || solvingRef.current}
-                  onChange={(e): void => setMazeSize(Number(e.target.value))}
-                />
+                Grid size:
+                <span>
+                  {" "}
+                  {mazeSize} x {mazeSize}
+                </span>
               </div>
+              <input
+                id="mazeSize"
+                name="mazeSize"
+                type="range"
+                min="10"
+                max="50"
+                value={mazeSize}
+                disabled={generatingRef.current || solvingRef.current}
+                onChange={(e): void => setMazeSize(Number(e.target.value))}
+              />
               <div className="clientcontrolpanel__mazecontrols__input">
                 Solving Algorithm:{" "}
                 <select
@@ -286,23 +294,29 @@ const ClientControlPanel = () => {
             <h1 className="clientcontrolpanel__title">Stats</h1>
             <div className="clientcontrolpanel__statscontrols__section">
               <div className="clientcontrolpanel__statscontrols__stats">
-                Speed: {delayPercentage(delay)}%
+                Speed:
+                <span>{delayPercentage(delay)}%</span>
               </div>
               <input
                 type="range"
                 min={10}
                 max={100}
                 step={10}
+                disabled={generatingRef.current || solvingRef.current}
                 onChange={(e) =>
-                  setDelay(delayValues[e.target.value as keyof typeof delayValues])
+                  setDelay(
+                    delayValues[e.target.value as keyof typeof delayValues],
+                  )
                 }
                 value={delayPercentage(delay)}
               />
               <div className="clientcontrolpanel__statscontrols__stats">
-                Number of Iterations: {iterationRef.current}
+                Number of Iterations:
+                <span>{iterationRef.current}</span>
               </div>
               <div className="clientcontrolpanel__statscontrols__stats">
-                Result: {resultRef.current}
+                Result:
+                <span>{resultRef.current}</span>
               </div>
               {isMobile && (
                 <div className="clientcontrolpanel__mazecontrols__buttons">
@@ -348,31 +362,36 @@ const ClientControlPanel = () => {
           </div>
         </div>
       )}{" "}
-      {currentPage === "build-board" && (
+      {currentPage === "build-maze" && (
         <div className="clientcontrolpanel__card build">
           <div className="clientcontrolpanel__mazecontrols__gridsection">
             <h1 className="clientcontrolpanel__title">Maze Controls</h1>
             <div className="clientcontrolpanel__mazecontrols__section">
               <div className="clientcontrolpanel__mazecontrols__input">
-                Grid size:{" "}
-                <input
-                  id="mazeSize"
-                  name="mazeSize"
-                  type="number"
-                  min="10"
-                  max="50"
-                  value={mazeSize}
-                  onChange={(e): void => {
-                    setMazeSize(Number(e.target.value));
-                  }}
-                />
+                Grid size:
+                <span>
+                  {mazeSize} x {mazeSize}
+                </span>
               </div>
+              <input
+                id="mazeSize"
+                name="mazeSize"
+                type="range"
+                min="10"
+                max="50"
+                value={mazeSize}
+                disabled={solvingRef.current}
+                onChange={(e): void => {
+                  setMazeSize(Number(e.target.value));
+                }}
+              />
               <div className="clientcontrolpanel__mazecontrols__input">
                 Solving Algorithm:{" "}
                 <select
                   name="algorithm"
                   id="algorithm"
                   value={algorithm}
+                  disabled={solvingRef.current}
                   onChange={(e): void => {
                     setAlgorithm(e.target.value as keyof typeof algorithms);
                     clearMaze();
@@ -389,12 +408,14 @@ const ClientControlPanel = () => {
                 <div className="clientcontrolpanel__mazecontrols__buttons">
                   <button
                     onClick={clearBuildBoard}
+                    disabled={solvingRef.current}
                     className="interactive__button"
                   >
                     Clear Board
                   </button>
                   <button
                     onClick={fillBuildBoard}
+                    disabled={solvingRef.current}
                     className="interactive__button"
                   >
                     Fill Board
@@ -473,34 +494,42 @@ const ClientControlPanel = () => {
             <h1 className="clientcontrolpanel__title">Stats</h1>
             <div className="clientcontrolpanel__statscontrols__section">
               <div className="clientcontrolpanel__statscontrols__stats">
-                Speed: {delayPercentage(delay)}%
+                Speed:
+                <span>{delayPercentage(delay)}%</span>
               </div>
               <input
                 type="range"
                 min={10}
                 max={100}
                 step={10}
+                disabled={solvingRef.current}
                 onChange={(e) =>
-                  setDelay(delayValues[e.target.value as keyof typeof delayValues])
+                  setDelay(
+                    delayValues[e.target.value as keyof typeof delayValues],
+                  )
                 }
                 value={delayPercentage(delay)}
               />
               <div className="clientcontrolpanel__statscontrols__stats">
-                Number of Iterations: {iterationRef.current}
+                Number of Iterations:
+                <span>{iterationRef.current}</span>
               </div>
               <div className="clientcontrolpanel__statscontrols__stats">
-                Result: {resultRef.current}
+                Result:
+                <span>{resultRef.current}</span>
               </div>
               {isMobile && (
                 <div className="clientcontrolpanel__mazecontrols__buttons">
                   <button
                     onClick={clearBuildBoard}
+                    disabled={solvingRef.current}
                     className="interactive__button"
                   >
                     Clear Board
                   </button>
                   <button
                     onClick={fillBuildBoard}
+                    disabled={solvingRef.current}
                     className="interactive__button"
                   >
                     Fill Board

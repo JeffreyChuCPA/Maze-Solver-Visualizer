@@ -64,14 +64,20 @@ a {
   touch-action: manipulation;
 }
 
-.interactive__button:hover {
+.interactive__button:not(:disabled):hover {
   color: var(--text-color);
   background-color: var(--third-color);
   box-shadow: rgba(0, 0, 0, 0.7) 0 8px 15px;
   transform: translateY(-3px);
 }
 
-.interactive__button:active {
+.interactive__button:not(:disabled):active {
   box-shadow: none;
   transform: translateY(0);
+}
+
+.interactive__button:disabled {
+  color: var(--text-color);
+  background-color: var(--third-color);
+  cursor: default !important;
 }

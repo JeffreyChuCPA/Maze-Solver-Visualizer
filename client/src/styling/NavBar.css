@@ -65,7 +65,7 @@
 }
 
 .nav__link:hover {
-  color: var(--text-color);
+  color: var(--third-color);
 }
 
 .nav__close {
@@ -94,6 +94,10 @@
   height: 100%;
   padding: 6rem 3rem 0;
   transition: right 0.4s;
+}
+
+.nav__github__logo {
+  max-width: 40px;
 }
 
 @media screen and (min-width: 667px) {

@@ -5,7 +5,7 @@ import { ColorProvider } from "./ColorProvider";
 import NavBar from "./components/NavBar";
 import Home from "./pages/Home";
 import About from "./pages/About";
-import BuildBoard from "./pages/BuildBoard";
+import BuildMaze from "./pages/BuildMaze";
 import "./App.css";
 
 function App() {
@@ -19,7 +19,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
-                <Route path="/build-board" element={<BuildBoard />} />
+                <Route path="/build-maze" element={<BuildMaze />} />
               </Routes>
             </ColorProvider>
           </MazeProvider>

@@ -25,8 +25,8 @@ const PageProvider: React.FC<PageProviderProps> = ({ children }) => {
       case "/about":
         setCurrentPage("About");
         break;
-      case "/build-board":
-        setCurrentPage("build-board");
+      case "/build-maze":
+        setCurrentPage("build-maze");
         break;
       default:
         setCurrentPage("");
