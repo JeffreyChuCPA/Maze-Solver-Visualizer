@@ -10,14 +10,8 @@
   display: flex;
   justify-content: space-between;
   padding: 10px;
-  /* background: drop-shadow(0 0 2em #61dafbaa); */
+  box-shadow:
+    0 0.2rem 3.2rem -0.125rem red,
+    0 0px 0.5rem 0.5rem var(--forth-color);
 }
-
-/* .about__page {
-  box-sizing: border-box;
-  padding: 0;
-  margin: 0;
-  width: 100%;
-  height: 100%;
-} */
 

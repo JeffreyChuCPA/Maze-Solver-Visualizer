@@ -21,9 +21,9 @@ export const solver = (
     const end = findEndPoint(maze);
 
     if (!start || !end) {
-      console.log("No valid start or endpoint");
       resultRef.current = "No valid start or endpoint";
       resolve(path);
+      alert("No valid start or endpoint");
       return;
     }
 

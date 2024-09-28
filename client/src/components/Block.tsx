@@ -112,7 +112,7 @@ const Block: React.FC<BlockProps> = ({ blockType, rowIndex, colIndex }) => {
   return (
     <>
       {currentPage === "Home" && <div style={maze_block} />}
-      {currentPage === "build-board" && (
+      {currentPage === "build-maze" && (
         <div
           onMouseDown={handleMouseDown}
           onMouseOver={handleHover}

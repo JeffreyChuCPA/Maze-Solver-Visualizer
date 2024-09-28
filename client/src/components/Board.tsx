@@ -108,7 +108,7 @@ const Board = () => {
           </div>
         </div>
       )}
-      {currentPage === "build-board" && (
+      {currentPage === "build-maze" && (
         <div className="board__card build">
           <div className="board__name"></div>
           <Maze />

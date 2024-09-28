@@ -56,6 +56,11 @@
   gap: 10px;
 }
 
+.clientcontrolpanel__statscontrols__stats {
+  display: flex;
+  justify-content: space-between;
+}
+
 .clientcontrolpanel__colorcontrols__section {
   grid-area: colors;
   display: flex;

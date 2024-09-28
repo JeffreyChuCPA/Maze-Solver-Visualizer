@@ -6,7 +6,7 @@ import { generateBaseBuildMaze } from "../utilities/utilities";
 import { MazeContext } from "../MazeProvider";
 import SubmitBoard from "../components/SubmitBoard";
 
-const BuildBoard = () => {
+const BuildMaze = () => {
   const { currentPage } = useContext(PageContext);
   const {
     mazeSize,
@@ -20,7 +20,7 @@ const BuildBoard = () => {
   } = useContext(MazeContext);
 
   useEffect(() => {
-    if (currentPage === "build-board") {
+    if (currentPage === "build-maze") {
       setMaze(generateBaseBuildMaze(mazeSize));
       setMazeName(null);
       iterationRef.current = 0;
@@ -50,4 +50,4 @@ const BuildBoard = () => {
   );
 };
 
-export default BuildBoard;
+export default BuildMaze;

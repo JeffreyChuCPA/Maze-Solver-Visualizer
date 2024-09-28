@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { IoClose, IoMenu } from "react-icons/io5";
 import { useMediaQuery } from "react-responsive";
 import "../styling/NavBar.css";
+import logo from "../assets/github-mark-white.png"
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -40,12 +41,17 @@ const NavBar = () => {
         </li>
         <li>
           <NavLink
-            to="/build-board"
+            to="/build-maze"
             className={linkClassName}
             onClick={closeMobileMenu}
           >
-            Build Board
+            Build Maze
           </NavLink>
+        </li>
+        <li>
+          <a href="https://github.com/JeffreyChuCPA/Maze-Solver-Visualizer">
+            <img src={logo} alt="github" className="nav__github__logo"/>
+          </a>
         </li>
         {/* <li>
           <NavLink
