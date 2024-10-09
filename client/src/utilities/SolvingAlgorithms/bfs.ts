@@ -40,7 +40,6 @@ export const bfs = async (
   //*while queue is not empty
   while (queue.length !== 0) {
     if (!solvingRef.current) {
-      console.log("Stopped solving");
       return false;
     }
 
@@ -65,7 +64,6 @@ export const bfs = async (
       let cell: Point | null | undefined = currCell;
       while (cell) {
         if (!solvingRef.current) {
-          console.log("Stopped solving");
           return false;
         }
 
@@ -79,14 +77,12 @@ export const bfs = async (
       resultRef.current = "Solved";
       setSolving(false);
       setSolved && setSolved(true);
-      console.log("Solved!");
       return true;
     }
 
     //*explore adjacent cells and add to queue if valid cells
     for (const direction of directions) {
       if (!solvingRef.current) {
-        console.log("Stopped solving");
         return false;
       }
 
@@ -105,13 +101,11 @@ export const bfs = async (
       }
     }
     if (!solvingRef.current) {
-      console.log("Stopped solving");
       return false;
     }
     currentMaze = updateMaze(currentMaze, currCell, setMaze, 2);
   }
 
-  console.log("Not solvable");
   resultRef.current = "Unsolvable";
   setSolved && setSolved(false);
   setSolving(false);

@@ -49,7 +49,6 @@ export const huntAndKill = async (
     return directions.every((direction) => {
       const middleX = cell.x + direction.x / 2;
       const middleY = cell.y + direction.y / 2;
-      // console.log(`x: ${middleX}, y: ${middleY}`);
       if (
         middleX < 0 ||
         middleX >= maze[0].length ||
@@ -68,7 +67,6 @@ export const huntAndKill = async (
       directions.some((direction) => {
         const newX = curr.x + direction.x;
         const newY = curr.y + direction.y;
-        // console.log(`x: ${newX}, y: ${newY}`);
 
         const validMove =
           newX > 0 &&
@@ -98,13 +96,8 @@ export const huntAndKill = async (
       !generatingRef.current ||
       currentGenerationID !== generatingIDRef.current
     ) {
-      console.log("Stopped generating");
       return false;
     }
-
-    console.log("carved path called");
-    console.log(visited);
-    console.log(`x: ${x}, y: ${y}`);
 
     const stack: Point[] = [{ x, y }];
     visited[x][y] = true;
@@ -114,14 +107,12 @@ export const huntAndKill = async (
         !generatingRef.current ||
         currentGenerationID !== generatingIDRef.current
       ) {
-        console.log("Stopped generating");
         return false;
       }
 
       const current = stack.pop();
       if (!current) continue;
 
-      // console.log(`x: ${current.x}, y: ${current.y}`);
       const neighbors = directions
         .map((dir) => ({ x: current.x + dir.x, y: current.y + dir.y }))
         .filter(
@@ -131,14 +122,11 @@ export const huntAndKill = async (
             adjacentCellCheck(currentMaze, { x: neighbor.x, y: neighbor.y }),
         );
 
-      // console.log(neighbors);
-
       if (neighbors.length) {
         if (
           !generatingRef.current ||
           currentGenerationID !== generatingIDRef.current
         ) {
-          console.log("Stopped generating");
           return false;
         }
 
@@ -153,7 +141,6 @@ export const huntAndKill = async (
             !generatingRef.current ||
             currentGenerationID !== generatingIDRef.current
           ) {
-            console.log("Stopped generating");
             return false;
           }
 
@@ -178,11 +165,8 @@ export const huntAndKill = async (
       !generatingRef.current ||
       currentGenerationID !== generatingIDRef.current
     ) {
-      console.log("Stopped generating");
       return false;
     }
-
-    console.log("hunt called");
 
     let foundPath = false;
     for (let x = 1; x < currentMaze.length; x++) {
@@ -192,22 +176,16 @@ export const huntAndKill = async (
             !generatingRef.current ||
             currentGenerationID !== generatingIDRef.current
           ) {
-            console.log("Stopped generating");
             return false;
           }
-
-          console.log("hunt value found");
-          console.log(`x: ${x}, y: ${y}`);
 
           setHighlightedRow({ x, y });
           await new Promise((resolve) => setTimeout(resolve, 300)); // Highlight duration
           setHighlightedRow(null); // Revert the row back
 
           const possibleMoves = possibleValidMoves(currentMaze, { x, y });
-          console.log(possibleMoves);
           const selectedMove =
             possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
-          // console.log(`x: ${selectedMove.x}, y: ${selectedMove.y}`);
           currentMaze[x][y] = 0;
           visited[x][y] = true;
           currentMaze[(x + selectedMove.x) / 2][(y + selectedMove.y) / 2] = 0;
@@ -234,11 +212,8 @@ export const huntAndKill = async (
     !generatingRef.current ||
     currentGenerationID !== generatingIDRef.current
   ) {
-    console.log("Stopped generating");
     return false;
   }
-
-  console.log(generatingIDRef.current);
 
   const current = start;
   if (current) {
@@ -252,7 +227,6 @@ export const huntAndKill = async (
         !generatingRef.current ||
         currentGenerationID !== generatingIDRef.current
       ) {
-        console.log("Stopped generating");
         return false;
       }
 
@@ -266,7 +240,6 @@ export const huntAndKill = async (
     setGenerating(false);
     generatingRef.current = false;
     setMaze(currentMaze);
-    console.log("Maze Generation Completed!");
   }
 
   return true;

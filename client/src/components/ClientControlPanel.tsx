@@ -110,7 +110,6 @@ const ClientControlPanel = () => {
     setVisualize(false);
     if (setGenerating) setGenerating(false);
     resetMaze(maze, setMaze, 0);
-    console.log("Reset");
   };
 
   const clearBuildBoard = () => {

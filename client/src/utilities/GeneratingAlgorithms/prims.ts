@@ -74,7 +74,6 @@ export const prims = async (
       !generatingRef.current ||
       currentGenerationID !== generatingIDRef.current
     ) {
-      console.log("Stopped generating");
       return false;
     }
 
@@ -135,13 +134,11 @@ export const prims = async (
     resultRef.current = "Generation Successful";
     setGenerating(false);
     generatingRef.current = false;
-    console.log("Done Generating");
     return true;
   }
 
   resultRef.current = "Generation Unsuccessful";
   setGenerating(false);
   generatingRef.current = false;
-  console.log("Done Generating");
   return false;
 };

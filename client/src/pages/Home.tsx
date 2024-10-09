@@ -59,7 +59,6 @@ const Home = () => {
       resultRef.current = "";
       solvingRef.current = false;
       setVisualize(false);
-      console.log("this ran");
     }
   }, [
     setMaze,
@@ -71,13 +70,10 @@ const Home = () => {
     setMazeName,
   ]);
 
-  //! do i need to update the setNumberSolved?
   useEffect(() => {
     if (solved && mazeID) {
       setNumberSolved((prevNum) => {
         const updatedNumberSolved = prevNum + 1;
-        console.log(updatedNumberSolved);
-
         debounceMutate(mazeID, updatedNumberSolved);
         return updatedNumberSolved;
       });

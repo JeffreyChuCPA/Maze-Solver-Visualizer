@@ -50,7 +50,6 @@ export const solver = (
           setSolving,
           setSolved,
         );
-        console.log("Final path:", path);
         resolve(path);
       };
       runAlgorithm();

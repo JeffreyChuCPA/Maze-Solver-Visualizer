@@ -19,7 +19,6 @@ export const greedyBestFirstSearch = async (
   setSolved?: SetState<boolean>,
 ): Promise<boolean> => {
   if (!curr || !start || !end) {
-    console.log("Provided points are not usable");
     return false;
   }
 
@@ -58,7 +57,6 @@ export const greedyBestFirstSearch = async (
 
   while (priorityQueue.length > 0) {
     if (!solvingRef.current) {
-      console.log("Stopped solving");
       return false;
     }
 
@@ -90,7 +88,6 @@ export const greedyBestFirstSearch = async (
       let cell: Point | null | undefined = { x: currCell.x, y: currCell.y };
       while (cell) {
         if (!solvingRef.current) {
-          console.log("Stopped solving");
           return false;
         }
 
@@ -104,13 +101,11 @@ export const greedyBestFirstSearch = async (
       resultRef.current = "Solved";
       setSolving(false);
       setSolved && setSolved(true);
-      console.log("Solved!");
       return true;
     }
 
     for (const direction of directions) {
       if (!solvingRef.current) {
-        console.log("Stopped solving");
         return false;
       }
 
@@ -137,7 +132,6 @@ export const greedyBestFirstSearch = async (
       }
     }
     if (!solvingRef.current) {
-      console.log("Stopped solving");
       return false;
     }
     currentMaze = updateMaze(
@@ -147,7 +141,6 @@ export const greedyBestFirstSearch = async (
       2,
     );
   }
-  console.log("Not solvable");
   resultRef.current = "Unsolvable";
   setSolved && setSolved(false);
   setSolving(false);

@@ -18,7 +18,6 @@ export const aStarSearch = async (
   setSolved?: SetState<boolean>,
 ): Promise<boolean> => {
   if (!curr || !start || !end) {
-    console.log("Provided points are not usable");
     return false;
   }
   class Node {
@@ -54,7 +53,6 @@ export const aStarSearch = async (
 
   while (openList.length > 0) {
     if (!solvingRef.current) {
-      console.log("Stopped solving");
       return false;
     }
     //get currentNode from openList with the lowest F cost
@@ -84,7 +82,6 @@ export const aStarSearch = async (
       let cell: Node | null = currentNode;
       while (cell) {
         if (!solvingRef.current) {
-          console.log("Stopped solving");
           return false;
         }
 
@@ -97,14 +94,12 @@ export const aStarSearch = async (
       resultRef.current = "Solved";
       setSolving(false);
       setSolved && setSolved(true);
-      console.log("Solved!");
       return true;
     }
 
     //  foreach neighbor of currentNode {
     for (const { x, y } of directions) {
       if (!solvingRef.current) {
-        console.log("Stopped solving");
         return false;
       }
 
@@ -164,12 +159,10 @@ export const aStarSearch = async (
       }
     }
     if (!solvingRef.current) {
-      console.log("Stopped solving");
       return false;
     }
     currentMaze = updateMaze(currentMaze, currentNode, setMaze, 2);
   }
-  console.log("Not solvable");
   resultRef.current = "Unsolvable";
   setSolved && setSolved(false);
   setSolving(false);

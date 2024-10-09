@@ -92,7 +92,6 @@ export const kruskals = async (
       !generatingRef.current ||
       generatingIDRef.current !== currentGenerationID
     ) {
-      console.log("Stopped generating");
       return false;
     }
     const [cell1, cell2] = wall;
@@ -135,13 +134,11 @@ export const kruskals = async (
     resultRef.current = "Generation Successful";
     setGenerating(false);
     generatingRef.current = false;
-    console.log("Done Generating");
     return true;
   }
 
   resultRef.current = "Generation Unsuccessful";
   generatingRef.current = false;
   setGenerating(false);
-  console.log("Done Generating");
   return false;
 };

@@ -37,7 +37,6 @@ const Board = () => {
   //Debounce the data being sent to the network request
   const debounceMutate = useCallback(
     debounce<number, boolean>((id: number, isLiked: boolean) => {
-      console.log("Like debounced mutation called with:", id, isLiked); // Debugging log
       mutationLikes.mutate({
         id,
         isLiked,
@@ -46,14 +45,12 @@ const Board = () => {
     [],
   );
 
-  //! do i need to update the setLikes?
   const handleLikes = () => {
     if (mazeID) {
       setLiked((prevLiked) => !prevLiked);
 
       setLikes((prevLikes) => {
         const updatedLikes = liked ? prevLikes - 1 : prevLikes + 1;
-        console.log(updatedLikes);
 
         debounceMutate(mazeID, !liked);
         return updatedLikes;

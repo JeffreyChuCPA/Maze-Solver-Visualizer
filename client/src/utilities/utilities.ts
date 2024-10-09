@@ -125,7 +125,6 @@ export const generateStartPoint = (
 
     if (!side) {
       updatedMaze[0][startIndex] = 0;
-      console.log(`start point x: ${0}, y: ${startIndex}`);
       let i = 1;
       while (i < maze.length - 1 && updatedMaze[i][startIndex] !== 0) {
         updatedMaze[i][startIndex] = 0;
@@ -140,7 +139,6 @@ export const generateStartPoint = (
       }
     } else {
       updatedMaze[startIndex][0] = 0;
-      console.log(`start point x: ${startIndex}, y: ${0}`);
       let i = 1;
       while (i < maze[0].length - 1 && updatedMaze[startIndex][i] !== 0) {
         updatedMaze[startIndex][i] = 0;

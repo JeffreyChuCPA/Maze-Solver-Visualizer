@@ -48,7 +48,6 @@ export const dijkstraAlgorithm = async (
 
   while (priorityQueue.length > 0) {
     if (!solvingRef.current) {
-      console.log("Stopped solving");
       return false;
     }
 
@@ -79,7 +78,6 @@ export const dijkstraAlgorithm = async (
       let cell: Point | null | undefined = { x: currCell.x, y: currCell.y };
       while (cell) {
         if (!solvingRef.current) {
-          console.log("Stopped solving");
           return false;
         }
 
@@ -93,12 +91,10 @@ export const dijkstraAlgorithm = async (
       resultRef.current = "Solved";
       setSolving(false);
       setSolved && setSolved(true);
-      console.log("Solved!");
       return true;
     }
     for (const direction of directions) {
       if (!solvingRef.current) {
-        console.log("Stopped solving");
         return false;
       }
 
@@ -126,7 +122,6 @@ export const dijkstraAlgorithm = async (
       }
     }
     if (!solvingRef.current) {
-      console.log("Stopped solving");
       return false;
     }
     currentMaze = updateMaze(
@@ -136,7 +131,6 @@ export const dijkstraAlgorithm = async (
       2,
     );
   }
-  console.log("Not solvable");
   resultRef.current = "Unsolvable";
   setSolved && setSolved(false);
   setSolving(false);

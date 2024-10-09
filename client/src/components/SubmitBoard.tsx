@@ -26,6 +26,7 @@ const SubmitBoard = () => {
     setMaze,
     setSolving,
     imageRef,
+    setVisualize
   } = useContext(MazeContext);
   const colorStates = useContext(ColorContext);
   const [boardPost, setBoardPost] = useState<BoardPost>({
@@ -50,19 +51,6 @@ const SubmitBoard = () => {
     e.preventDefault();
     setIsValidating(true);
 
-    // const clearMazeForValidation = async () => {
-    //   setSolving(false);
-    //   solvingRef.current = false;
-    //   iterationRef.current = 0;
-    //   resultRef.current = "";
-    //   new Promise((resolved) => {
-    //     resolved(resetMaze(maze, setMaze, 0))
-    //   })
-    //   console.log("Reset");
-    // }
-
-    // await clearMazeForValidation()
-
     //is there a start and end point
     const start = findStartPoint(maze);
     const end = findEndPoint(maze);
@@ -75,9 +63,6 @@ const SubmitBoard = () => {
     //validate maze with x walls
     if (!isEnoughWalls(maze, mazeSize)) {
       setIsValidating(false);
-      console.log(
-        `Need to place ${remainingWallsNeeded(minWalls(mazeSize), totalWalls(maze))} block(s)`,
-      );
       return alert(
         `Need to place ${remainingWallsNeeded(minWalls(mazeSize), totalWalls(maze))} block(s)`,
       );
@@ -110,22 +95,21 @@ const SubmitBoard = () => {
 
     await isSolvable();
 
-    //*to add custom modal when condition met as alert() interferes with the rendering timing
+    //*If not solvable, display on clientcontroller that it is unsolvable
     if (resultRef.current !== "Solved") {
       iterationRef.current = 0;
-      resultRef.current = "";
+      resultRef.current = "Unsolvable maze";
+      setVisualize(true)
       setIsValidating(false);
       resetMaze(maze, setMaze, 0);
-      return console.log("Can't submit an unsolvable maze");
+      return
     }
 
-    //add name, maze, mazesize, date, etc to board post
-    //! maze variable that is set is the maze before the handleBoardSubmit is called
+    //* if its a valid board, set it to BoardPost and call api submission 
     setBoardPost((prevBoardPost) => {
       const updatedBoardPost: BoardPost = {
         ...prevBoardPost,
         name: nameRef.current!.value,
-        // mazeID: crypto.randomUUID(),
         maze,
         mazeSize,
         date: Date.now().toString(),
@@ -138,8 +122,6 @@ const SubmitBoard = () => {
       };
 
       //post to API
-      console.log(updatedBoardPost);
-
       postBoard(updatedBoardPost);
       return updatedBoardPost;
     });
@@ -148,7 +130,7 @@ const SubmitBoard = () => {
     resetMaze(maze, setMaze, 0);
     iterationRef.current = 0;
     resultRef.current = "";
-    console.log(boardPost);
+    return boardPost;
   };
 
   return (
