@@ -50,7 +50,6 @@ export const recursiveBacktracking = async (
       !generatingRef.current ||
       currentGenerationID !== generatingIDRef.current
     ) {
-      console.log("Stopped generating");
       return false;
     }
 
@@ -70,7 +69,6 @@ export const recursiveBacktracking = async (
           !generatingRef.current ||
           currentGenerationID !== generatingIDRef.current
         ) {
-          console.log("Stopped generating");
           return false;
         }
 
@@ -90,7 +88,6 @@ export const recursiveBacktracking = async (
     !generatingRef.current ||
     currentGenerationID !== generatingIDRef.current
   ) {
-    console.log("Stopped");
     return false;
   }
 
@@ -98,6 +95,5 @@ export const recursiveBacktracking = async (
   resultRef.current = "Generation Successful";
   setGenerating(false);
   generatingRef.current = false;
-  console.log("Done Generating");
   return true;
 };

@@ -17,7 +17,6 @@ const PageProvider: React.FC<PageProviderProps> = ({ children }) => {
   const route = useLocation();
 
   useEffect(() => {
-    console.log("Location changed:", location.pathname); // Debug log
     switch (route.pathname) {
       case "/":
         setCurrentPage("Home");

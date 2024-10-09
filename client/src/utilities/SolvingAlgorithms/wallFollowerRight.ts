@@ -44,7 +44,6 @@ export const wallFollowerRight = async (
 
   while (curr?.x !== end?.x || curr?.y !== end?.y) {
     if (!solvingRef.current) {
-      console.log("Stopped solving");
       return false;
     }
 
@@ -63,7 +62,6 @@ export const wallFollowerRight = async (
 
     if (!hasValidMoves) {
       if (!solvingRef.current) {
-        console.log("Stopped solving");
         return false;
       }
 
@@ -82,7 +80,6 @@ export const wallFollowerRight = async (
         resultRef.current = "Unsolvable";
         setSolving(false);
         setSolved && setSolved(false);
-        console.log("Unsolvable!");
         return false;
       }
     }
@@ -94,7 +91,6 @@ export const wallFollowerRight = async (
 
     if (isValid(seen, { x: rightX, y: rightY })) {
       if (!solvingRef.current) {
-        console.log("Stopped solving");
         return false;
       }
 
@@ -112,7 +108,6 @@ export const wallFollowerRight = async (
 
       if (isValid(seen, { x: nextX, y: nextY })) {
         if (!solvingRef.current) {
-          console.log("Stopped solving");
           return false;
         }
 
@@ -124,7 +119,6 @@ export const wallFollowerRight = async (
       } else {
         //otherwise turn left
         if (!solvingRef.current) {
-          console.log("Stopped solving");
           return false;
         }
         directionIndex = (directionIndex + 3) % 4;
@@ -142,6 +136,5 @@ export const wallFollowerRight = async (
   updateMazePath(currentMaze, path, setMaze, 4);
   setSolving(false);
   setSolved && setSolved(true);
-  console.log("Solved!");
   return true;
 };

@@ -14,11 +14,7 @@ export const postBoard = async (board: BoardPost) => {
       },
     );
     if (response.ok) {
-      console.log("successfully submitted");
-
       const data = await response.json();
-      console.log(data);
-
       alert("Maze has been successfully posted.");
       return data;
     } else {

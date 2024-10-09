@@ -18,7 +18,6 @@ export const dfs = async (
   setSolved?: SetState<boolean>,
 ): Promise<boolean> => {
   if (!solvingRef.current) {
-    console.log("Stopped solving");
     return false;
   }
 
@@ -46,7 +45,6 @@ export const dfs = async (
     updateMazePath(maze, path, setMaze, 4);
     setSolving(false);
     setSolved && setSolved(true);
-    console.log("Solved");
     return true;
   }
 
@@ -71,7 +69,6 @@ export const dfs = async (
     });
 
     if (!hasValidMoves) {
-      console.log("Not solvable");
       resultRef.current = "Unsolvable";
       setSolving(false);
       return false;
@@ -95,7 +92,6 @@ export const dfs = async (
   //* recurse
   for (const direction of directions) {
     if (!solvingRef.current) {
-      console.log("Stopped solving");
       return false;
     }
 
@@ -138,7 +134,6 @@ export const dfs = async (
     }
 
     if (deleteCurr.x === start.x && deleteCurr.y === start.y) {
-      console.log("Not solvable");
       resultRef.current = "Unsolvable";
       setSolved && setSolved(false);
       setSolving(false);
