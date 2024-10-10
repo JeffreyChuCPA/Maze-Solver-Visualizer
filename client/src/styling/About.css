@@ -1,6 +1,6 @@
 .about__card {
   width: 80%;
-  height: 100vw;
+  /* height: 100vw; */
   border: 2px solid var(--first-color);
   background-color: var(--first-color);
   border-radius: 20px;
@@ -11,7 +11,29 @@
   justify-content: space-between;
   padding: 10px;
   box-shadow:
-    0 0.2rem 3.2rem -0.125rem red,
+    0 0.2rem 3.2rem -0.125rem var(--first-color),
     0 0px 0.5rem 0.5rem var(--forth-color);
 }
 
+.about__text {
+  padding: 10px 20px 10px;
+}
+
+.about__title {
+  text-align: center;
+  margin: 10px 10px 20px;
+}
+
+.about__p {
+  line-height: 1.5rem;
+  margin-bottom: 1.5em;
+  text-align: left;
+}
+
+.about__p  a {
+  text-decoration: none;
+}
+
+.about__p  a:hover {
+  text-decoration: underline;
+}
