@@ -1,12 +1,26 @@
-﻿# Maze-It-Yourself
+<div align="center">
+  <h1 align="center">Maze-It-Yourself</h3>
 
-## Features
-- Visually implements 10 algorithms for maze creation and traversal.
-- Control speed and cell colors of the algorithm execution.
+   <div align="center">
+     This fullstack project visualizes the various maze-solving and generating algorithms, and also provides a platform for users to create and share their own custom maze creations.
+    </div>
+</div>
+
+## <a name="tech-stack">⚙️ Tech Stack</a>
+
+- Vite
+- React.js
+- Typescript
+- FastAPI - Python
+- Postgres
+
+## <a name="features">🔋 Features</a>
+- Visually implements 10 total algorithms for maze creation and traversal.
+- Control speed and cell element colors of the algorithm execution.
 - Build feature for custom maze creation that can be downloaded and posted.
-- Access and solve custom mazes created by other users.
+- Browse and solve custom mazes created by other users.
 - Statistics tracking during algorithm execution.
-- About page with general algorithm info and additional resources. (WIP)
+
 
 ## User and Engineer stories
 DONE - User Story: As a User, I want to be able to select Wall Follower left or right algorithm
