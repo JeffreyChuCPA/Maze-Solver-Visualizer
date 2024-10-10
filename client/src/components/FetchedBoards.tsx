@@ -76,7 +76,7 @@ const FetchedBoards: React.FC<FetchedBoardsProps> = ({
   }
 
   return (
-    <div className="fetchboards__section">
+    <div className="fetchboards__section" id="collection">
       <div className="fetchboards__sortoptions">
         <div>
           <span className="fetchboards__sortoptions__title">Sort: </span>

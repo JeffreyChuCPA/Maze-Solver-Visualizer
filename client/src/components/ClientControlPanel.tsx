@@ -240,7 +240,7 @@ const ClientControlPanel = () => {
             <h1 className="clientcontrolpanel__title">Color Controls</h1>
             <div className="clientcontrolpanel__colorcontrols__section">
               <div className="clientcontrolpanel__colorselector">
-                <span>Path Color: </span>
+                <span>Path: </span>
                 <input
                   type="color"
                   value={colorStates.pathColor}
@@ -249,7 +249,7 @@ const ClientControlPanel = () => {
                 />
               </div>
               <div className="clientcontrolpanel__colorselector">
-                <span>Wall Color: </span>
+                <span>Wall: </span>
                 <input
                   type="color"
                   value={colorStates.wallColor}
@@ -258,7 +258,7 @@ const ClientControlPanel = () => {
                 />
               </div>
               <div className="clientcontrolpanel__colorselector">
-                <span> Walked Color: </span>
+                <span> Walked: </span>
                 <input
                   type="color"
                   value={colorStates.walkedColor}
@@ -267,7 +267,7 @@ const ClientControlPanel = () => {
                 />
               </div>
               <div className="clientcontrolpanel__colorselector">
-                <span>Queued Color: </span>
+                <span>Queued: </span>
                 <input
                   type="color"
                   value={colorStates.queuedColor}
@@ -276,7 +276,7 @@ const ClientControlPanel = () => {
                 />
               </div>
               <div className="clientcontrolpanel__colorselector">
-                <span> Current Color: </span>
+                <span> Current: </span>
                 <input
                   type="color"
                   value={colorStates.shortPathColor}
@@ -445,7 +445,7 @@ const ClientControlPanel = () => {
             <h1 className="clientcontrolpanel__title">Color Controls</h1>
             <div className="clientcontrolpanel__colorcontrols__section">
               <div className="clientcontrolpanel__colorselector">
-                <span>Path Color: </span>
+                <span>Path: </span>
                 <input
                   type="color"
                   value={colorStates.pathColor}
@@ -453,7 +453,7 @@ const ClientControlPanel = () => {
                 />
               </div>
               <div className="clientcontrolpanel__colorselector">
-                <span>Wall Color: </span>
+                <span>Wall: </span>
                 <input
                   type="color"
                   value={colorStates.wallColor}
@@ -461,7 +461,7 @@ const ClientControlPanel = () => {
                 />
               </div>
               <div className="clientcontrolpanel__colorselector">
-                <span> Walked Color: </span>
+                <span> Walked: </span>
                 <input
                   type="color"
                   value={colorStates.walkedColor}
@@ -469,7 +469,7 @@ const ClientControlPanel = () => {
                 />
               </div>
               <div className="clientcontrolpanel__colorselector">
-                <span>Queued Color: </span>
+                <span>Queued: </span>
                 <input
                   type="color"
                   value={colorStates.queuedColor}
@@ -477,7 +477,7 @@ const ClientControlPanel = () => {
                 />
               </div>
               <div className="clientcontrolpanel__colorselector">
-                <span> Current Color: </span>
+                <span> Current: </span>
                 <input
                   type="color"
                   value={colorStates.shortPathColor}
