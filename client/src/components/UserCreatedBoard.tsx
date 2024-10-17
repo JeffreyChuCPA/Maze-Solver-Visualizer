@@ -2,6 +2,7 @@ import React, { useCallback, useContext } from "react";
 import { UserCreatedBoardProps } from "../utilities/types";
 import { MazeContext } from "../MazeProvider";
 import { ColorContext } from "../ColorProvider";
+import { useMediaQuery } from "react-responsive";
 
 const UserCreatedBoard: React.FC<UserCreatedBoardProps> = ({ boardData }) => {
   const {
@@ -16,6 +17,7 @@ const UserCreatedBoard: React.FC<UserCreatedBoardProps> = ({ boardData }) => {
     setSolved,
   } = useContext(MazeContext);
   const colorStates = useContext(ColorContext);
+  const isMobile: boolean = useMediaQuery({ maxWidth: "767px" });
 
   const handleMazeSelection = useCallback(() => {
     solvingRef.current = false;
@@ -32,6 +34,14 @@ const UserCreatedBoard: React.FC<UserCreatedBoardProps> = ({ boardData }) => {
     colorStates.setWalkedColor(boardData.walkedColor);
     colorStates.setQueuedColor(boardData.queuedColor);
     colorStates.setShortPathColor(boardData.shortPathColor);
+
+    let displayedMaze;
+    if (isMobile) {
+      displayedMaze = document.getElementById("top-page-mobile")
+    } else {
+      displayedMaze = document.getElementById("top-page-desktop")
+    }
+    displayedMaze!.scrollIntoView({behavior: 'smooth'})
   }, [
     boardData.maze,
     boardData.mazeID,
@@ -54,6 +64,7 @@ const UserCreatedBoard: React.FC<UserCreatedBoardProps> = ({ boardData }) => {
     setSolved,
     setVisualize,
     solvingRef,
+    isMobile
   ]);
 
   return (

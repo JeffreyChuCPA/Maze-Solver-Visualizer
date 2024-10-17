@@ -131,7 +131,7 @@ const ClientControlPanel = () => {
   return (
     <>
       {currentPage === "Home" && (
-        <div className="clientcontrolpanel__card">
+        <div className="clientcontrolpanel__card" id="top-page-desktop">
           <div className="clientcontrolpanel__mazecontrols__gridsection">
             <h1 className="clientcontrolpanel__title">Maze Controls</h1>
             <div className="clientcontrolpanel__mazecontrols__section">
@@ -318,7 +318,7 @@ const ClientControlPanel = () => {
                 <span>{resultRef.current}</span>
               </div>
               {isMobile && (
-                <div className="clientcontrolpanel__mazecontrols__buttons">
+                <div className="clientcontrolpanel__mazecontrols__buttons" id="top-page-mobile">
                   {!generating ? (
                     <button
                       onClick={generateMaze}
