@@ -6,6 +6,10 @@
     </div>
 </div>
 
+https://www.loom.com/share/a1c06f0cd4eb4dfbb76a687935c73283?sid=cc1e5280-1aca-46b0-b4e3-1202da528b64
+
+https://www.loom.com/share/a92d6bf07619493791e78845c993c882?sid=9f55acdb-2510-4c5c-a0c0-8c01a64eaaa0
+
 ## <a name="tech-stack">⚙️ Tech Stack</a>
 
 - Vite
